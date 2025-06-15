@@ -68,5 +68,73 @@ export const data = {
   ]
 }
 
-export const navbarLinks = [
-  {name: "হোম", color: true}, {name: "কোর্স সমূহ"}, {name: "ফ্রি িএক্সাম"}, {name: "শাখা সমূহ"},{name: "Login | Register", bg: true}]
+import { FaEnvelope, FaLinkedinIn , FaFacebook, FaYoutube, FaTwitter  } from "react-icons/fa";
+import { FaPhone} from "react-icons/fa6";
+
+export const headerData = {
+  headerS1: [
+    {
+      icon: FaEnvelope, // JSX element নয়, component ref
+      data: "focusedu@gmail.com"
+    },
+    {
+      icon: FaPhone,
+      data: "01719520202"
+    }
+  ],
+  headerS2: [
+    {
+      icon: FaFacebook
+    },
+    {
+      icon: FaTwitter
+    },
+    {
+      icon: FaYoutube
+    },
+    {
+      icon: FaLinkedinIn
+    }
+  ],
+  headerBg: {
+    color: "#b62c10",
+    textColor: "#fff"
+  },
+};
+
+import logo from "../data/images/logo.png"
+
+export const navData = 
+  {navbar: {
+      title: "কনটেস্ট",
+      subTitle: "বিশ্ববিদ্যালয় ভর্তি কোচিং",
+      logo: logo,
+      links: [
+        { name: "হোম" },
+        { name: "কোর্সসমূহ"},
+        { name: "ফ্রি এক্সাম"},
+        { name: "শাখা সমূহ"},
+        { name: "Login | Register", bg: true },
+      ]
+  }}
+
+export const footerData = 
+{footer: {
+    about: "ফোকাস অনলাইন কেয়ার একটি অনলাইন ভিত্তিক শিক্ষা প্রতিষ্ঠান, যা শিক্ষার্থীদের অনলাইন কোর্স, লাইভ ক্লাস, মডেল টেস্ট ও মেন্টর সাপোর্ট দিয়ে সাফল্যের দিকে এগিয়ে নিতে সহায়তা করে।",
+    links: [
+      { label: "শর্তাবলী", path: "/terms", icon: "MdOutlineLibraryBooks" },
+      { label: "প্রাইভেসি পলিসি", path: "/privacy", icon: "MdOutlineLibraryBooks" },
+      { label: "সচরাচর প্রশ্ন", path: "/faq", icon: "MdOutlineCastForEducation" },
+      { label: "যোগাযোগ", path: "/contact", icon: "MdOutlineContactPhone" }
+    ],
+    contactInfo: [
+      { type: "phone", label: "০১৮১২-৩৪৫৬৭৮", icon: "FaPhone" },
+      { type: "email", label: "support@focuscare.com", icon: "FaEnvelope" },
+      { type: "address", label: "ধানমন্ডি, ঢাকা, বাংলাদেশ", icon: "FaMapMarkerAlt" }
+    ],
+    social: [
+      { platform: "Facebook", url: "https://facebook.com/focuscare", icon: "FaFacebook" },
+      { platform: "YouTube", url: "https://youtube.com/focuscare", icon: "FaYoutube" },
+      { platform: "Instagram", url: "https://instagram.com/focuscare", icon: "FaInstagram" }
+    ]
+  }}

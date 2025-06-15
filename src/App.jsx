@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { Home, Courses, Exams, Branches, Login } from './pages';
-import { Header, Navbar, Error } from './components';
+import { Header, Error } from './components';
 
 
 const App = () => {
@@ -9,7 +9,6 @@ const App = () => {
     <>
       <BrowserRouter>
         <Header />
-        <Navbar />
 
 
          <Routes>
