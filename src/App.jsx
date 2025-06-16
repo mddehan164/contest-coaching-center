@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { Home, Courses, Exams, Branches, Login } from './pages';
-import { Header, Error } from './components';
+import { HeaderMain, Error } from './components';
 
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Header />
+        <HeaderMain />
 
 
          <Routes>

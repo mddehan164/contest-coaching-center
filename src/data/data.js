@@ -96,10 +96,6 @@ export const headerData = {
       icon: FaLinkedinIn
     }
   ],
-  headerBg: {
-    color: "#b62c10",
-    textColor: "#fff"
-  },
 };
 
 import logo from "../data/images/logo.png"
@@ -110,11 +106,11 @@ export const navData =
       subTitle: "বিশ্ববিদ্যালয় ভর্তি কোচিং",
       logo: logo,
       links: [
-        { name: "হোম" },
-        { name: "কোর্সসমূহ"},
-        { name: "ফ্রি এক্সাম"},
-        { name: "শাখা সমূহ"},
-        { name: "Login | Register", bg: true },
+        { name: "হোম" ,path: "home" },
+        { name: "কোর্সসমূহ", path: "courses"},
+        { name: "ফ্রি এক্সাম" ,path: "exams"},
+        { name: "শাখা সমূহ" ,path: "branches"},
+        { name: "Login | Register", bg: true , path: "login"},
       ]
   }}
 
