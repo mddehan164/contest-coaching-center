@@ -110,7 +110,6 @@ export const navData =
         { name: "কোর্সসমূহ", path: "courses"},
         { name: "ফ্রি এক্সাম" ,path: "exams"},
         { name: "শাখা সমূহ" ,path: "branches"},
-        { name: "Login | Register", bg: true , path: "login"},
       ]
   }}
 

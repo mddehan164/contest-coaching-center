@@ -17,6 +17,7 @@ export default {
     extend: {
       colors: {
         headerColor: '#b62c10',
+        headerColorHover:"#931c03",
         headerTextColor: '#ffffff',
       },
     },

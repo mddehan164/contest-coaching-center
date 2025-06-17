@@ -6,7 +6,7 @@ const HeaderDetails = () => {
         <div className='flex gap-6 max-sm:gap-1 max-sm:text-[5vw] max-md:gap-2  '>
           {
             headerData.headerS1.map((item, index) => (
-              <div className='flex items-center justify-between px-4 py-2 gap-1 max-sm:px-1' key={index}>
+              <div className='flex items-center justify-between px-2 py-2 gap-1 max-sm:px-1' key={index}>
                   <item.icon/>
                   <span>{item.data}</span>
               </div>
