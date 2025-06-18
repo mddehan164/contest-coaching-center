@@ -12,10 +12,10 @@ const Navbarmain = () => {
       setIsActiveMenu(!isActiveMenu);
     };
   return (
-   <nav className='text-black bg-blue-200 w-full flex justify-between items-center relative px-40 max-sm:px-2 max-md:px-2'>
+   <nav className='text-black w-full flex justify-between items-center relative max-sm:px-2 sm:px-5 lg:px-36'>
       <NavbarLogo />
       <NavbarLinks />
-      <div><AiOutlineMenuUnfold className={`hidden max-sm:block max-md:block cursor-pointer ${isActiveMenu ? "max-sm:hidden max-md:hidden" : "max-sm:block max-md:block"} text-headerColor font-extrabold w-5 h-5`} onClick={toggleMenu}/></div>
+      <div><AiOutlineMenuUnfold className={`hidden max-sm:block cursor-pointer ${isActiveMenu ? "max-sm:hidden " : "max-sm:block"} text-headerColor font-extrabold w-5 h-5`} onClick={toggleMenu}/></div>
    </nav>
   )
 }

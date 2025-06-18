@@ -11,14 +11,14 @@ const NavbarLinks = () => {
     setIsActiveMenu(!isActiveMenu);
   };
   return (
-    <div className='flex items-center gap-10 text-lg font-semibold text-black sm:block sm:gap-3 sm:absolute sm:top-0 sm:right-0 max-sm:w-[50%] sm:text-[4.8vw] sm:bg-slate-50/80 shadow-xl max-md:absolute max-md:top-0 max-md:block max-md:right-0 min-md:w-[50%] max-md:text-[3.2vw] max-md:bg-slate-50/80'>
-      <MdCancel className={`hidden sm:block max-md:block cursor-pointer ${!isActiveMenu ? "sm:hidden max-md:hidden" : "sm:block max-md:block"} absolute top-0 right-0 text-xl text-headerColor w-6 h-6`} onClick={toggleMenu}/>
+    <div className='flex items-center justify-end font-semibold text-black max-sm:block max-sm:gap-3 max-sm:absolute max-sm:top-0 max-sm:right-0 max-sm:w-[45%] max-sm:text-[4vw] max-sm:bg-slate-50/80 max-sm:shadow-xl sm:text-[2vw] sm:gap-3 sm:w-[70%] md:text-[1.7vw] md:gap-5 lg:text-[1.3vw] lg:gap-10 xl:text-[1.1vw]'>
+    <MdCancel className={`hidden max-sm:block cursor-pointer ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} absolute top-0 right-0 text-xl text-headerColor w-6 h-6`} onClick={toggleMenu}/>
       {
         navData.navbar.links.map((link, idx) => (
-          <div key={idx} className={`hover:text-headerColor ${!isActiveMenu ? "sm:hidden max-md:hidden" : "sm:block max-md:block"} sm:m-3 max-md:m-5`}><NavLink to={link.path}>{link.name}</NavLink></div>
+          <div key={idx} className={`hover:text-headerColor ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} max-sm:m-5`}><NavLink to={link.path}>{link.name}</NavLink></div>
         ))
       }
-      <div className={`bg-headerColor px-6 py-4 text-white rounded-lg hover:bg-headerColorHover ${!isActiveMenu ? "sm:hidden max-md:hidden" : "sm:block max-md:block"} sm:py-1 sm:px-6 sm:rounded-md max-md:py-2 max-md:px-5`}><NavLink to="/login"><NavbarBtn /></NavLink></div>
+      <NavLink to="/login" className={`${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"}`}><NavbarBtn /></NavLink>
       
     </div>
   )
