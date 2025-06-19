@@ -18,7 +18,7 @@ const NavbarLinks = () => {
           <div key={idx} className={`hover:text-headerColor ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} max-sm:m-5`}><NavLink to={link.path}>{link.name}</NavLink></div>
         ))
       }
-      <NavLink to="/login" className={`${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"}`}><NavbarBtn /></NavLink>
+      <NavLink to="/login" className={`${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"}`}><NavbarBtn data={navData}/></NavLink>
       
     </div>
   )

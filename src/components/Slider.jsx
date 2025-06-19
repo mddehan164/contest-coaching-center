@@ -1,29 +1,42 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { Autoplay } from 'swiper/modules';
+import 'swiper/css/effect-cube';
+import { Autoplay, EffectCube } from 'swiper/modules';
+import { sliderData } from '../data/data';
 
-export default function AutoSlider() {
+export default function CubeSlider() {
   return (
     <Swiper
-      modules={[Autoplay]}
+      modules={[Autoplay, EffectCube]}
+      effect="cube"
+      cubeEffect={{
+        shadow: false,
+        slideShadows: false,
+      }}
+      speed={600}  // কমিয়ে smooth করার চেষ্টা
       autoplay={{
-        delay: 1000, // 1 second per slide
+        delay: 3500,
         disableOnInteraction: false,
       }}
       loop={true}
       slidesPerView={1}
-      className="w-full max-w-2xl mx-auto"
+      className="w-full mx-auto"
+      style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
     >
-      <SwiperSlide>
-        <div className="bg-blue-200 p-10 text-center rounded-xl">Slide 1</div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="bg-green-200 p-10 text-center rounded-xl">Slide 2</div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="bg-yellow-200 p-10 text-center rounded-xl">Slide 3</div>
-      </SwiperSlide>
+      {
+        sliderData.sliderImg.map((img, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={img}
+              alt={`Slide ${index + 1}`}
+              className="w-full h-auto object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </SwiperSlide>
+        ))
+      }
     </Swiper>
   );
 }

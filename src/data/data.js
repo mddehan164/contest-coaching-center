@@ -1,4 +1,122 @@
-export const data = {
+
+// start header from here
+
+import { FaEnvelope, FaLinkedinIn , FaFacebook, FaYoutube, FaTwitter  } from "react-icons/fa";
+import { FaPhone} from "react-icons/fa6";
+
+export const headerData = {
+  headerS1: [
+    {
+      icon: FaEnvelope, // JSX element নয়, component ref
+      data: "focusedu@gmail.com"
+    },
+    {
+      icon: FaPhone,
+      data: "01719520202"
+    }
+  ],
+  headerS2: [
+    {
+      icon: FaFacebook
+    },
+    {
+      icon: FaTwitter
+    },
+    {
+      icon: FaYoutube
+    },
+    {
+      icon: FaLinkedinIn
+    }
+  ],
+};
+
+// start navbar data from here
+
+import logo from "../data/images/logo.png"
+
+export const navData = 
+  {navbar: {
+      title: "কনটেস্ট",
+      subTitle: "বিশ্ববিদ্যালয় ভর্তি কোচিং",
+      logo: logo,
+      links: [
+        { name: "হোম" ,path: "home" },
+        { name: "কোর্সসমূহ", path: "courses"},
+        { name: "ফ্রি এক্সাম" ,path: "exams"},
+        { name: "শাখা সমূহ" ,path: "branches"},
+      ],
+      navBtn:"Login | Register",
+      navBtnColor:"headerColor",
+      navBtnHoverColor:"headerColorHover"
+  }}
+
+  
+import sliderImg1 from "../data/images/slider/slider-1.jpg";
+import sliderImg2 from "../data/images/slider/slider-2.jpg";
+import sliderImg3 from "../data/images/slider/slider-3.jpg";
+
+  export const sliderData = {
+    sliderImg:[sliderImg1, sliderImg2, sliderImg3]
+  }
+
+// start notice data from here
+  
+export const noticeData = {
+  tabs: ['Admission', 'Administration', 'Department'],
+  notices: [
+    {
+      date: '14/01/2025',
+      title: 'Economics, 2nd Admission Test Result Spring-2025',
+      link: '#',
+    },
+    {
+      date: '13/01/2025',
+      title: 'Special Admission Test Result Spring-2025 (English)',
+      link: '#',
+    },
+    {
+      date: '13/01/2025',
+      title: 'CSE Spring 2025 B.Sc in CSE Special Admission Test Result',
+      link: '#',
+    },
+    {
+      date: '13/01/2025',
+      title: 'Islamic History and Culture (IHC) Special Admission Test Result (Spring-2025)',
+      link: '#',
+    },
+    {
+      date: '13/01/2025',
+      title: 'Nutrition and Food Engineering (NFE) Special Admission Test Result (Spring-2025)',
+      link: '#',
+    },
+  ],
+};
+
+export const studyPrograms = {
+  undergraduate: {
+    title: 'Undergraduate Study',
+    image: '/images/undergraduate.jpg',
+    links: [
+      { label: 'Academic Programs', url: '#' },
+      { label: 'Admission Requirements', url: '#' },
+      { label: 'Apply Online', url: '#' },
+    ],
+  },
+  graduate: {
+    title: 'Graduate Study',
+    image: '/images/graduate.jpg',
+    links: [
+      { label: 'Academic Programs', url: '#' },
+      { label: 'Admission Requirements', url: '#' },
+      { label: 'Apply Online', url: '#' },
+    ],
+  },
+};
+
+//  start course data from here
+
+export const courseData = {
   courses: [
     {
       title: "ভর্তি 'খ' + প্রস্তুতি",
@@ -68,50 +186,9 @@ export const data = {
   ]
 }
 
-import { FaEnvelope, FaLinkedinIn , FaFacebook, FaYoutube, FaTwitter  } from "react-icons/fa";
-import { FaPhone} from "react-icons/fa6";
 
-export const headerData = {
-  headerS1: [
-    {
-      icon: FaEnvelope, // JSX element নয়, component ref
-      data: "focusedu@gmail.com"
-    },
-    {
-      icon: FaPhone,
-      data: "01719520202"
-    }
-  ],
-  headerS2: [
-    {
-      icon: FaFacebook
-    },
-    {
-      icon: FaTwitter
-    },
-    {
-      icon: FaYoutube
-    },
-    {
-      icon: FaLinkedinIn
-    }
-  ],
-};
 
-import logo from "../data/images/logo.png"
-
-export const navData = 
-  {navbar: {
-      title: "কনটেস্ট",
-      subTitle: "বিশ্ববিদ্যালয় ভর্তি কোচিং",
-      logo: logo,
-      links: [
-        { name: "হোম" ,path: "home" },
-        { name: "কোর্সসমূহ", path: "courses"},
-        { name: "ফ্রি এক্সাম" ,path: "exams"},
-        { name: "শাখা সমূহ" ,path: "branches"},
-      ]
-  }}
+// start footer data from here
 
 export const footerData = 
 {footer: {
