@@ -5,4 +5,4 @@ export {default as HeaderDetails} from './header/HeaderDetails';
 export {default as HeaderIcons} from './header/HeaderIcons';
 export {default as Error} from './Error';
 export {default as NavbarMain} from './navbar/NavbarMain';
-export {default as Slider} from './Slider';
+// export {default as Slider} from './Slider';
