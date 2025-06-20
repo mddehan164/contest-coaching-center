@@ -1,10 +1,11 @@
 import React from 'react'
-// import {Slider} from '../components/index'
+import {NoticeMain, Slider} from '../components/index'
 
 const Home = () => {
   return (
-    <div>
-      {/* <Slider /> */}home
+    <div className='max-sm:px-1 sm:px-5 md:px-10 lg:px-44'>
+      <Slider />
+      <NoticeMain />
     </div>
   )
 }

@@ -8,10 +8,13 @@ const initialState = {
 
 export const ContextProvider = ({ children }) => {
     const [isActiveMenu, setIsActiveMenu] = useState(false);
+    const [activeTab, setActiveTab] = useState('Admission')
     return (
         <StateContext.Provider value={{
             isActiveMenu,
             setIsActiveMenu,
+            activeTab,
+            setActiveTab
         }}>
             {children}
         </StateContext.Provider>

@@ -8,7 +8,7 @@ const HeaderIcons = () => {
           {
             headerData.headerS2.map((item, index) => (
               <div className='flex items-center justify-between' key={index}>
-                  <item.icon className="cursor-pointer transition duration-300 hover:drop-shadow-[0_0_8px_white] hover:scale-150 max-sm:text-sm"/>
+                  <item.icon className="cursor-pointer transition duration-300 hover:drop-shadow-[0_0_8px_white] hover:scale-150 max-sm:text-xs"/>
               </div>
             ))
         } 
