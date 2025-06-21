@@ -174,26 +174,48 @@ export const noticeData = {
           ]},
 };
 
-export const studyPrograms = {
-  undergraduate: {
-    title: 'Undergraduate Study',
-    image: '/images/undergraduate.jpg',
-    links: [
-      { label: 'Academic Programs', url: '#' },
-      { label: 'Admission Requirements', url: '#' },
-      { label: 'Apply Online', url: '#' },
+import card1 from "./images/card/card-1.jpg";
+import card2 from "./images/card/card-2.jpg";
+
+export const noticeStudyPrograms = [
+  {
+    titleStatus: true,
+    image: card1,
+    icon: true,
+    btnData: {
+      btnName: ['Undergraduate Study'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        bgFull: true,
+      }
+    },
+    body: [
+      { lists: 'Academic Programs' },
+      { lists: 'Admission Requirements' },
+      { lists: 'Apply Online' },
     ],
   },
-  graduate: {
-    title: 'Graduate Study',
-    image: '/images/graduate.jpg',
-    links: [
-      { label: 'Academic Programs', url: '#' },
-      { label: 'Admission Requirements', url: '#' },
-      { label: 'Apply Online', url: '#' },
+  {
+    titleStatus: true,
+    image: card2,
+    icon: true,
+    btnData: {
+      btnName: ['Graduate Study'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        bgFull: true,
+      }
+    },
+    body: [
+      { lists: 'Academic Programs' },
+      { lists: 'Admission Requirements' },
+      { lists: 'Apply Online' },
     ],
-  },
-};
+  }
+]
+
 
 //  start course data from here
 
