@@ -9,3 +9,5 @@ export {default as Slider} from './Slider';
 export {default as NoticeMain} from './notice/NoticeMain';
 export {default as MainBtn} from './mainBtn';
 export {default as Courses} from './courses/Courses';
+export {default as StatsMain} from './stats/StatsMain';
+export {default as SuccessCards} from './successfullPerson/SuccessCards';

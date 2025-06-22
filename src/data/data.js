@@ -223,12 +223,19 @@ export const noticeStudyPrograms = [
 //  start course data from here
 // ratio should be 3:2 of each card image
 import courseImg1 from "./images/course-card/card-1.jpg";
-import courseImg2 from "./images/course-card/card-3.jpg";
+import courseImg2 from "./images/course-card/card-2.jpg";
 import courseImg3 from "./images/course-card/card-3.jpg";
 
 
 export const courseData = {
   title: "আমাদের কোর্সসমূহ",
+  btnData: {
+      btnName: ['See More'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+      }
+    },
   courses: [
     {
       unit: "B Unit 2025-26",
@@ -315,36 +322,60 @@ export const courseData = {
       image: courseImg3
     },
     
+    
   ],
   
 }
 
+// start stats data from here
 
-export const studentData = {
-  students: [
-    {
-      name: "মোঃ আনিসুজ্জামান জামিল",
-      institution: "BUET ১ম",
-      session: "২০২৩-২৪",
-      story: "আমি ফোকাসের একজন স্টুডেন্ট ছিলাম...",
-      image: "student_1.jpg"
-    },
-    {
-      name: "মাহবুবুল হাসান",
-      institution: "BUET ২য়",
-      session: "২০২৩-২৪",
-      story: "আমি ফোকাসের নিয়মিত স্টুডেন্ট ছিলাম...",
-      image: "student_2.jpg"
-    },
-    {
-      name: "সুনীতি ঘোষাল",
-      institution: "BUET ৩য়",
-      session: "২০২৩-২৪",
-      story: "আমি ফোকাসের একজন সাফল্যপ্রাপ্ত শিক্ষার্থী...",
-      image: "student_3.jpg"
-    }
-  ]
-}
+import { FaUniversity, FaStethoscope, FaGraduationCap, FaTools } from 'react-icons/fa';
+
+export const statsData = [
+  {
+    title: 'BUET',
+    count: '1290+',
+    description: '২০২৩ BUET ভর্তি পরীক্ষায় লেখ পরীক্ষায় প্রথম ৫০ ও ১০০ জন সহ ৯০টিরও অধিক অ্যাডমিশন টেস্টে অংশ নিয়ে ঢাকা পেয়েছে ।',
+    icon: FaUniversity,
+    backgroundGradient: 'bg-gradient-to-br from-purple-400 to-purple-900',
+  },
+  {
+    title: 'মেডিকেল',
+    count: '4300+',
+    description: '২০২৩ মেডিকেল ভর্তি পরীক্ষায় জাতীয় মেধায় প্রথম ৫০ ও ১০০ জন এবং DMC-তে ৪৯ জনসহ ৬৩০টি অ্যাডমিশনে ঢাকায় পেয়েছে ।',
+    icon: FaStethoscope,
+    backgroundGradient: 'bg-gradient-to-br from-red-500 to-red-800',
+  },
+  {
+    title: "চাবি'ক",
+    count: '1800+',
+    description: '২০২৩ চাবি\'ক ইউনিট ভর্তি পরীক্ষায় লেখ পরীক্ষায় প্রথম ৫০ ও ১০০ জন সহ ১৮০টিরও অধিক অ্যাডমিশনে ঢাকায় পেয়েছে ।',
+    icon: FaGraduationCap,
+    backgroundGradient: 'bg-gradient-to-br from-green-500 to-green-900',
+  },
+  {
+    title: 'CKRUET',
+    count: '3180+',
+    description: '২০২৩ CKRUET ভর্তি পরীক্ষায় লেখ পরীক্ষায় প্রথম ৫০ ও ১০০ জন সহ ৬৩০টিরও অধিক অ্যাডমিশনে ঢাকায় পেয়েছে ।',
+    icon: FaTools,
+    backgroundGradient: 'bg-gradient-to-br from-yellow-400 to-yellow-700',
+  },
+  {
+    title: 'RUET',
+    count: '2900+',
+    description: '২০২৩ RUET ভর্তি পরীক্ষায় বিশাল সংখ্যক শিক্ষার্থী ভর্তি হয়েছে এবং তাদের পারফর্মেন্স ছিল অসাধারণ।',
+    icon: FaTools,
+    backgroundGradient: 'bg-gradient-to-br from-blue-500 to-blue-900',
+  },
+  {
+    title: 'CUET',
+    count: '3100+',
+    description: '২০২৩ CUET ভর্তি পরীক্ষায় শীর্ষ র্যাংকধারী শিক্ষার্থীদের মধ্যেও অনেকেই এখানে ভর্তি হয়েছেন।',
+    icon: FaTools,
+    backgroundGradient: 'bg-gradient-to-br from-orange-500 to-orange-700',
+  },
+];
+
 
 
 // start footer data from here
