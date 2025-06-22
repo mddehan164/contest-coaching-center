@@ -49,7 +49,6 @@ export const navData =
       btnName:["Login | Register"],
       btnStyle:{
         btnColor:"headerColor",
-        btnHoverColor:"headerColorHover"
       }
   }}
 
@@ -174,6 +173,8 @@ export const noticeData = {
           ]},
 };
 
+
+// ratio should be 3:2 of each card image
 import card1 from "./images/card/card-1.jpg";
 import card2 from "./images/card/card-2.jpg";
 
@@ -188,12 +189,13 @@ export const noticeStudyPrograms = [
         btnBgColor: "headerColor",
         btnHoverColor: "headerColorHover",
         bgFull: true,
+        fontBold: true,
       }
     },
     body: [
-      { lists: 'Academic Programs' },
-      { lists: 'Admission Requirements' },
-      { lists: 'Apply Online' },
+      'Academic Programs',
+      'Admission Requirements',
+      'Apply Online',
     ],
   },
   {
@@ -206,25 +208,39 @@ export const noticeStudyPrograms = [
         btnBgColor: "headerColor",
         btnHoverColor: "headerColorHover",
         bgFull: true,
+        fontBold: true,
       }
     },
     body: [
-      { lists: 'Academic Programs' },
-      { lists: 'Admission Requirements' },
-      { lists: 'Apply Online' },
+      'Academic Programs' ,
+      'Admission Requirements' ,
+      'Apply Online' ,
     ],
   }
 ]
 
 
 //  start course data from here
+// ratio should be 3:2 of each card image
+import courseImg1 from "./images/course-card/card-1.jpg";
+import courseImg2 from "./images/course-card/card-3.jpg";
+import courseImg3 from "./images/course-card/card-3.jpg";
+
 
 export const courseData = {
+  title: "আমাদের কোর্সসমূহ",
   courses: [
     {
-      title: "ভর্তি 'খ' + প্রস্তুতি",
       unit: "B Unit 2025-26",
-      details: [
+      btnData: {
+      btnName: ['Enroll Now', 'Details'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        btnStatus: true,
+      }
+    },
+      body: [
         "মোট ক্লাস সংখ্যা: ১০৪+",
         "লেকচার শীট সংখ্যা: ৯",
         "ডেইলি এক্সাম সংখ্যা: ৫৪",
@@ -233,12 +249,19 @@ export const courseData = {
         "টাইপ: অনলাইন",
         "ফি: ৭৫০ টাকা"
       ],
-      image: "course_b_unit.jpg"
+      image: courseImg1
     },
     {
-      title: "ভর্তি 'ক' + প্রস্তুতি",
       unit: "A Unit 2025-26",
-      details: [
+      btnData: {
+      btnName: ['Enroll Now', 'Details'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        btnStatus: true,
+      }
+    },
+      body: [
         "মোট ক্লাস সংখ্যা: ১০৫+",
         "লেকচার শীট সংখ্যা: ৯",
         "ডেইলি এক্সাম সংখ্যা: ৫৫",
@@ -247,12 +270,19 @@ export const courseData = {
         "টাইপ: অনলাইন",
         "ফি: ৭৫০ টাকা"
       ],
-      image: "course_a_unit.jpg"
+      image: courseImg2
     },
     {
-      title: "ভর্তি 'গ' + প্রস্তুতি",
       unit: "C Unit 2025-26",
-      details: [
+      btnData: {
+      btnName: ['Enroll Now', 'Details'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        btnStatus: true,
+      }
+    },
+      body: [
         "মোট ক্লাস সংখ্যা: ৯৫+",
         "লেকচার শীট সংখ্যা: ৮",
         "ডেইলি এক্সাম সংখ্যা: ৫০",
@@ -261,9 +291,36 @@ export const courseData = {
         "টাইপ: অনলাইন",
         "ফি: ৭৫০ টাকা"
       ],
-      image: "course_c_unit.jpg"
-    }
+      image: courseImg3
+    },
+    {
+      unit: "C Unit 2025-26",
+      btnData: {
+      btnName: ['Enroll Now', 'Details'],
+      btnStyle: {
+        btnBgColor: "headerColor",
+        btnHoverColor: "headerColorHover",
+        btnStatus: true,
+      }
+    },
+      body: [
+        "মোট ক্লাস সংখ্যা: ৯৫+",
+        "লেকচার শীট সংখ্যা: ৮",
+        "ডেইলি এক্সাম সংখ্যা: ৫০",
+        "মডেল টেস্ট সংখ্যা: ৬",
+        "ইনিশিয়াল গাইডলাইন ক্লাস",
+        "টাইপ: অনলাইন",
+        "ফি: ৭৫০ টাকা"
+      ],
+      image: courseImg3
+    },
+    
   ],
+  
+}
+
+
+export const studentData = {
   students: [
     {
       name: "মোঃ আনিসুজ্জামান জামিল",
@@ -288,7 +345,6 @@ export const courseData = {
     }
   ]
 }
-
 
 
 // start footer data from here

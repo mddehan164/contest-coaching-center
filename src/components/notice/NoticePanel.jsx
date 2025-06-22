@@ -12,7 +12,7 @@ const NoticePanel = ({ notices }) => {
   return (
     <div className='w-full'>
       <p className='text-sm text-headerColor border-b border-gray-300'>{currentDateObj.currentDate}</p>
-      <div className='overflow-auto max-sm:h-60 sm:h-40 lg:h-36 xl:h-56'>
+      <div className='overflow-auto max-sm:h-60 sm:h-44 lg:h-36 xl:h-72'>
         {noticeList.length > 0 ? (
           noticeList.map((notice, index) => (
             <div key={index} className='text-xs flex justify-start items-center gap-2 p-2 border-b border-gray-300 hover:bg-gray-100 cursor-pointer md:text-lg lg:text-base xl:text-lg'>

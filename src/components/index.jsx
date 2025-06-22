@@ -8,3 +8,4 @@ export {default as NavbarMain} from './navbar/NavbarMain';
 export {default as Slider} from './Slider';
 export {default as NoticeMain} from './notice/NoticeMain';
 export {default as MainBtn} from './mainBtn';
+export {default as Courses} from './courses/Courses';
