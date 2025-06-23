@@ -11,3 +11,6 @@ export {default as MainBtn} from './mainBtn';
 export {default as Courses} from './courses/Courses';
 export {default as StatsMain} from './stats/StatsMain';
 export {default as SuccessCards} from './successfullPerson/SuccessCards';
+export {default as QuickStat} from './QuickStat';
+export {default as ServicesStats} from './servicesStat/ServicesStats';
+export {default as Summary} from './summary/Summary';

@@ -421,6 +421,39 @@ export const successData = {
   }
 ]};
 
+//services data from here
+
+import { FaBookOpen, FaHeadphones, FaUsers, FaFileAlt, FaQuestion, FaSms, FaChartBar } from 'react-icons/fa';
+import { MdOutlineVideoLibrary } from 'react-icons/md';
+import { BsClipboardData } from 'react-icons/bs';
+import { GiTeacher } from 'react-icons/gi';
+import { BiBookOpen } from 'react-icons/bi';
+
+export const services = {
+  title: "আমাদের সেবা সমূহ",
+  data:[
+  { title: 'অনলাইন গ্রন্থাগার', icon: FaBookOpen },
+  { title: 'মেধাবী ও অভিজ্ঞ শিক্ষক', icon: GiTeacher },
+  { title: 'মানসম্পন্ন অডিও ম্যাটেরিয়ালস', icon: FaHeadphones },
+  { title: 'কনসেপ্ট হেইভড ক্লাস', icon: MdOutlineVideoLibrary },
+  { title: 'ইউনিক এপ্রোচ সিস্টেম', icon: FaFileAlt },
+  { title: 'সার্বজনিক Q&A সেবা', icon: FaQuestion },
+  { title: 'Auto SMS রেজাল্ট', icon: FaSms },
+  { title: 'এপ্রোচ এনালাইসিস রিপোর্ট', icon: FaChartBar },
+]};
+
+
+// summary data from here
+
+export const summary = {
+  title: "আমাদের সারসংক্ষেপ",
+  data:[
+  { title: 'সকল শিক্ষার্থী', value: '48712 জন', icon: FaUsers },
+  { title: 'সর্বমোট কোর্স', value: '১৫ টি', icon: BsClipboardData },
+  { title: 'অভিজ্ঞ শিক্ষক', value: '৪৮৭ জন', icon: GiTeacher },
+  { title: 'সর্বমোট সাবজেক্ট', value: '১৫ টি', icon: BiBookOpen },
+]};
+
 
 
 
