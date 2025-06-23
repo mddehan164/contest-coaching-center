@@ -11,9 +11,9 @@ const StatsMain = () => {
         spaceBetween={20}
         breakpoints={{
           0: { slidesPerView: 1 },
-          480: { slidesPerView: 1.3 },
-          640: { slidesPerView: 2 },
-          768: { slidesPerView: 2.5 },
+          480: { slidesPerView: 2 },
+          640: { slidesPerView: 2.5 },
+          768: { slidesPerView: 3 },
           1024: { slidesPerView: 3 },
           1280: { slidesPerView: 4 },
         }}
