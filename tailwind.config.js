@@ -10,9 +10,9 @@ export default {
     extend: {
       colors: {
         headerColor: '#50ccff',
-        headerColorHover:"#081132",
+        headerColorHover:"#082a6e",
         headerTextColor: '#ffffff',
-        contestRed:"ff0522",
+        contestRed:"#ff0522",
       },
     },
   },
