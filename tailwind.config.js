@@ -9,9 +9,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        headerColor: '#b62c10',
-        headerColorHover:"#931c03",
+        headerColor: '#50ccff',
+        headerColorHover:"#081132",
         headerTextColor: '#ffffff',
+        contestRed:"ff0522",
       },
     },
   },
