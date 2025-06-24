@@ -8,7 +8,7 @@ import { NavbarMain } from '../index.jsx'
 
 const Header = () => {
   return (
-    <header className='w-full text-white px-0 py-0' >
+    <header className='w-full text-white px-0 py-0'>
       <div className='flex items-center justify-between w-full gap-10 px-40 bg-headerColor text-headerTextColor max-sm:gap-1 max-sm:p-1 sm:px-5 md:px-10 lg:px-20 xl:px-44'>
            <HeaderDetails />
            <HeaderIcons /> 

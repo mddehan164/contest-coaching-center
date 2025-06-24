@@ -458,24 +458,40 @@ export const summary = {
 
 
 // start footer data from here
+import { FaInstagramSquare } from "react-icons/fa";
+import footerLogo from "./images/footer-logo.png"
 
-export const footerData = 
-{footer: {
-    about: "ফোকাস অনলাইন কেয়ার একটি অনলাইন ভিত্তিক শিক্ষা প্রতিষ্ঠান, যা শিক্ষার্থীদের অনলাইন কোর্স, লাইভ ক্লাস, মডেল টেস্ট ও মেন্টর সাপোর্ট দিয়ে সাফল্যের দিকে এগিয়ে নিতে সহায়তা করে।",
-    links: [
-      { label: "শর্তাবলী", path: "/terms", icon: "MdOutlineLibraryBooks" },
-      { label: "প্রাইভেসি পলিসি", path: "/privacy", icon: "MdOutlineLibraryBooks" },
-      { label: "সচরাচর প্রশ্ন", path: "/faq", icon: "MdOutlineCastForEducation" },
-      { label: "যোগাযোগ", path: "/contact", icon: "MdOutlineContactPhone" }
-    ],
-    contactInfo: [
-      { type: "phone", label: "০১৮১২-৩৪৫৬৭৮", icon: "FaPhone" },
-      { type: "email", label: "support@focuscare.com", icon: "FaEnvelope" },
-      { type: "address", label: "ধানমন্ডি, ঢাকা, বাংলাদেশ", icon: "FaMapMarkerAlt" }
-    ],
-    social: [
-      { platform: "Facebook", url: "https://facebook.com/focuscare", icon: "FaFacebook" },
-      { platform: "YouTube", url: "https://youtube.com/focuscare", icon: "FaYoutube" },
-      { platform: "Instagram", url: "https://instagram.com/focuscare", icon: "FaInstagram" }
-    ]
-  }}
+export const footerData = {
+  logo: {
+    slogan: "সম্পর্ক হোক সহযোগিতার....",
+    brand: "কনটেস্ট",
+    des:"Online Care",
+    logoImage: footerLogo, // চাইলে তোমার লোগোর রিলেটিভ পাথ দাও
+  },
+  helpLinks: [
+    { name: "About Us", url: "/about" },
+    { name: "Privacy Policy", url: "/privacy" },
+    { name: "Terms & Conditions", url: "/terms" },
+    { name: "FAQs", url: "/faq" },
+    { name: "Contact Us", url: "/contact" },
+  ],
+  exploreLinks: [
+    { name: "Udvash", url: "/udvash" },
+    { name: "Unmesh", url: "/unmesh" },
+  ],
+  contact: {
+    address: `Hossain Tower (5th Floor), 75, Green Road, 
+Farmgate, Sher-e-Bangla Nagar PS, Dhaka-1205.`,
+    helpline: "09666775566",
+    email: "info@udvash-unmesh.com",
+  },
+  socialMedia: [
+    { icon: FaFacebook, url: "https://www.facebook.com" },
+    { icon: FaYoutube, url: "https://www.twitter.com" },
+    { icon: FaInstagramSquare , url: "https://www.twitter.com" },
+  ],
+  copyright: "Copyright © Contest Online Care. All rights reserved.",
+  year: "2025",
+};
+
+
