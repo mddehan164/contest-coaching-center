@@ -14,3 +14,4 @@ export {default as SuccessCards} from './successfullPerson/SuccessCards';
 export {default as QuickStat} from './QuickStat';
 export {default as ServicesStats} from './servicesStat/ServicesStats';
 export {default as Summary} from './summary/Summary';
+export {default as ScrollAnimatedSection} from './ScrollAnimatedSection';
