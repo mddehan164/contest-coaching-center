@@ -8,7 +8,7 @@ const QuickStat = ({data}) => {
             <data.icon />
         </div>
         {data.value && <p className='text-center text-sm font-bold md:text-xl'>{data.value}</p>}
-        <p className={`text-center text-md font-bold md:text-lg ${data.value && "xl:text-xl"}`}>{data.title}</p>
+        <p className={`h-1/2 text-center text-md font-bold md:text-lg ${data.value && "xl:text-xl"}`}>{data.title}</p>
     </div>
   )
 }

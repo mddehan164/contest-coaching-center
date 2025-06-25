@@ -9,7 +9,7 @@ const ServicesStats = () => {
 
        <div className='w-full flex justify-center flex-wrap gap-2 sm:gap-4'>
             {services.data.map((service, index) => (
-                <div key={index} className='aspect-square w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md cursor-pointer'>
+                <div key={index} className='aspect-3/2 w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md cursor-pointer'>
                 <QuickStat data={service} />
                 </div>
             ))}

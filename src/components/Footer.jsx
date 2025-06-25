@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'motion/react'; // Motion for React (Framer Motion)
 import { footerData } from '../data/data';
 import NavbarLogo from '../components/navbar/NavbarLogo';
 import { NavLink } from 'react-router';
-import { motion } from "motion/react";
 
 const Footer = () => {
   const fullText = `${footerData?.copyright} ${footerData?.year}`;
@@ -11,15 +11,19 @@ const Footer = () => {
   const [typedText, setTypedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
   useEffect(() => {
-    if (currentIndex < letters.length) {
-      const timeout = setTimeout(() => {
-        setTypedText((prev) => prev + letters[currentIndex]);
-        setCurrentIndex((prev) => prev + 1);
-      }, 70); // typing speed
-      return () => clearTimeout(timeout);
+    let timeout;
+    if (isInView && currentIndex < letters.length) {
+      timeout = setTimeout(() => {
+        setTypedText(prev => prev + letters[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 70);
     }
-  }, [currentIndex, letters]);
+    return () => clearTimeout(timeout);
+  }, [isInView, currentIndex, letters]);
 
   return (
     <motion.div
@@ -27,7 +31,7 @@ const Footer = () => {
       whileInView={{ opacity: 1, scaleX: 1 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.5 }}
-      className='p-3 sm:px-5 md:px-10 lg:px-20 xl:px-44 bg-headerColorHover text-white w-full mt-10 xl:mt-20'
+      className="p-3 sm:px-5 md:px-10 lg:px-20 xl:px-44 bg-headerColorHover text-white w-full mt-10 xl:mt-20"
     >
       <h1 className='text-xl font-bold my-5 sm:py-2 sm:text-2xl w-full'>{footerData?.logo?.slogan}</h1>
 
@@ -88,18 +92,21 @@ const Footer = () => {
       </div>
 
       {/* Typing Animation with Cursor Moving Along */}
-      <div className='text-center text-sm mt-2 w-full sm:text-md xl:mt-5 xl:text-lg font-bold relative flex justify-center'>
-        <span className="inline-flex text-white font-bold text-lg">
-          {typedText}
-          <motion.span
-            className="ml-1"
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ repeat: Infinity, duration: 1 }}
-          >
-            |
-          </motion.span>
-        </span>
+      <div ref={ref}>
+        <div className='text-center text-sm mt-2 w-full sm:text-md xl:mt-5 xl:text-lg font-bold relative flex justify-center'>
+          <span className="inline-flex text-white font-bold text-lg">
+            {typedText}
+            <motion.span
+              className="ml-1"
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 1 }}
+            >
+              |
+            </motion.span>
+          </span>
+        </div>
       </div>
+
     </motion.div>
   );
 };
