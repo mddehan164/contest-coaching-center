@@ -4,7 +4,6 @@ import HeaderIcons from './HeaderIcons.jsx';
 import { motion, useAnimation } from "framer-motion";
 import { NavbarMain } from '../index.jsx';
 
-// Parent animation
 const containerVariants = {
   hidden: { opacity: 0, y: -100 },
   visible: {
@@ -19,15 +18,8 @@ const containerVariants = {
   },
 };
 
-const leftChildVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0 },
-};
-
-const rightChildVariants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0 },
-};
+const leftChildVariants = { hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } };
+const rightChildVariants = { hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } };
 
 const Header = () => {
   const controls = useAnimation();
@@ -35,15 +27,11 @@ const Header = () => {
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-
     if (currentScrollY > lastScrollY && currentScrollY > 50) {
-      // Scrolling down
       controls.start({ y: '-100%', transition: { duration: 0.4 } });
     } else {
-      // Scrolling up
       controls.start({ y: '0%', transition: { duration: 0.4 } });
     }
-
     setLastScrollY(currentScrollY);
   };
 
@@ -56,13 +44,13 @@ const Header = () => {
     <motion.header
       animate={controls}
       initial={{ y: 0 }}
-      className='fixed top-0 left-0 w-full z-50 bg-headerColor text-headerTextColor'
+      className="fixed inset-x-0 top-0 w-full z-10 bg-headerColor text-headerTextColor"
     >
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className='flex items-center justify-between w-full gap-10 px-40 max-sm:gap-1 max-sm:p-1 sm:px-5 md:px-10 lg:px-20 xl:px-44'
+        className="flex items-center justify-between w-full gap-10 max-sm:gap-1 max-sm:p-1 sm:px-5 md:px-10 lg:px-20 xl:px-44"
       >
         <motion.div variants={leftChildVariants}>
           <HeaderDetails />
@@ -71,10 +59,7 @@ const Header = () => {
           <HeaderIcons />
         </motion.div>
       </motion.div>
-
-      <div>
-        <NavbarMain />
-      </div>
+      <NavbarMain />
     </motion.header>
   );
 };

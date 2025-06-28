@@ -1,5 +1,4 @@
-// components/common/ScrollAnimatedSection.jsx
-
+// ScrollAnimatedSection.jsx
 import { motion, useInView, useAnimation } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useStateContext } from "../context/ContextProvider";
@@ -12,14 +11,10 @@ const ScrollAnimatedSection = ({
   animation = {},
 }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, {
-    once: true,
-    amount: 0.4,
-  });
+  const inView = useInView(ref, { once: true, amount: 0.2 });
 
   const controls = useAnimation();
   const { scrollAnimatedSections, setScrollAnimatedSections } = useStateContext();
-
   const alreadyAnimated = scrollAnimatedSections[id];
 
   useEffect(() => {
@@ -27,7 +22,7 @@ const ScrollAnimatedSection = ({
       controls.start("visible");
       setScrollAnimatedSections((prev) => ({ ...prev, [id]: true }));
     }
-  }, [inView, alreadyAnimated]);
+  }, [inView, alreadyAnimated, controls, id, setScrollAnimatedSections]);
 
   const xOffset = direction === "left" ? -100 : direction === "right" ? 100 : 0;
 
@@ -39,7 +34,6 @@ const ScrollAnimatedSection = ({
       transition: {
         duration: 0.5,
         ease: "easeOut",
-        delay: 0.2,
       },
     },
   };

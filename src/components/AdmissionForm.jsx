@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import admissionFormFields from "../data/admissionData";
+import logo from "../data/images/logo.png"
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState({});
@@ -27,9 +28,19 @@ const AdmissionForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto bg-white shadow-lg rounded-2xl space-y-6"
+      className="w-full px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 py-5 max-w-7xl mx-auto bg-contestLight rounded-2xl space-y-6"
     >
-      <h1 className="text-3xl font-bold text-center text-blue-700">Admission Form</h1>
+      <div className="w-full border">
+        <div className="flex justify-between items-center w-full tracking-[.1rem] font-extrabold border">
+          <img src={logo} alt="" className="w-[30%] aspect-square rounded-full bg-white p-2"/>
+          <div className="border w-[65%]">
+            <h1 className="text-3xl text-center">CONTEST</h1>
+        <h3 className="text-sm tracking-wide font-normal leading-[1.2] text-center">University Admission Coaching</h3>
+          </div>
+        </div>
+        <div className="hidden">photo</div>
+        <h4 className="text-center mt-2 font-bold w-full bg-headerColor p-1">Admission Form</h4>
+      </div>
 
       {/* Photo Upload */}
       <div>
@@ -67,7 +78,7 @@ const AdmissionForm = () => {
               type={field.type}
               name={field.key}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-1 border border-gray-300 rounded-md"
             />
           </div>
         ))}
@@ -97,14 +108,14 @@ const AdmissionForm = () => {
               <textarea
                 name={field.key}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-1 border border-gray-300 rounded-md"
               ></textarea>
             ) : (
               <input
                 type={field.type}
                 name={field.key}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-1 border border-gray-300 rounded-md"
               />
             )}
           </div>
@@ -123,7 +134,7 @@ const AdmissionForm = () => {
                   type={field.type}
                   name={field.key}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-1 border border-gray-300 rounded-md"
                 />
               </div>
             ))}
