@@ -28,22 +28,32 @@ const AdmissionForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 py-5 max-w-7xl mx-auto bg-contestLight rounded-2xl space-y-6"
+      className="w-full px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 py-5 max-w-7xl mx-auto bg-contestLight rounded-2xl space-y-6 relative"
     >
-      <div className="w-full border">
-        <div className="flex justify-between items-center w-full tracking-[.1rem] font-extrabold border">
-          <img src={logo} alt="" className="w-[30%] aspect-square rounded-full bg-white p-2"/>
-          <div className="border w-[65%]">
-            <h1 className="text-3xl text-center">CONTEST</h1>
-        <h3 className="text-sm tracking-wide font-normal leading-[1.2] text-center">University Admission Coaching</h3>
+      <div className="w-full">
+        <div className="flex justify-between items-center w-full tracking-[.6rem] font-extrabold sm:justify-start md:py-6 md:px-3">
+          <img src={logo} alt="" className="w-[25%] aspect-square rounded-full bg-white p-2 sm:w-[15%] md:w-[12%]"/>
+          <div className="w-[50%]">
+            <h1 className="text-3xl text-center sm:text-6xl">CONTEST</h1>
+        <h3 className="text-sm tracking-wide font-normal leading-[1.2] text-center sm:text-2xl sm:tracking-normal text-contestRed">University Admission Coaching</h3>
           </div>
         </div>
-        <div className="hidden">photo</div>
+        <div className="hidden sm:block w-28 aspect-square absolute bg-white top-6 right-12 md:w-36 md:right-20 xl:right-44">
+              <div className="flex items-center justify-center">
+                <h5 className="mt-10 font-bold text-sm md:text-lg xl:text-xl xl:mt-14 lg:mt-16 text-gray-400">Upload Photo</h5>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+                className="opacity-0 absolute inset-0 w-full h-full cursor-pointer z-20"
+              />
+          </div>
+        </div>
         <h4 className="text-center mt-2 font-bold w-full bg-headerColor p-1">Admission Form</h4>
       </div>
 
       {/* Photo Upload */}
-      <div>
+      <div className="sm:hidden">
         <label className="block text-sm font-semibold mb-2">Upload Photo</label>
         <input
           type="file"
@@ -55,6 +65,9 @@ const AdmissionForm = () => {
 
       {/* Branch Options */}
       <div className="flex flex-wrap gap-4">
+        <div className="w-full text-center text-white">
+          <h4 className="bg-headerColorHover py-1 w-1/3 rounded-3xl font-medium sm:w-1/4">For Office</h4>
+        </div>
         {admissionFormFields.branchOptions.map((branch) => (
           <label key={branch} className="flex items-center gap-2 text-sm">
             <input
@@ -69,6 +82,9 @@ const AdmissionForm = () => {
         ))}
       </div>
 
+        <div className="w-full text-center text-white sm:pt-6">
+          <h4 className="bg-headerColorHover py-1 w-1/2 rounded-3xl font-medium sm:w-1/4">Personal Information</h4>
+        </div>
       {/* Office Use Only */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {admissionFormFields.officeUseOnly.map((field) => (
@@ -122,9 +138,13 @@ const AdmissionForm = () => {
         ))}
       </div>
 
+      <div className="w-full text-center text-white pt-5">
+          <h4 className="bg-headerColorHover py-1 w-[70%] rounded-3xl font-medium sm:w-1/3">Educational Qualifications</h4>
+      </div>
+
       {/* Educational Qualifications */}
       {admissionFormFields.educationQualifications.map((exam) => (
-        <div key={exam.exam} className="pt-6">
+        <div key={exam.exam}>
           <h2 className="text-lg font-semibold mb-2 border-b pb-1">{exam.exam}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {exam.fields.map((field) => (
@@ -142,10 +162,10 @@ const AdmissionForm = () => {
         </div>
       ))}
 
-      <div className="flex justify-center">
+      <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition"
+          className="bg-headerColor text-white px-8 py-2 rounded-md hover:bg-headerColorHover transition"
         >
           Submit
         </button>
