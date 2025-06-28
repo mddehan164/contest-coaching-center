@@ -43,8 +43,8 @@ export const navData =
       links: [
         { name: "হোম" ,path: "home" },
         { name: "কোর্সসমূহ", path: "courses"},
-        { name: "ফ্রি এক্সাম" ,path: "exams"},
         { name: "শাখা সমূহ" ,path: "branches"},
+        { name: "এডমিশন" ,path: "admission"},
       ],
       btnName:["Login | Register"],
       btnStyle:{

@@ -1,7 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import { Home, Courses, Exams, Branches, Login } from './pages';
-import { HeaderMain, Error, Footer } from './components';
+import { Home, Courses, Branches, Login, Admission } from './pages';
+import { HeaderMain, Error, Footer, RegisterForm } from './components';
+
 
 
 const App = () => {
@@ -15,9 +16,10 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/exams" element={<Exams />} />
+            <Route path="/admission" element={<Admission />} />
             <Route path="/branches" element={<Branches />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<RegisterForm/>} />
             <Route path="*" element={<Error />} />
          </Routes>
 

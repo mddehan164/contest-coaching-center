@@ -13,6 +13,7 @@ export default {
         headerColorHover:"#082a6e",
         headerTextColor: '#ffffff',
         contestRed:"#ff0522",
+        contestLight:"#ebf9ff",
       },
     },
   },
