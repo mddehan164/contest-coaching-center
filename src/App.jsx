@@ -1,7 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { Home, Courses, Exams, Branches, Login } from './pages';
-import { HeaderMain, Error, Footer } from './components';
+import { HeaderMain, Error, Footer, RegisterForm } from './components';
+
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/exams" element={<Exams />} />
             <Route path="/branches" element={<Branches />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<RegisterForm/>} />
             <Route path="*" element={<Error />} />
          </Routes>
 

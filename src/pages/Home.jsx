@@ -6,7 +6,9 @@ import { Courses, NoticeMain, ServicesStats, Slider, StatsMain, SuccessCards, Su
 const Home = () => {
   return (
     <div className='max-sm:px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44'>
+      <ScrollAnimatedSection id="slider" direction="right">
         <Slider />
+      </ScrollAnimatedSection>
       <ScrollAnimatedSection id="notice" direction="left">
         <NoticeMain />
       </ScrollAnimatedSection>
