@@ -15,20 +15,20 @@
 
 @layer utilities {
     @media (min-width: 200px) {
-    body {
+    .padding {
       padding-top: 80px;
     }
   }
 
 
   @media (min-width: 400px) and (max-width: 700px) {
-    body {
+    .padding {
       padding-top: 120px;
     }
   }
 
    @media (min-width: 701px){
-    body {
+    .padding {
       padding-top: 150px;
     }
   }

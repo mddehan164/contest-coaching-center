@@ -41,10 +41,10 @@ export const navData =
       subTitle: "বিশ্ববিদ্যালয় ভর্তি কোচিং",
       logo: logo,
       links: [
-        { name: "হোম" ,path: "home" },
-        { name: "কোর্সসমূহ", path: "courses"},
-        { name: "শাখা সমূহ" ,path: "branches"},
-        { name: "এডমিশন" ,path: "admission"},
+        { name: "হোম" ,path: "/" },
+        { name: "কোর্সসমূহ", path: "/courses"},
+        { name: "শাখা সমূহ" ,path: "/branches"},
+        { name: "এডমিশন" ,path: "/admission"},
       ],
       btnName:["Login | Register"],
       btnStyle:{
