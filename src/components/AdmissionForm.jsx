@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import admissionFormFields from "../data/admissionData";
-import logo from "../data/images/logo.png"
+import logo from "../../public/images/logo.png"
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState({});
@@ -21,14 +21,12 @@ const AdmissionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const submissionData = { ...formData, photo };
-    console.log("Submitted Data:", submissionData);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 py-5 max-w-7xl mx-auto bg-contestLight rounded-2xl space-y-6 relative"
+      className="w-full px-1 sm:px-5 md:px-10 lg:px-20 xl:px-20 py-5 max-w-7xl mx-auto bg-contestLight rounded-2xl space-y-6 relative"
     >
       <div className="w-full">
         <div className="flex justify-between items-center w-full tracking-[.6rem] font-extrabold sm:justify-start md:py-6 md:px-3">
@@ -38,9 +36,9 @@ const AdmissionForm = () => {
         <h3 className="text-sm tracking-wide font-normal leading-[1.2] text-center sm:text-2xl sm:tracking-normal text-contestRed">University Admission Coaching</h3>
           </div>
         </div>
-        <div className="hidden sm:block w-28 aspect-square absolute bg-white top-6 right-12 md:w-36 md:right-20 xl:right-44">
+        <div className="hidden sm:block w-28 aspect-square absolute bg-white top-6 right-12 md:w-36 md:right-20 xl:right-26 xl:w-44">
               <div className="flex items-center justify-center">
-                <h5 className="mt-10 font-bold text-sm md:text-lg xl:text-xl xl:mt-14 lg:mt-16 text-gray-400">Upload Photo</h5>
+                <h5 className="mt-10 font-bold text-sm md:text-lg xl:text-xl xl:mt-20 lg:mt-16 text-gray-400 ">Upload Photo</h5>
               <input
                 type="file"
                 accept="image/*"
@@ -49,7 +47,7 @@ const AdmissionForm = () => {
               />
           </div>
         </div>
-        <h4 className="text-center mt-2 font-bold w-full bg-headerColor p-1">Admission Form</h4>
+        <h4 className="text-center mt-2 font-bold w-full bg-headerColor p-1 lg:text-lg xl:text-xl">Admission Form</h4>
       </div>
 
       {/* Photo Upload */}
