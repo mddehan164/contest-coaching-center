@@ -4,7 +4,9 @@ import { Home, Courses, Branches, Login, Admission } from './pages';
 import { Error, RegisterForm } from './components';
 import MainLayout from './layout/MainLayout';
 import Dashboard from './layout/Dashboard';
-import DHome from './dashboardPages/DMain';
+import DHome from './dashboardPages/DHome';
+import { DCalender } from './dashboardPages';
+
 
 
 
@@ -28,7 +30,7 @@ const App = () => {
           {/* 🔴 Dashboard layout - without header/footer */}
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<DHome />} />
-            <Route />
+            <Route path="calender" element={<DCalender />} />
           </Route>
 
       </Routes>
