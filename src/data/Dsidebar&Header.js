@@ -1,7 +1,7 @@
 import { MdOutlineMessage, MdOutlineNotificationsActive } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
-import logo from "../../public/images/logo.png"
+import logo from "../assets/images/logo.png"
 
 
 export const headerData = {
@@ -28,7 +28,7 @@ export const sidebarData = [
     {
         title:"Menu",
         items:[
-        {icon: RiDashboardHorizontalFill , title:"Dashboard", link:"dashboard"}, {icon: SiGoogleclassroom, title:"Student", link:"student"}, {icon: GiTeacher, title:"Teacher", link:"teacher"}, {icon: TfiLayoutSliderAlt, title:"Slider", link:"slider"}, {icon: LuNotebookPen, title:"Notice", link:"notice"}, {icon: GrSchedules, title:"Schedule", link:"schedule"}
+        {icon: RiDashboardHorizontalFill , title:"Dashboard", link:"/dashboard"}, {icon: SiGoogleclassroom, title:"Student", link:"student"}, {icon: GiTeacher, title:"Teacher", link:"teacher"}, {icon: TfiLayoutSliderAlt, title:"Slider", link:"slider"}, {icon: LuNotebookPen, title:"Notice", link:"notice"}, {icon: GrSchedules, title:"Schedule", link:"schedule"}
     ]
     },
    {

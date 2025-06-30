@@ -33,7 +33,7 @@ export const headerData = {
 
 // start navbar data from here
 
-import logo from "../../public/images/logo.png"
+import logo from "../../src/assets/images/logo.png"
 
 export const navData = 
   {data: {
@@ -53,9 +53,10 @@ export const navData =
   }}
 
   
-import sliderImg1 from "../../public/images/slider/slider-1.jpg";
-import sliderImg2 from "../../public/images/slider/slider-2.jpg";
-import sliderImg3 from "../../public/images/slider/slider-3.jpg";
+import sliderImg1 from "../assets/images/slider/slider-1.jpg";
+import sliderImg2 from "../assets/images/slider/slider-2.jpg";
+import sliderImg3 from "../assets/images/slider/slider-3.jpg";
+
 
 
   export const sliderData = {
@@ -176,8 +177,9 @@ export const noticeData = {
 
 
 // ratio should be 3:2 of each card image
-import card1 from "../../public/images/card/card-1.jpg";
-import card2 from "../../public/images/card/card-2.jpg";
+import card1 from "../assets/images/card/card-1.jpg";
+import card2 from "../assets/images/card/card-2.jpg";
+
 
 export const noticeStudyPrograms = [
   {
@@ -223,9 +225,9 @@ export const noticeStudyPrograms = [
 
 //  start course data from here
 // ratio should be 3:2 of each card image
-import courseImg1 from "../../public/images/course-card/card-1.jpg";
-import courseImg2 from "../../public/images/course-card/card-2.jpg";
-import courseImg3 from "../../public/images/course-card/card-3.jpg";
+import courseImg1 from "../assets/images/course-card/card-1.jpg";
+import courseImg2 from "../assets/images/course-card/card-2.jpg";
+import courseImg3 from "../assets/images/course-card/card-3.jpg";
 
 
 
@@ -383,9 +385,9 @@ export const statsData = [
 
 // successData.js
 
-import personImg1 from "../../public/images/successful-person/p-1.png";
-import personImg2 from "../../public/images/successful-person/p-2.png";
-import personImg3 from "../../public/images/successful-person/p-3.png";
+import personImg1 from "../assets/images/successful-person/p-1.png";
+import personImg2 from "../assets/images/successful-person/p-2.png";
+import personImg3 from "../assets/images/successful-person/p-3.png";
 
 
 export const successData = {
@@ -462,7 +464,7 @@ export const summary = {
 
 // start footer data from here
 import { FaInstagramSquare } from "react-icons/fa";
-import footerLogo from "../../public/images/footer-logo.png"
+import footerLogo from "../assets/images/footer-logo.png"
 
 export const footerData = {
   logo: {

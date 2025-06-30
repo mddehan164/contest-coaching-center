@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'motion/react'; // Motion for React (Framer Motion)
 import { footerData } from '../data/data';
-import NavbarLogo from '../components/navbar/NavbarLogo';
 import { NavLink } from 'react-router';
 
 const Footer = () => {

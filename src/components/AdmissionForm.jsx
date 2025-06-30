@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import admissionFormFields from "../data/admissionData";
-import logo from "../../public/images/logo.png"
+import logo from "../assets/images/logo.png"
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState({});

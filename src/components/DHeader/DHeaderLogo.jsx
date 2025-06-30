@@ -7,7 +7,7 @@ const DHeaderLogo = () => {
       <img src={headerData.logo.image} alt={headerData.logo.title} className='w-10 aspect-square lg:w-14'/>
       <div className='w-[70%]'>
         <h1 className='text-xl tracking-[0.15rem] text-start lg:text-3xl'>{headerData.logo.title} </h1>
-        <h5 className='text-sm text-start lg:text-lg'>({headerData.logo.subtitle})</h5>
+        <h5 className='text-sm text-start lg:text-lg text-headerColorHover'>({headerData.logo.subtitle})</h5>
       </div>
     </div>
   )
