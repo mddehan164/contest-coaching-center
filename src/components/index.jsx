@@ -19,3 +19,4 @@ export {default as LoginForm} from './LoginForm/LoginForm';
 export {default as RegisterForm} from './RegisterForm/RegisterForm';
 export {default as DHeaderMain} from './DHeader/DHeaderMain';
 export {default as DSidebar} from './DSidebar/DSidebar';
+export {default as Hero} from './Hero';
