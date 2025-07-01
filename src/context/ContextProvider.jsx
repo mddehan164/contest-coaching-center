@@ -11,6 +11,9 @@ export const ContextProvider = ({ children }) => {
   // scroll animation state (optional, future extensibility)
   const [scrollAnimatedSections, setScrollAnimatedSections] = useState({});
 
+  const [isExpand, setIsExpand] = useState(true);
+
+
   return (
     <StateContext.Provider value={{
       isActiveMenu,
@@ -19,6 +22,8 @@ export const ContextProvider = ({ children }) => {
       setActiveTab,
       scrollAnimatedSections,
       setScrollAnimatedSections,
+      isExpand,
+      setIsExpand,
     }}>
       {children}
     </StateContext.Provider>
