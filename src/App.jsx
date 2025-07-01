@@ -1,11 +1,11 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { Home, Courses, Branches, Login, Admission } from './pages';
-import { Error, RegisterForm } from './components';
+import { Error, RegisterForm, Slider } from './components';
 import MainLayout from './layout/MainLayout';
 import Dashboard from './layout/Dashboard';
 import DHome from './dashboardPages/DHome';
-import { Schedule } from './dashboardPages';
+import { DSlider, Help, Logout, Notice, Schedule, Settings, Student, Teacher } from './dashboardPages';
 
 
 
@@ -31,6 +31,13 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />}>
             <Route index element={<DHome />} />
             <Route path="schedule" element={<Schedule/>} />
+            <Route path="student" element={<Student/>} />
+            <Route path="teacher" element={<Teacher/>} />
+            <Route path="slider" element={<DSlider/>} />
+            <Route path="notice" element={<Notice/>} />
+            <Route path="settings" element={<Settings/>} />
+            <Route path="help" element={<Help/>} />
+            <Route path="logout" element={<Logout/>} />
           </Route>
 
       </Routes>

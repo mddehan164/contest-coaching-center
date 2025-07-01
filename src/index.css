@@ -16,6 +16,11 @@
     
   }
 }
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: rgb(184, 239, 253) !important; /* yellow-100 */
+}
+
+
 
 @layer utilities {
     @media (min-width: 200px) {

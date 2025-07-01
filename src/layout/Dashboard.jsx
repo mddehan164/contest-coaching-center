@@ -22,7 +22,7 @@ const Dashboard = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="p-5 overflow-x-hidden overflow-y-auto bg-gray-100">
+      <main className="p-5 overflow-x-hidden overflow-y-auto bg-slate-50 max-h-[91vh]">
         <Outlet/>
       </main>
 
