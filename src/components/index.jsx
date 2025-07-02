@@ -20,3 +20,5 @@ export {default as RegisterForm} from './RegisterForm/RegisterForm';
 export {default as DHeaderMain} from './DHeader/DHeaderMain';
 export {default as DSidebar} from './DSidebar/DSidebar';
 export {default as Hero} from './Hero';
+export {default as List} from './List';
+export {default as ListDetails} from './ListDetails';
