@@ -1,9 +1,10 @@
 import React from 'react'
+import SliderEditor from '../components/SliderEditor'
 
 const DSlider = () => {
   return (
     <div>
-      slider
+      <SliderEditor/>
     </div>
   )
 }
