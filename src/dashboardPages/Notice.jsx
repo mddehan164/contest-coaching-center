@@ -1,10 +1,10 @@
 import React from 'react'
-import { EditNotices } from '../components'
+import { NoticeManager } from '../components'
 
 const Notice = () => {
   return (
     <div>
-      <EditNotices/>
+      <NoticeManager/>
     </div>
   )
 }
