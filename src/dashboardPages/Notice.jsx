@@ -1,9 +1,10 @@
 import React from 'react'
+import { EditNotices } from '../components'
 
 const Notice = () => {
   return (
     <div>
-      notice
+      <EditNotices/>
     </div>
   )
 }

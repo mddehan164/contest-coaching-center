@@ -23,3 +23,4 @@ export {default as Hero} from './Hero';
 export {default as List} from './List';
 export {default as ListDetails} from './ListDetails';
 export {default as SliderEditor} from './SliderEditor';
+export {default as EditNotices} from './EditNotices';
