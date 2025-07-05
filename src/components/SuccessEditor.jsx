@@ -57,7 +57,7 @@ const SuccessEditor = () => {
   };
 
   return (
-    <div className="p-4 space-y-8">
+    <div className="p-4 space-y-8 xl:px-44 xl:text-xl">
       <h2 className="text-2xl font-semibold text-center">Add or Edit Successful Students</h2>
 
       <div className="grid md:grid-cols-3 gap-4">
@@ -74,7 +74,7 @@ const SuccessEditor = () => {
 
         <div className="border p-4 rounded">
           <h4 className="font-semibold mb-2">Preview</h4>
-          {previewImage && <img src={previewImage} alt="Preview" className="w-[80%] object-cover rounded-full aspect-square" />}
+          {previewImage && <img src={previewImage} alt="Preview" className="w-[80%] xl:w-[50%] mx-auto object-cover rounded-full aspect-square" />}
           <p className="mt-2 font-bold">{newPerson.title}</p>
           <p className="text-sm">{newPerson.subtitle}</p>
           <p className="text-sm font-semibold">{newPerson.rank}</p>
@@ -99,6 +99,9 @@ const SuccessEditor = () => {
             </div>
           </div>
         ))}
+      </div>
+       <div className="text-center">
+        <button className={`px-6 py-2 rounded bg-black text-white cursor-pointer`}>Save All Changes</button>
       </div>
 
       {previewFull && (

@@ -3,7 +3,7 @@ import { CourseEditor } from '../components'
 
 const DCourse = () => {
   return (
-    <div>
+    <div className='xl:px-44 xl:text-xl'>
         <CourseEditor/>
     </div>
   )
