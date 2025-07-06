@@ -26,3 +26,4 @@ export {default as SliderEditor} from './SliderEditor';
 export {default as NoticeManager} from './NoticeManager';
 export {default as CourseEditor} from './CourseEditor';
 export {default as SuccessEditor} from './SuccessEditor';
+export {default as StatsEditor} from './StatsEditor ';
