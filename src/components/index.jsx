@@ -29,3 +29,5 @@ export {default as SuccessEditor} from './SuccessEditor';
 export {default as StatsEditor} from './StatsEditor ';
 export {default as ServiceEditor} from './ServiceEditor';
 export {default as SummaryEditor} from './SummaryEditor';
+export {default as GalleryMain} from './Gallery/GalleryMain';
+export {default as GalleryEditor} from './GalleryEditor';

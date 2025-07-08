@@ -8,7 +8,7 @@ export const headerData = {
   headerS1: [
     {
       icon: FaEnvelope, // JSX element নয়, component ref
-      data: "focusedu@gmail.com"
+      data: "contest@gmail.com"
     },
     {
       icon: FaPhone,
@@ -44,6 +44,7 @@ export const navData =
         { name: "হোম" ,path: "/" },
         { name: "কোর্সসমূহ", path: "/courses"},
         { name: "শাখা সমূহ" ,path: "/branches"},
+        { name: "গ্যালারী" ,path: "/gallery"},
         { name: "এডমিশন" ,path: "/admission"},
       ],
       btnName:["Login | Register"],
