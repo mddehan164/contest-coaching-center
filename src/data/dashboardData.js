@@ -17,28 +17,28 @@ export const statsData = [
     title: "Total Students",
     value: 120,
     icon: "user",
-    color: "bg-blue-600",
+    color: "bg-blue-500",
   },
   {
     id: 2,
     title: "Total Teachers",
     value: 10,
-    icon: "users",
-    color: "bg-green-600",
+    icon: "user",
+    color: "bg-lime-400",
+  },
+  {
+    id: 4,
+    title: "Total Users",
+    value: 150,
+    icon: "user",
+    color: "bg-emerald-400",
   },
   {
     id: 3,
     title: "Upcoming Exams",
     value: 3,
     icon: "calendar",
-    color: "bg-yellow-500",
-  },
-  {
-    id: 4,
-    title: "Monthly Revenue",
-    value: "৳ 75,000",
-    icon: "dollar-sign",
-    color: "bg-purple-600",
+    color: "bg-orange-500",
   },
 ];
 
@@ -78,11 +78,9 @@ export const upcomingExams = [
   { id: 3, title: "English Grammar Quiz", date: "20/07/25" },
 ];
 
-export const adminShortcuts = [
-  { id: 1, label: "Students", icon: User, route: "/admin/students" },
-  { id: 2, label: "Teachers", icon: Users, route: "/admin/teachers" },
-  { id: 3, label: "Exams", icon: FileText, route: "/admin/exams" },
-  { id: 4, label: "Notices", icon: ClipboardList, route: "/admin/notices" },
-  { id: 5, label: "Lecture Sheets", icon: BookOpen, route: "/admin/lectures" },
-];
-
+export const notifications = [
+  {id: 1, title: "Hasan Recently Enrolled a Physics course.", date: "02/07/25", new: true},
+  {id: 2, title: "Redwan comment on your notice feed back." ,date: "05/07/25", new: true},
+  {id: 3, title: "Sumi recently sign up on our field" ,date: "06/07/25" },
+  {id: 4, title: "You exam result is pending to publish" ,date: "09/07/25" }
+]
