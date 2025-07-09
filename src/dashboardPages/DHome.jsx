@@ -1,82 +1,101 @@
-import React from 'react';
-import { Slider } from '../components';
-import { Link } from 'react-router';
-import NoticeHeader from '../components/notice/NoticeHeader';
-import NoticeBody from '../components/notice/NoticeBody';
-import { courseData, successData } from '../data/data';
-import Card from '../components/Card';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import Stats from '../components/stats/Stats';
+// Dashboard.jsx
+import React from "react";
+import {
+  statsData,
+  recentEnrollments,
+  notices,
+  upcomingExams,
+} from "../data/dashboardData";
+import { User, Layers, Calendar, DollarSign } from "lucide-react";
+
+const iconMap = {
+  user: <User className="w-6 h-6" />,
+  layers: <Layers className="w-6 h-6" />,
+  calendar: <Calendar className="w-6 h-6" />,
+  "dollar-sign": <DollarSign className="w-6 h-6" />,
+};
+
+const StatCard = ({ title, value, icon, color }) => (
+  <div className={`rounded-xl p-4 text-white shadow-md ${color} flex items-center justify-between`}>
+    <div>
+      <h4 className="text-sm font-semibold">{title}</h4>
+      <p className="text-xl font-bold">{value}</p>
+    </div>
+    <div>{iconMap[icon]}</div>
+  </div>
+);
 
 const DHome = () => {
   return (
-    <div className='xl:text-xl xl:px-44'>
-      <h1 className='text-center xl:text-4xl'>Edit <strong className='text-headerColor'>UI</strong></h1>
-
-      {/* Slider Section */}
-      <div className='w-full flex items-center justify-center gap-10 bg-gray-100 mt-5 rounded-lg shadow-lg'>
-        <div className='w-1/2 mb-8'>
-          <h3 className='my-3 text-2xl text-headerColorHover'>Current Slider</h3>
-          <Slider/>
-        </div>
-        <Link to="slider" className='bg-headerColor sm:text-sm lg:text-lg xl:text-xl px-6 py-3 rounded-md hover:bg-headerColorHover hover:text-white'>Edit</Link>
+    <div className="w-full p-4 space-y-8 xl:px-44">
+      {/* Stats Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {statsData.map((stat) => (
+          <StatCard key={stat.id} {...stat} />
+        ))}
       </div>
 
-      {/* Notice Section */}
-      <div className='w-full flex items-center justify-center gap-10 mt-10 rounded-lg shadow-lg'>
-        <div className='w-1/2 mb-8'>
-          <h3 className='my-3 text-2xl text-headerColorHover'>Current Notices</h3>
-          <NoticeHeader/>
-          <NoticeBody/>
+      {/* Enrollments & Notices Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h3 className="text-lg font-semibold mb-4">Recent Enrollments</h3>
+          <ul className="space-y-3">
+            {recentEnrollments.map((enroll) => (
+              <li
+                key={enroll.id}
+                className="flex justify-between items-center border-b pb-2"
+              >
+                <div>
+                  <p className="font-medium">{enroll.name}</p>
+                  <p className="text-sm text-gray-500">{enroll.batch}</p>
+                </div>
+                <div className="text-sm text-right">
+                  <p>{enroll.date}</p>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full ${
+                      enroll.status === "Active"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
+                    {enroll.status}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-        <Link to="notice" className='bg-headerColor sm:text-sm lg:text-lg xl:text-xl px-6 py-3 rounded-md hover:bg-headerColorHover hover:text-white'>Edit</Link>
+
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h3 className="text-lg font-semibold mb-4">Recent Notices</h3>
+          <ul className="space-y-3">
+            {notices.map((notice) => (
+              <li
+                key={notice.id}
+                className="flex justify-between border-b pb-2"
+              >
+                <span>{notice.title}</span>
+                <span className="text-sm text-gray-500">{notice.date}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className='w-full flex items-center justify-between px-5 mt-10 rounded-lg shadow-lg bg-gray-100'>
-        <div className='w-[80%] mb-8'> 
-          <h3 className='my-3 text-2xl text-headerColorHover'>Current Courses</h3>
-          <Swiper
-            breakpoints={{
-              0: { slidesPerView: 1.5, spaceBetween: 10 },
-              480: { slidesPerView: 2, spaceBetween: 15 },
-              640: { slidesPerView: 2.5, spaceBetween: 20 },
-              768: { slidesPerView: 3, spaceBetween: 25 },
-              1024: { slidesPerView: 2, spaceBetween: 30 },
-              1280: { slidesPerView: 3.2, spaceBetween: 30 },
-            }}
-          >
-            {
-              courseData.courses.map((course, idx) => (
-                <SwiperSlide key={idx}>
-                  <Card data={course} />
-                </SwiperSlide>
-              ))
-            }
-          </Swiper>
-        </div>
-        <Link to="course-editor" className='bg-headerColor sm:text-sm lg:text-lg xl:text-xl px-6 py-3 rounded-md hover:bg-headerColorHover hover:text-white'>Edit</Link> {/* লিংক 'notice' থেকে 'courses' এ পরিবর্তন করা হয়েছে */}
-      </div>
-
-      <div className='w-full flex items-center justify-between px-5 mt-10 rounded-lg shadow-lg'>
-        <div className='w-[80%] mb-8'> 
-          <h3 className='my-3 text-2xl text-headerColorHover'>Current Successfull Persons</h3>
-          <Swiper
-            breakpoints={{
-              0: { slidesPerView: 1.5, spaceBetween: 10 },
-              480: { slidesPerView: 2, spaceBetween: 15 },
-              640: { slidesPerView: 2.5, spaceBetween: 20 },
-              768: { slidesPerView: 3, spaceBetween: 25 },
-              1024: { slidesPerView: 2, spaceBetween: 30 },
-              1280: { slidesPerView: 3.2, spaceBetween: 30 },
-            }}
-          >
-          {
-            successData.mainData.map((stat, index) => (<SwiperSlide key={index} className='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'><Stats stat={stat}/></SwiperSlide>))
-          }
-          </Swiper>
-        </div>
-        <Link to="success-editor" className='bg-headerColor sm:text-sm lg:text-lg xl:text-xl px-6 py-3 rounded-md hover:bg-headerColorHover hover:text-white'>Edit</Link> {/* লিংক 'notice' থেকে 'courses' এ পরিবর্তন করা হয়েছে */}
+      {/* Upcoming Exams */}
+      <div className="bg-white shadow-md rounded-xl p-4">
+        <h3 className="text-lg font-semibold mb-4">Upcoming Exams</h3>
+        <ul className="space-y-3">
+          {upcomingExams.map((exam) => (
+            <li
+              key={exam.id}
+              className="flex justify-between border-b pb-2"
+            >
+              <span>{exam.title}</span>
+              <span className="text-sm text-gray-500">{exam.date}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
