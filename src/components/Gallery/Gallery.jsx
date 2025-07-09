@@ -71,12 +71,12 @@ const Gallery = () => {
             <div
               key={item.id}
               className="overflow-hidden rounded-lg shadow-md relative group cursor-pointer"
-              onClick={() => openModal(item.image)}
+              onClick={() => openModal(item.src)}
             >
               <img
-                src={item.image}
+                src={item.src}
                 alt={`Gallery ${item.id}`}
-                className="w-full h-full object-cover transition-all duration-300 transform group-hover:scale-105 group-hover:opacity-80"
+                className="w-full h-[250px] object-contain bg-black transition-all duration-300 transform group-hover:scale-105 group-hover:opacity-80"
               />
               {/* Fullscreen icon */}
               <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -99,7 +99,7 @@ const Gallery = () => {
             <img
               src={modalImage}
               alt="Full-screen view"
-              className="max-w-full max-h-full object-contain"
+              className="max-w-screen max-h-screen object-contain"
             />
             {/* Cancel Button */}
             <button

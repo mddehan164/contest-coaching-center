@@ -14,42 +14,42 @@ export const galleryData = [
   {
     id: 1,
     category: "Success",
-    image: localImages[0],
+    src: localImages[0],
   },
   {
     id: 2,
     category: "Campus",
-    image: localImages[1],
+    src: localImages[1],
   },
   {
     id: 3,
     category: "Students",
-    image: localImages[2],
+    src: localImages[2],
   },
   {
     id: 4,
     category: "Others",
-    image: localImages[3],
+    src: localImages[3],
   },
   {
     id: 5,
     category: "Success",
-    image: localImages[4],
+    src: localImages[4],
   },
   {
     id: 6,
     category: "Campus",
-    image: localImages[5],
+    src: localImages[5],
   },
   {
     id: 7,
     category: "Students",
-    image: localImages[6],
+    src: localImages[6],
   },
   {
     id: 8,
     category: "Others",
-    image: localImages[7],
+    src: localImages[7],
   },
 ];
 
