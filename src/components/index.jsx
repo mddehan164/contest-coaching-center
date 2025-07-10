@@ -31,3 +31,5 @@ export {default as ServiceEditor} from './ServiceEditor';
 export {default as SummaryEditor} from './SummaryEditor';
 export {default as GalleryMain} from './Gallery/GalleryMain';
 export {default as GalleryEditor} from './GalleryEditor';
+export {default as BranchCard} from './BranchCard/BranchCard';
+export {default as MapLocation} from './MapLocation';

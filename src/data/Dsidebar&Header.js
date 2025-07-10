@@ -10,7 +10,7 @@ export const headerData = {
         title:"Contest",
         subtitle:"Admin",
     },
-    icons:[ {icon: MdOutlineMessage, link:"/message"}, {icon: MdOutlineNotificationsActive, link:"/notification"}, {icon: BsCart4, link: "/cart"}, {icon: FaRegUserCircle, link: "/user"}]
+    icons:[ {icon: MdOutlineMessage, link:"/message"}, {icon: MdOutlineNotificationsActive, link:"/notification", new: true}, {icon: BsCart4, link: "/cart"}, {icon: FaRegUserCircle, link: "/user"}]
 }
 
 

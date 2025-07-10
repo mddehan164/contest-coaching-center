@@ -11,8 +11,8 @@ const DHeaderLinks = () => {
         headerData.icons.map((icon, idx) => <Link
          key={idx} 
          to={icon.link}
-         className='hover:text-headerColorHover inline-block'
-         >{<icon.icon/>}</Link>)
+         className='hover:text-headerColorHover inline-block relative'
+         >{<icon.icon/>}<div className={`absolute top-0 left-0 w-1/5 aspect-square rounded-full ${icon.new ? "bg-contestRed animate-ping" : "bg-transparent"}`}></div></Link>)
       }
     </div>
   )

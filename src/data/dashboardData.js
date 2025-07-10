@@ -17,28 +17,28 @@ export const statsData = [
     title: "Total Students",
     value: 120,
     icon: "user",
-    color: "bg-blue-500",
+    color1: "bg-blue-300",    color2: "bg-blue-400",    color3: "bg-blue-500",
   },
   {
     id: 2,
     title: "Total Teachers",
     value: 10,
     icon: "user",
-    color: "bg-lime-400",
+    color1: "bg-lime-200",    color2: "bg-lime-300",    color3: "bg-lime-400",
   },
   {
     id: 4,
     title: "Total Users",
     value: 150,
     icon: "user",
-    color: "bg-emerald-400",
+    color1: "bg-emerald-200",    color2: "bg-emerald-300",    color3: "bg-emerald-400",
   },
   {
     id: 3,
     title: "Upcoming Exams",
     value: 3,
     icon: "calendar",
-    color: "bg-orange-500",
+    color1: "bg-orange-300",    color2: "bg-orange-400",    color3: "bg-orange-500",
   },
 ];
 
