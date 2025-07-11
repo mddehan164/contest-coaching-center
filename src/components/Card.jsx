@@ -30,7 +30,15 @@ const Card = ({ data }) => {
             </li>
           ))}
         </ul>
-      </div>
+        {data.offer ? (
+            <p className="text-xs mt-4">
+              <span className="line-through text-red-600 mr-1">৳ {data.price}</span> &nbsp;
+              <span className="text-headerColorHover font-semibold">৳  {data.offerPrice}</span>
+            </p>
+          ) : (
+            <p className="text-xs mt-2 text-headerColorHover font-semibold">৳&nbsp;{data.price}</p>
+          )}
+        </div>
 
       {/* Button (if needed below) */}
       <div className="p-4 w-full flex justify-between items-center">

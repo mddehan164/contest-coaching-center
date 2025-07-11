@@ -8,7 +8,7 @@ import { Navigation } from 'swiper/modules';
 
 const bulletStyles = {
   circle: 'list-disc',
-  arrow: 'list-[">"]',
+  arrow: 'list-[">>"]',
   decimal: 'list-decimal',
   roman: 'list-[upper-roman]',
   alpha: 'list-[upper-alpha]'
@@ -21,7 +21,7 @@ const CourseEditor = () => {
     shortDesc: '',
     details: '',
     bulletType: 'circle',
-    regularPrice: '',
+    price: '',
     offer: false,
     offerPrice: '',
     image: ''
@@ -54,7 +54,7 @@ const CourseEditor = () => {
       unit: newCourse.title,
       body: newBody,
       image: newCourse.image,
-      regularPrice: newCourse.regularPrice,
+      price: newCourse.price,
       offer: newCourse.offer,
       offerPrice: newCourse.offerPrice,
       btnData: {
@@ -83,7 +83,7 @@ const CourseEditor = () => {
       shortDesc: '',
       details: '',
       bulletType: 'circle',
-      regularPrice: '',
+      price: '',
       offer: false,
       offerPrice: '',
       image: ''
@@ -104,9 +104,9 @@ const CourseEditor = () => {
     setNewCourse({
       title: course.unit,
       shortDesc: course.body.join('\n'),
-      details: course.body[1] || '',
+      details: course.des || '',
       bulletType: course.bulletType || 'circle',
-      regularPrice: course.regularPrice || '',
+      price: course.price || '',
       offer: course.offer || false,
       offerPrice: course.offerPrice || '',
       image: course.image
@@ -145,7 +145,7 @@ const CourseEditor = () => {
             <option value="roman">Roman</option>
             <option value="alpha">Alpha</option>
           </select>
-          <input name="regularPrice" value={newCourse.regularPrice} onChange={handleInputChange} placeholder="Regular Price" className="block w-full p-2 border rounded" />
+          <input name="price" value={newCourse.price} onChange={handleInputChange} placeholder="Regular Price" className="block w-full p-2 border rounded" />
           <div className="flex items-center space-x-2">
             <label className="flex items-center space-x-2">
               <input type="checkbox" name="offer" checked={newCourse.offer} onChange={handleInputChange} />
@@ -172,11 +172,11 @@ const CourseEditor = () => {
           </ul>
           {newCourse.offer ? (
             <p className="text-sm mt-2">
-              <span className="line-through text-gray-500 mr-2">৳{newCourse.regularPrice}</span>
-              <span className="text-red-500 font-semibold">৳{newCourse.offerPrice}</span>
+              <span className="line-through text-red-600 mr-2">৳{newCourse.price}</span>
+              <span className="text-headerColorHover font-semibold">৳{newCourse.offerPrice}</span>
             </p>
           ) : (
-            <p className="text-sm mt-2">৳{newCourse.regularPrice}</p>
+            <p className="text-sm mt-2 text-headerColorHover font-semibold">৳ &nbsp;{newCourse.price}</p>
           )}
           <div className="flex gap-2 mt-2">
             <button className="text-white bg-headerColor px-2 py-1 text-xs rounded">Enroll Now</button>
@@ -203,20 +203,20 @@ const CourseEditor = () => {
                 </ul>
                 {course.offer ? (
                   <p className="text-xs mt-2">
-                    <span className="line-through text-gray-500 mr-1">৳{course.regularPrice}</span>
-                    <span className="text-red-500 font-semibold">৳{course.offerPrice}</span>
+                    <span className="line-through text-red-600 mr-1">৳{course.price}</span>
+                    <span className="text-headerColorHover font-semibold">৳{course.offerPrice}</span>
                   </p>
                 ) : (
-                  <p className="text-xs mt-2">৳{course.regularPrice}</p>
+                  <p className="text-xs mt-2 text-headerColorHover font-semibold">৳ &nbsp;{course.price}</p>
                 )}
                 <div className="flex gap-2 mt-2">
                   <button className="text-white bg-headerColor px-2 py-1 text-xs rounded">Enroll Now</button>
                   <button className="text-white bg-headerColorHover px-2 py-1 text-xs rounded">Details</button>
                 </div>
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center space-y-2 transition">
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center space-y-2 transition text-sm">
                   <button onClick={() => setPreviewFull(course)} className="bg-white text-black px-3 py-1 rounded flex items-center gap-1"><FaEye /> Preview</button>
-                  <button onClick={() => handleEdit(index)} className="bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1"><FaEdit /> Edit</button>
-                  <button onClick={() => handleDelete(index)} className="bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1"><FaTrash /> Delete</button>
+                  <button onClick={() => handleEdit(index)} className="bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1 text-sm"><FaEdit /> Edit</button>
+                  <button onClick={() => handleDelete(index)} className="bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1 text-sm"><FaTrash /> Delete</button>
                 </div>
               </div>
             </SwiperSlide>
@@ -252,11 +252,11 @@ const CourseEditor = () => {
             </ul>
             {previewFull.offer ? (
               <p className="text-sm mt-2">
-                <span className="line-through text-gray-500 mr-2">৳{previewFull.regularPrice}</span>
-                <span className="text-red-500 font-semibold">৳{previewFull.offerPrice}</span>
+                <span className="line-through text-red-600 mr-2">৳{previewFull.price}</span>
+                <span className="text-headerColorHover font-semibold">৳{previewFull.offerPrice}</span>
               </p>
             ) : (
-              <p className="text-sm mt-2">৳{previewFull.regularPrice}</p>
+              <p className="text-sm mt-2 text-headerColorHover font-semibold">৳{previewFull.price}</p>
             )}
             <div className="flex gap-2 mt-4">
               <button className="text-white bg-headerColor px-4 py-1 rounded">Enroll Now</button>
