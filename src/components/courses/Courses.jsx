@@ -1,10 +1,11 @@
 import React from 'react'
-import { courseData } from '../../data/data';
+import { courseData } from '../../data/courseData';
 import Card from '../Card';
 import MainBtn from '../mainBtn';
 import { NavLink } from 'react-router';
 
 const CourseMain = () => {
+  const someCourse = courseData.courses.slice(0, 4);
   return (
     <div
       className='w-full max-sm:p-3 sm:pt-10 relative min-h-[400px]'
@@ -13,9 +14,9 @@ const CourseMain = () => {
         {courseData.title}
       </h1>
 
-      <div className='sm:flex sm:flex-wrap sm:gap-8 md:flex sm:justify-center lg:w-full'>
+      <div className='grid grid-cols-1 gap-5 px-7 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:px-0'>
         {
-          courseData.courses.map((course, idx) => <Card key={idx} data={course} />)
+          someCourse.map((course, idx) => <Card key={idx} data={course} />)
         }
       </div>
 

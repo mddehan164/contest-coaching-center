@@ -64,8 +64,8 @@ const BranchCard = () => {
 
             {/* Info Section */}
             <div className="md:w-1/2 w-full p-4 flex flex-col justify-center space-y-2">
-              <h2 className="text-2xl font-bold lg:text-4xl text-headerColorHover">{branch.district}</h2>
-              <p className="text-gray-500 font-medium lg:text-2xl">{branch.address}</p>
+              <h2 className="text-2xl font-bold lg:text-2xl text-headerColorHover">{branch.district}</h2>
+              <p className="text-gray-500 font-medium lg:text-xl">{branch.address}</p>
               <p className="text-gray-400 text-sm xl:text-lg">{branch.description}</p>
             </div>
           </div>

@@ -34,3 +34,4 @@ export {default as GalleryEditor} from './GalleryEditor';
 export {default as BranchCard} from './BranchCard/BranchCard';
 export {default as MapLocation} from './MapLocation';
 export {default as BranchEditor} from './BranchEditor';
+export {default as AllSuccessCard} from './successfullPerson/AllSuccessCard';

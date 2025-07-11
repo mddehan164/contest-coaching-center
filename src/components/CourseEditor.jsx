@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { courseData } from '../data/data';
+import { courseData } from '../data/courseData';
 import { FaEdit, FaTrash, FaEye, FaTimes } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';

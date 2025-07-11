@@ -24,7 +24,7 @@ const ScrollAnimatedSection = ({
     }
   }, [inView, alreadyAnimated, controls, id, setScrollAnimatedSections]);
 
-  const xOffset = direction === "left" ? -100 : direction === "right" ? 100 : 0;
+  const xOffset = direction === "left" ? -200 : direction === "right" ? 200 : 0;
 
   const defaultVariants = {
     hidden: { opacity: 0, x: xOffset },

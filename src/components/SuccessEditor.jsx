@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { successData } from '../data/data';
+import { successData } from '../data/SuccessfulStudentData';
 import { FaEdit, FaTrash, FaEye, FaTimes } from 'react-icons/fa';
 
 const SuccessEditor = () => {
@@ -106,9 +106,9 @@ const SuccessEditor = () => {
 
       {previewFull && (
         <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-4 w-[90%] md:w-[70%] lg:w-[50%] relative">
+          <div className="bg-white rounded-lg p-4 w-[90%] md:w-[70%] lg:w-[50%] relative flex flex-col gap-2 items-center">
             <button onClick={() => setPreviewFull(null)} className="absolute top-2 right-2 text-red-500 text-xl"><FaTimes /></button>
-            <img src={previewFull.img} alt={previewFull.title} className="w-full aspect-[3/2] object-cover rounded mb-2" />
+            <img src={previewFull.img} alt={previewFull.title} className="w-[60%] aspect-square object-cover rounded mb-2" />
             <h2 className="text-lg font-bold mb-2">{previewFull.title}</h2>
             <p className="text-sm">{previewFull.subtitle}</p>
             <p className="text-sm font-semibold">{previewFull.rank}</p>

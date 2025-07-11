@@ -9,7 +9,7 @@ const MainBtn = ({ data, btnStyle, isActive, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`max-sm:py-1 max-sm:px-2 max-sm:rounded-sm max-sm:text-sm sm:py-2 sm:px-4 px-6 py-4 rounded-lg ${textColor} bg-${bgColor} ${hoverColor} ${fullWidth} lg:text-sm xl:text-lg`}
+      className={`max-sm:py-1 max-sm:px-2 max-sm:rounded-md max-sm:text-sm sm:py-2 sm:px-4 px-6 py-4 lg:px-3 lg:py-2 md:px-2 md:py-1 rounded-lg ${textColor} bg-${bgColor} ${hoverColor} ${fullWidth} lg:text-sm xl:text-lg`}
     >
       {data}
     </button>

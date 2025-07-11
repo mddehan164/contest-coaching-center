@@ -3,7 +3,7 @@ import MainBtn from './mainBtn';
 
 const Card = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xs max-sm:mx-auto max-sm:my-10 hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xs max-sm:mx-auto  hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6">
       {/* Title */}
       {data.titleStatus && data.btnData?.btnName?.[0] && (
         <div className="bg-headerColor text-white font-bold text-center py-2 xl:text-xl">
