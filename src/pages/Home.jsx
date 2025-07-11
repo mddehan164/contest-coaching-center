@@ -1,7 +1,9 @@
 // pages/Home.jsx
 
 import React from 'react';
-import { Courses, NoticeMain, ServicesStats, Slider, StatsMain, SuccessCards, Summary,ScrollAnimatedSection } from '../components/index';
+import { Courses, NoticeMain, ServicesStats, Slider, StatsMain, SuccessCards, Summary } from '../components/index';
+import ScrollAnimatedSection from '../components/ScrollAnimatedSection'
+
 
 const Home = () => {
   return (
@@ -13,7 +15,7 @@ const Home = () => {
         <NoticeMain />
       </ScrollAnimatedSection>
 
-      <ScrollAnimatedSection id="courses" direction="right">
+      <ScrollAnimatedSection id="course" direction="right">
         <Courses />
       </ScrollAnimatedSection>
 

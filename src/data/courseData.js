@@ -1,10 +1,23 @@
+import heroImg from "../assets/images/hero/course.svg"
+
+export const courseHeroData = {
+  img: heroImg,
+  color: "text-emerald-500",
+  data:{
+        title: "Take a best Choice For Learning",
+        subtitle: "Helps you to reach on your destination faster",
+        des: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus itaque perspiciatis commodi nam. Facilis inventore necessitatibus soluta, quaerat ipsum, minima sequi tempore optio labore nesciunt recusandae? Alias, dolore repudiandae dolorum quisquam repellat excepturi quo consequuntur tempore fuga doloremque aspernatur officiis ipsam sed autem voluptate rem commodi eius a consectetur facere?",
+      },
+}
+
+
+
 //  start course data from here
 // ratio should be 3:2 of each card image
 import courseImg1 from "../assets/images/course-card/card-1.jpg";
 import courseImg2 from "../assets/images/course-card/card-2.jpg";
 import courseImg3 from "../assets/images/course-card/card-3.jpg";
-
-
+import { Subtitles } from "lucide-react";
 
 export const courseData = {
   title: "আমাদের কোর্সসমূহ",
