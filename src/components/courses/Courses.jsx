@@ -2,7 +2,7 @@ import React from 'react'
 import { courseData } from '../../data/courseData';
 import Card from '../Card';
 import MainBtn from '../mainBtn';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 const CourseMain = () => {
   const someCourse = courseData.courses.slice(0, 4);
@@ -16,7 +16,7 @@ const CourseMain = () => {
 
       <div className='grid grid-cols-1 gap-5 px-7 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:px-0'>
         {
-          someCourse.map((course, idx) => <Card key={idx} data={course} />)
+          someCourse.map((course, idx) => <Card key={idx} data={course}/>)
         }
       </div>
 
@@ -31,5 +31,4 @@ const CourseMain = () => {
     </div>
   )
 }
-
 export default CourseMain

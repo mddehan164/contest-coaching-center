@@ -53,10 +53,12 @@ const CourseEditor = () => {
     const course = {
       unit: newCourse.title,
       body: newBody,
+      des: newCourse.details, // << এইটা courseDetails এ লাগবে
       image: newCourse.image,
       price: newCourse.price,
       offer: newCourse.offer,
       offerPrice: newCourse.offerPrice,
+      bulletType: newCourse.bulletType, // << bullet type Save করো
       btnData: {
         btnName: ['Enroll Now', 'Details'],
         btnStyle: {
@@ -64,9 +66,9 @@ const CourseEditor = () => {
           btnHoverColor: 'headerColorHover',
           btnStatus: true
         }
-      },
-      bulletType: newCourse.bulletType
+      }
     };
+
 
     if (isEditing) {
       const updatedCourses = [...courses];
