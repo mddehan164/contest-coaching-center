@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { courseData } from '../data/courseData';
+import { courseData, courseHeroData } from '../data/courseData';
 import { FaEdit, FaTrash, FaEye, FaTimes } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -128,9 +128,98 @@ const CourseEditor = () => {
     alert('Changes saved successfully!');
   };
 
+  const [hero, setHero] = useState(courseHeroData);
+  const [showHeroModal, setShowHeroModal] = useState(false);
+  const [formHero, setFormHero] = useState({
+    title: '',
+    subtitle: '',
+    des: '',
+    image: null
+  });
+
+  const handleHeroSave = () => {
+    setHero({
+      img: formHero.image,
+      color: hero.color,
+      data: {
+        title: formHero.title,
+        subtitle: formHero.subtitle,
+        des: formHero.des
+      }
+    });
+    setShowHeroModal(false);
+  };
+
+  const handleImageUpload = (e, isHero = false) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    if (isHero) {
+      setFormHero({ ...formHero, image: url });
+    } else {
+      setNewCourse({ ...newCourse, image: url });
+      setPreviewImage(url);
+    }
+    setIsChanged(true);
+  };
+
   return (
     <div className="p-4 space-y-8">
       <h2 className="text-2xl font-semibold text-center">Add or Edit Courses</h2>
+
+      {/* Hero Section */}
+      <section className="bg-white rounded shadow p-4">
+        <h2 className="text-2xl font-bold mb-4 text-headerColorHover">Hero Section</h2>
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="flex-1 space-y-1">
+            <h3 className={`text-xl font-bold ${hero.color}`}>{hero.data.title}</h3>
+            <p className="text-gray-700 font-medium">{hero.data.subtitle}</p>
+            <p className="text-gray-500 text-sm">{hero.data.des}</p>
+          </div>
+          <img src={hero.img} alt="Course Hero" className="w-full lg:w-1/3 rounded" />
+        </div>
+        <button
+          className="mt-4 px-6 py-2 bg-headerColor text-white rounded hover:bg-headerColorHover"
+          onClick={() => setShowHeroModal(true)}
+        >
+          Edit Hero
+        </button>
+      </section>
+
+      {/* Hero Edit Modal */}
+      {showHeroModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded max-w-md w-full space-y-4">
+            <h3 className="text-xl font-bold">Edit Hero Section</h3>
+            <input
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Title"
+              value={formHero.title}
+              onChange={(e) => setFormHero({ ...formHero, title: e.target.value })}
+            />
+            <input
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Subtitle"
+              value={formHero.subtitle}
+              onChange={(e) => setFormHero({ ...formHero, subtitle: e.target.value })}
+            />
+            <textarea
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Description"
+              value={formHero.des}
+              onChange={(e) => setFormHero({ ...formHero, des: e.target.value })}
+            />
+            <div>
+              {formHero.image && <img src={formHero.image} className="rounded mb-2 w-[70%]" />}
+              <input type="file" onChange={(e) => handleImageUpload(e, true)} />
+            </div>
+            <div className="flex justify-between">
+              <button onClick={() => setShowHeroModal(false)} className="px-4 py-2 border rounded">Cancel</button>
+              <button onClick={handleHeroSave} className="px-4 py-2 bg-headerColor text-white rounded hover:bg-headerColorHover">Save</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Form Section */}
       <div className="grid md:grid-cols-3 gap-4">
