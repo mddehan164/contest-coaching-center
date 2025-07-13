@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { sliderData } from "../data/DSliderData";
+import { sliderData } from "../data/data";
 
 const MAX_SLIDERS = 8;
 const MAX_DELETE = 6;

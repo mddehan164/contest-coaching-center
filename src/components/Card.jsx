@@ -48,11 +48,11 @@ const Card = ({ data}) => {
 
         {data.offer ? (
             <p className="text-xs mt-4">
-              <span className="line-through text-red-600 mr-1 sm:text-lg">৳ {data.price}</span> &nbsp;
-              <span className="text-headerColorHover font-semibold sm:text-lg">৳  {data.offerPrice}</span>
+              <span className="line-through text-red-600 mr-1 sm:text-lg">{data.price && "৳"}{data.price}</span> &nbsp;
+              <span className="text-headerColorHover font-semibold sm:text-lg">{data.price && "৳"}{data.offerPrice} </span>
             </p>
           ) : (
-            <p className="text-xs mt-2 text-headerColorHover font-semibold sm:text-lg">৳&nbsp;{data.price}</p>
+            <p className="text-xs mt-2 text-headerColorHover font-semibold sm:text-lg">{data.price && "৳"} &nbsp;{data.price} </p>
           )}
         </div>
 

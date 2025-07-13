@@ -26,13 +26,13 @@ export default function CubeSlider() {
       style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
     >
       {
-        sliderData.sliderImg.map((img, index) => (
+        sliderData.map((data, index) => (
           <SwiperSlide 
            
           key={index}>
             <img
-              src={img}
-              alt={`Slide ${index + 1}`}
+              src={data.preview}
+              alt={data.title}
               className="w-full h-auto object-cover"
               loading="lazy"
               decoding="async"

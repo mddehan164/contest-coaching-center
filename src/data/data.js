@@ -1,4 +1,4 @@
-
+//full homepage Data
 // start header from here
 
 import { FaEnvelope, FaLinkedinIn , FaFacebook, FaYoutube, FaTwitter  } from "react-icons/fa";
@@ -54,15 +54,31 @@ export const navData =
   }}
 
   
-import sliderImg1 from "../assets/images/slider/slider-1.jpg";
-import sliderImg2 from "../assets/images/slider/slider-2.jpg";
-import sliderImg3 from "../assets/images/slider/slider-3.jpg";
+// slider data
+
+import slider1 from "../assets/images/slider/slider-1.jpg";
+import slider2 from "../assets/images/slider/slider-2.jpg";
+import slider3 from "../assets/images/slider/slider-3.jpg";
 
 
 
-  export const sliderData = {
-    sliderImg:[sliderImg1, sliderImg2, sliderImg3]
-  }
+  export const sliderData = [
+    {
+      id: 1,
+      title: "1st slider",
+      preview: slider1,
+    },
+    {
+      id: 2,
+      title: "2nd slider",
+      preview: slider2,
+    },
+    {
+      id: 3,
+      title: "3rd slider",
+      preview: slider3,
+    },
+  ];
 
 // start notice data from here
   
