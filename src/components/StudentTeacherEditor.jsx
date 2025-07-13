@@ -8,7 +8,7 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
   const [viewMode, setViewMode] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   const getEmptyEntry = () => {
     return type === 'student'
@@ -56,17 +56,21 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
   const handleView = (entry) => {
     setSelectedEntry(entry);
     setViewMode(true);
+    setShowForm(false);
+    setIsEdit(false);
   };
 
   const handleEdit = () => {
     setIsEdit(true);
     setShowForm(true);
+    setViewMode(false);
   };
 
   const handleAdd = () => {
     setSelectedEntry(getEmptyEntry());
     setIsEdit(false);
     setShowForm(true);
+    setViewMode(false);
   };
 
   const confirmSave = () => {
@@ -75,13 +79,12 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
       setEntries(updated);
       onSave && onSave(selectedEntry);
     } else {
-      const newEntry = { ...selectedEntry, id: Date.now() };
+      const newEntry = { ...selectedEntry, id: Date.now() + Math.floor(Math.random() * 1000) };
       const updated = [...entries, newEntry];
       setEntries(updated);
       onAdd && onAdd(newEntry);
     }
     setShowForm(false);
-    setShowConfirm(false);
     setViewMode(false);
   };
 
@@ -93,92 +96,140 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
     }
   };
 
-  const renderFormField = (label, name) => (
-    <div className="mb-2">
+  const renderFormField = (label, name, idx) => (
+    <div className="mb-2" key={idx}>
       <label className="block font-medium text-sm">{label}</label>
-      <input name={name} value={selectedEntry[name]} onChange={handleInputChange} className="border p-1 rounded w-full" />
+      <input
+        name={name}
+        value={selectedEntry[name] || ''}
+        onChange={handleInputChange}
+        className="border p-1 rounded w-full"
+      />
+    </div>
+  );
+
+  const renderNestedFields = (key) => {
+    if (!Array.isArray(selectedEntry[key])) return null;
+
+    return (
+      <div className="mt-4">
+        <h3 className="font-semibold capitalize mb-2">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h3>
+        {selectedEntry[key].map((item, i) => (
+          <div key={i} className="grid grid-cols-4 gap-2 mb-2">
+            {Object.entries(item).map(([field, val]) => (
+              <input
+                key={field + i}
+                className="border p-1 rounded"
+                placeholder={field.replace(/([A-Z])/g, ' $1')}
+                value={val || ''}
+                onChange={(e) => handleNestedChange(key, i, field, e.target.value)}
+              />
+            ))}
+            <button onClick={() => handleRemoveNested(key, i)} className="bg-contestRed hover:bg-red-700 text-white rounded px-2">X</button>
+          </div>
+        ))}
+        <button onClick={() => handleAddNested(key)} className="bg-headerColorHover text-white px-3 py-1 rounded">+ Add {key}</button>
+      </div>
+    );
+  };
+
+  const renderForm = () => (
+    <div className="bg-white p-4 rounded shadow w-full">
+      <h2 className="text-xl font-bold mb-4 text-[#102542]">{isEdit ? 'Edit' : 'Add'} {type === 'student' ? 'Student' : 'Teacher'}</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {Object.entries(getEmptyEntry()).map(([key, val]) => (
+          Array.isArray(val)
+            ? null
+            : renderFormField(key.replace(/([A-Z])/g, ' $1'), key)
+        ))}
+      </div>
+      {type === 'student' && (
+        <>
+          {renderNestedFields('installments')}
+          {renderNestedFields('examResults')}
+          {renderNestedFields('lectureSheets')}
+        </>
+      )}
+      {type === 'teacher' && renderNestedFields('paymentRecords')}
+      <div className="mt-6 flex gap-4">
+        <button onClick={confirmSave} className="bg-[#4CAF50] text-white px-4 py-2 rounded">Save</button>
+        <button onClick={() => { setShowForm(false); setViewMode(false); }} className="bg-gray-600 text-white px-4 py-2 rounded">Cancel</button>
+      </div>
     </div>
   );
 
   const renderViewDetails = () => (
     <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-xl font-bold mb-4 text-[#102542]">{type === 'student' ? 'Student' : 'Teacher'} Details</h2>
+      <h2 className="text-xl xl:text-3xl font-bold mb-4 text-[#102542]">{type === 'student' ? 'Student' : 'Teacher'} Details</h2>
       <div className="grid grid-cols-2 gap-4">
         {Object.entries(selectedEntry).map(([key, value]) => (
           Array.isArray(value) ? null : (
             <div key={key}>
-              <strong className="text-sm text-gray-700">{key}:</strong> <span>{value}</span>
+              <strong className="text-base md:text-lg text-gray-700">
+                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
+              </strong>
+              <span className="ml-1 break-words">{value}</span>
             </div>
           )
         ))}
       </div>
 
-      <div className="mt-4">
-        {(type === 'student') && (
-          <>
-            <h3 className="font-semibold">Installments</h3>
-            <table className="table-auto border w-full text-sm mb-4">
-              <thead className="bg-gray-100">
-                <tr>{['installment', 'amount', 'status', 'paymentDate', 'nextPaymentDate'].map(h => <th key={h} className="border px-2 py-1">{h}</th>)}</tr>
-              </thead>
-              <tbody>
-                {selectedEntry.installments.map((item, i) => (
-                  <tr key={i}>{Object.values(item).map((val, j) => <td key={j} className="border px-2 py-1">{val}</td>)}</tr>
-                ))}
-              </tbody>
-            </table>
+      {type === 'student' && (
+        <>
+          {['installments', 'examResults', 'lectureSheets'].map((key) => (
+            Array.isArray(selectedEntry[key]) && selectedEntry[key].length > 0 && (
+              <div key={key} className="mt-4">
+                <h3 className="font-semibold capitalize mb-2">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h3>
+                <table className="table-auto border w-full text-base md:text-lg lg:text-xl text-center">
+                  <thead className="bg-headerColor">
+                    <tr>{Object.keys(selectedEntry[key][0]).map(h => <th key={h} className='px-2 py-1'>{h.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</th>)}</tr>
+                  </thead>
+                  <tbody>
+                    {selectedEntry[key].map((item, i) => (
+                      <tr key={i}>{Object.values(item).map((val, j) => <td key={j} className="border px-2 py-1 ">{val}</td>)}</tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )
+          ))}
+        </>
+      )}
 
-            <h3 className="font-semibold">Exam Results</h3>
-            <table className="table-auto border w-full text-sm mb-4">
-              <thead className="bg-gray-100">
-                <tr>{['examName', 'marks', 'position', 'highestMarks'].map(h => <th key={h} className="border px-2 py-1">{h}</th>)}</tr>
-              </thead>
-              <tbody>
-                {selectedEntry.examResults.map((item, i) => (
-                  <tr key={i}>{Object.values(item).map((val, j) => <td key={j} className="border px-2 py-1">{val}</td>)}</tr>
-                ))}
-              </tbody>
-            </table>
-
-            <h3 className="font-semibold">Lecture Sheets</h3>
-            <table className="table-auto border w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>{['name', 'status', 'givenDate'].map(h => <th key={h} className="border px-2 py-1">{h}</th>)}</tr>
-              </thead>
-              <tbody>
-                {selectedEntry.lectureSheets.map((item, i) => (
-                  <tr key={i}>{Object.values(item).map((val, j) => <td key={j} className="border px-2 py-1">{val}</td>)}</tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
-
-        {(type === 'teacher') && (
-          <>
-            <h3 className="font-semibold">Payment Records</h3>
-            <table className="table-auto border w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>{['classId', 'amount', 'status', 'paymentDate'].map(h => <th key={h} className="border px-2 py-1">{h}</th>)}</tr>
-              </thead>
-              <tbody>
-                {selectedEntry.paymentRecords.map((item, i) => (
-                  <tr key={i}>{['classId', 'amount', 'status', 'paymentDate'].map(field => (
-                    <td key={field} className="border px-2 py-1">{item[field]}</td>
-                  ))}</tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
-      </div>
+      {type === 'teacher' && Array.isArray(selectedEntry.paymentRecords) && selectedEntry.paymentRecords.length > 0 && (
+        <div className="mt-4">
+          <h3 className="font-semibold mb-2">Payment Records</h3>
+          <table className="table-auto border w-full text-base md:text-lg lg:text-xl">
+            <thead className="bg-headerColor">
+              <tr>{Object.keys(selectedEntry.paymentRecords[0]).map(h => <th key={h} className='px-2 py-1'>{h.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</th>)}</tr>
+            </thead>
+            <tbody>
+              {selectedEntry.paymentRecords.map((item, i) => (
+                <tr key={i}>{Object.values(item).map((val, j) => <td key={j} className="border px-2 py-1">{val}</td>)}</tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="mt-6 flex gap-4">
-        <button onClick={handleEdit} className="bg-[#4CAF50] text-white px-4 py-2 rounded">Edit</button>
+        <button onClick={handleEdit} className="bg-headerColorHover text-white px-4 py-2 rounded">Edit</button>
         <button onClick={() => setViewMode(false)} className="bg-gray-600 text-white px-4 py-2 rounded">Back</button>
       </div>
     </div>
   );
+
+  const filteredEntries = entries.filter((entry, index, self) => {
+  const match = Object.entries(entry).some(([key, val]) => {
+      if (typeof val === 'string' || typeof val === 'number') {
+        return val.toString().toLowerCase().includes(searchText.toLowerCase());
+      }
+      return false;
+    });
+
+    const firstIndex = self.findIndex(e => e.id === entry.id);
+    return match && firstIndex === index; // remove duplicate ids
+  });
 
   return (
     <div className="p-4 w-full">
@@ -188,6 +239,14 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
             <h2 className="text-xl font-bold text-[#102542]">{type === 'student' ? 'Student' : 'Teacher'} List</h2>
             <button onClick={handleAdd} className="bg-[#4CAF50] text-white px-4 py-1 rounded">+ Add</button>
           </div>
+
+          <input
+            type="text"
+            placeholder="Search by any detail..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="border px-3 py-2 mb-4 w-full rounded"
+          />
 
           <table className="w-full table-auto border">
             <thead className="bg-[#102542] text-white">
@@ -209,8 +268,8 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
               </tr>
             </thead>
             <tbody>
-              {entries.map((entry) => (
-                <tr key={entry.id} className="hover:bg-gray-100">
+              {filteredEntries.map((entry) => (
+                <tr key={entry.id + '_' + entry.name} className="hover:bg-contestLight">
                   {type === 'student' ? (
                     <>
                       <td className="border px-3 py-2">{entry.name}</td>
@@ -224,9 +283,9 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
                       <td className="border px-3 py-2">{entry.subject}</td>
                     </>
                   )}
-                  <td className="border px-3 py-2 space-x-2">
-                    <button onClick={() => handleView(entry)} className="bg-[#2196F3] text-white px-3 py-1 rounded">View</button>
-                    <button onClick={() => confirmDelete(entry)} className="bg-[#f44336] text-white px-3 py-1 rounded">Delete</button>
+                  <td className="border px-3 py-2 space-x-2 text-center">
+                    <button onClick={() => handleView(entry)} className="bg-headerColor hover:bg-headerColorHover text-white px-3 py-1 rounded">View</button>
+                    <button onClick={() => confirmDelete(entry)} className="bg-contestRed hover:bg-red-700 text-white px-3 py-1 rounded">Delete</button>
                   </td>
                 </tr>
               ))}
@@ -235,7 +294,7 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
         </div>
       )}
 
-      {viewMode && !showForm && selectedEntry && renderViewDetails()}
+      {viewMode && selectedEntry && renderViewDetails()}
       {showForm && selectedEntry && renderForm()}
     </div>
   );
