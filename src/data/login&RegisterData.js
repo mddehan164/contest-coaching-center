@@ -1,12 +1,12 @@
 export const loginData =  {
-    title: "রৌনকায় স্বাগতম!",
+    title: "কনটেস্টে স্বাগতম!",
     subtitle: "আপনার অ্যাকাউন্টে লগইন করুন",
     fields: [
       {
-        label: "Mobile number",
-        name: "mobile",
-        type: "text",
-        placeholder: "Mobile number",
+        label: "Email Adress",
+        name: "email",
+        type: "email",
+        placeholder: "Email Address",
       },
       {
         label: "Password",
@@ -30,7 +30,7 @@ export const loginData =  {
 
 
 export const registerData = {
-    title: "রৌনকায় স্বাগতম!",
+    title: "কনটেস্টে স্বাগতম!",
     subtitle: "নতুন অ্যাকাউন্ট তৈরি করতে নিচের ফর্মটি পূর্ণ করুন।",
     fields: [
       {
@@ -50,6 +50,12 @@ export const registerData = {
         name: "password",
         type: "password",
         placeholder: "Password",
+      },
+      {
+        label: "Confirm Password",
+        name: "password",
+        type: "password",
+        placeholder: "Confirm Password",
       },
     ],
     bottomText: "ইতিমধ্যে একটি অ্যাকাউন্ট আছে?",

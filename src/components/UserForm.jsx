@@ -5,7 +5,7 @@ import MainBtn from "./MainBtn"
 
 const UserForm = ({data}) => {
   return (
-    <div className='w-full sm:w-1/2 xl:w-1/3 sm:px-5 md:px-7 lg:px-10 xl:px-14 xl:py-10 px-2 py-5 bg-contestLight rounded-md shadow-md border-none'>
+    <div className='w-full sm:w-1/2 xl:w-1/3 h-full sm:px-5 md:px-7 lg:px-10 xl:px-14 xl:py-10 px-2 py-5 bg-contestLight rounded-md shadow-md border-none'>
       <h1 className='text-2xl text-center text-headerColorHover font-semibold'>{data.title}</h1>
       <h3 className='text-sm mt-3 text-center'>{data.subtitle}</h3>
       {
