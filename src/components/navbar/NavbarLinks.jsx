@@ -30,13 +30,13 @@ const NavbarLinks = () => {
     <MdCancel className={`hidden max-sm:block cursor-pointer ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} absolute top-0 right-0 text-xl text-headerColor w-6 h-6`} onClick={toggleMenu}/>
       {
         navData.data.links.map((link, idx) => (
-          <div key={idx} className={`hover:text-headerColor ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} max-sm:m-5 group relative`}>
-            <NavLink to={link.path}>{link.name}</NavLink>
+          <>
+            <NavLink to={link.path} key={idx} className={`hover:text-headerColor ${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"} max-sm:m-5 group relative`}>{link.name}</NavLink>
             <div className='absolute -bottom-2 left-0 w-0 h-1 bg-headerColor lg:group-hover:w-full transition-all duration-300'></div>
-          </div>
+          </>
         ))
       }
-      <NavLink to="/login" className={`${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"}`}><NavbarBtn data={navData}/></NavLink>
+      <div className={`${!isActiveMenu ? "max-sm:hidden " : "max-sm:block"}`}><NavbarBtn data={navData}/></div>
       
     </motion.div>
   )

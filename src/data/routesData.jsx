@@ -1,10 +1,10 @@
-import { AllSuccessCard, BranchEditor, CourseDetails, Customise, Error, GalleryEditor, GalleryMain, RegisterForm, ServiceEditor, StatsEditor, SuccessEditor, SummaryEditor } from "../components";
+import { AllSuccessCard, BranchEditor, CourseDetails, Customise, Error, GalleryEditor, GalleryMain, ServiceEditor, StatsEditor, SuccessEditor, SummaryEditor } from "../components";
 import { DCourse, DSlider, Help, Logout, Notice, Schedule, Settings, Student, Teacher } from "../dashboardPages";
 
-import { Admission, Branches, Courses, Login } from "../pages";
+import { Admission, Branches, Courses, Login, Register } from "../pages";
 
 export let mainPageRoutes = [
-    {route: <Courses/>, path: "courses"}, {route: <Admission/>, path: "admission"},{route: <GalleryMain/>, path: "gallery"}, {route: <Branches/>, path: "branches"},{route: <AllSuccessCard/>, path: "all-success"}, {route: <CourseDetails/>, path:"/courses/:id"}, {route: <Login/>, path: "login"}, {route: <RegisterForm/>, path: "register"}, {route: <Error/>, path: "*"},
+    {route: <Courses/>, path: "courses"}, {route: <Admission/>, path: "admission"},{route: <GalleryMain/>, path: "gallery"}, {route: <Branches/>, path: "branches"},{route: <AllSuccessCard/>, path: "all-success"}, {route: <CourseDetails/>, path:"/courses/:id"}, {route: <Login/>, path: "login"}, {route: <Register/>, path: "register"}, {route: <Error/>, path: "*"},
 ];
 
 export let dashboardPageRoutes = [

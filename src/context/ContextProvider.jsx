@@ -7,6 +7,9 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [isActiveMenu, setIsActiveMenu] = useState(false);
   const [activeTab, setActiveTab] = useState('Admission');
+  const [user, setUser] = useState(null);
+  const [msg, setMsg] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // scroll animation state (optional, future extensibility)
   const [scrollAnimatedSections, setScrollAnimatedSections] = useState({});
@@ -24,6 +27,12 @@ export const ContextProvider = ({ children }) => {
       setScrollAnimatedSections,
       isExpand,
       setIsExpand,
+      user,
+      setUser,
+      msg,
+      setMsg,
+      showConfirm,
+      setShowConfirm,
     }}>
       {children}
     </StateContext.Provider>

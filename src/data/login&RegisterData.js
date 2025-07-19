@@ -40,10 +40,10 @@ export const registerData = {
         placeholder: "Student's Name",
       },
       {
-        label: "Mobile number",
-        name: "mobile",
-        type: "text",
-        placeholder: "Mobile number",
+        label: "Email Address",
+        name: "email",
+        type: "email",
+        placeholder: "Email Address",
       },
       {
         label: "Password",
@@ -53,7 +53,7 @@ export const registerData = {
       },
       {
         label: "Confirm Password",
-        name: "password",
+        name: "password_confirmation",
         type: "password",
         placeholder: "Confirm Password",
       },
