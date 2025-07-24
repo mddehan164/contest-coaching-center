@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom';
 
 const NavbarBtn = (props) => {
   const [click, setClick] = useState(false);
-  const {showConfirm , setShowConfirm} = useStateContext();
-  const {user, setUser} = useStateContext()
-  const {setMsg} = useStateContext();
+  const {showConfirm , setShowConfirm, setMsg, user, setUser} = useStateContext();
 
   useEffect(() => {
   const savedUser = localStorage.getItem("user");

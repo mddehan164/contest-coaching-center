@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { registerData } from '../data/login&RegisterData';
 import UserForm from '../components/userForm';
 import { useStateContext } from '../context/ContextProvider';

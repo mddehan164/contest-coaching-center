@@ -10,10 +10,7 @@ export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [msg, setMsg] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
-
-  // scroll animation state (optional, future extensibility)
   const [scrollAnimatedSections, setScrollAnimatedSections] = useState({});
-
   const [isExpand, setIsExpand] = useState(true);
 
 
