@@ -17,39 +17,38 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setMsg("Logging in...");
+    e.preventDefault();
+    setMsg("Logging in...");
 
-  try {
-    // await api.get("/sanctum/csrf-cookie");
-    const res = await api.post('/login', form);
-    console.log(res)
+    try {
+      // await api.get("/sanctum/csrf-cookie");
+      const res = await api.post('/login', form);
 
-    if (res.status === 200 || res.status === 201) {
-      const user = res.data.data?.user;
-      const accessToken = res.data.data?.access_token ;
-      const refreshToken = res.data.data?.refresh_token;
+      if (res.status === 200 || res.status === 201) {
+        const user = res.data.data?.user;
+        const accessToken = res.data.data?.access_token ;
+        const refreshToken = res.data.data?.refresh_token;
 
-      setMsg(res.data.message || "Login Successful");
+        setMsg(res.data.message || "Login Successful");
 
-      if (user) setUser(user);
-      if (accessToken) localStorage.setItem("access_token", accessToken);
-      if (refreshToken) localStorage.setItem("refresh_token", refreshToken);
-      if (user) localStorage.setItem("user", JSON.stringify(user));
+        if (user) setUser(user);
+        if (accessToken) localStorage.setItem("access_token", accessToken);
+        if (refreshToken) localStorage.setItem("refresh_token", refreshToken);
+        if (user) localStorage.setItem("user", JSON.stringify(user));
 
-      setTimeout(() => {
-        navigate("/"), 2000
-        setMsg("")
-      });
+        setTimeout(() => {
+          navigate("/"), 2000
+          setMsg("")
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setMsg("❌ Login failed. Try again.");
     }
-  } catch (error) {
-    console.error(error);
-    setMsg("❌ Login failed. Try again.");
-  }
+    };
   useEffect(() => {
-    setMsg(""); // clear any previous messages on mount
-  }, [setMsg]);
-};
+      setMsg(""); // clear any previous messages on mount
+    }, [setMsg]);
   return (
       <div className='flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4'>
          {msg && <p className="mb-2 text-lg text-headerColorHover font-semibold">{msg}</p>}
