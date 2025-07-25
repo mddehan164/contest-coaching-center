@@ -34,7 +34,6 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshErr) {
         localStorage.clear();
-        window.location.href = "/login";
       }
     }
 

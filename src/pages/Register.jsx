@@ -4,12 +4,15 @@ import UserForm from '../components/userForm';
 import { useStateContext } from '../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosInstance';
+import { useLoader } from '../context/LoaderContext';
+import Loader from '../components/Loader';
 
 
 
 const RegisterForm = () => {
     const navigate = useNavigate()
     const {msg, setMsg} = useStateContext();
+    const {loading, setLoading} = useLoader();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -23,21 +26,23 @@ const RegisterForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if(formData.password.length > 6){
-        alert("Password must be 6 charecters");
+        setLoading(true);
+        if(formData.password.length < 6){
+        alert("❌ Password must be 6 charecters");
+        setLoading(false);
         return;
         }
         
         if (formData.password !== formData.password_confirmation) {
-        alert("Passwords do not match");
+        alert("❌ Passwords are not matching");
+        setLoading(false);
         return;
         }
         
-
         else{
         setMsg("Registering...");
-        }
+        setLoading(true);
+
 
         try {
 
@@ -48,21 +53,39 @@ const RegisterForm = () => {
             setMsg(res.data.message);
             setTimeout(() => {
                 navigate("/login");
-                setMsg("")
+                setMsg("");
+                setLoading(false);
             }, 2000);
         }
         } catch (err) {
-        console.error(err);
-        if (err.response?.data?.message) {
-            setMsg("❌ " + err.response.data.message);
-        } else {
-            setMsg("❌ Registration failed");
+            let mainMsg = "Registration failed";
+            let detailMsg = "";
+
+            if (err.response?.data) {
+                const data = err.response.data;
+
+                mainMsg = data.message || mainMsg;
+
+                if (data.errors) {
+                if (data.errors.email) {
+                    detailMsg = data.errors.email.join(", ");
+                }
+                }
+            }
+
+            setMsg(mainMsg);
+            setLoading(false);
+
+            setTimeout(() => setMsg(""), 3000);
+
+            alert(detailMsg || "Please check your input");
+            }
         }
-        }
+
     };
   return (
-    <div className='flex justify-center items-center w-full xl:h-auto p-3 flex-wrap space-y-4'>
-        {msg && <p className="mb-2 text-lg text-green-500 font-semibold w-full text-center">{msg}</p>}
+    <div className='flex justify-center items-center w-full xl:h-auto p-3 flex-wrap space-y-4 relative'>
+        {loading && <Loader message={msg} duration={2000} />}
         <h1 className='w-full text-xl font-semibold text-headerColor text-center'>Register</h1>
       <UserForm data={registerData} handleChange={handleChange} handleSubmit={handleSubmit}/>
     </div>
