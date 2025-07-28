@@ -1,7 +1,7 @@
 // context/ContextProvider.jsx
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../../api/axiosInstance';
+import api, { getCsrfToken } from '../../api/axiosInstance';
 import { useLoader } from './LoaderContext';
 
 const StateContext = createContext();
@@ -15,36 +15,71 @@ export const ContextProvider = ({ children }) => {
   const [scrollAnimatedSections, setScrollAnimatedSections] = useState({});
   const [isExpand, setIsExpand] = useState(true);
   const {setLoading} = useLoader();
-   const accessToken = localStorage.getItem("access_token");
+  // const accessToken = localStorage.getItem("access_token");
 
-  const checkAuth = async () => {
-  setLoading(true); // ✅ শুরুতেই loader চালাও
+// this is for Sanctum authentication
+const checkAuth = async () => {
+  setLoading(true);
   setMsg("Checking authentication...");
 
   try {
-    const response = await api.get('/me');
+    // 1. Get CSRF cookie
+    await getCsrfToken(); // ❗ Must be called first (no auth required)
+
+    // 2. Then check if user is authenticated
+    const response = await api.get("/me"); // expects Sanctum to find user via cookie
 
     if (response.status === 200) {
       setUser(response.data.data.user);
       setMsg("✅ Authenticated successfully");
+    } else {
+      setUser(null);
+      setMsg("❌ Not authenticated");
     }
   } catch (err) {
-    setMsg('❌ Network Error !', err.message);
     setUser(null);
     console.log('❌ Auth check failed:', err);
+    setMsg("❌ Not authenticated");
   } finally {
     setTimeout(() => {
-      setLoading(false); // ✅ যেকোনো অবস্থায় loader বন্ধ
-    }, 1000); // Optional delay to show spinner smoothly
+      setLoading(false);
+    }, 800);
   }
 };
 
-
   useEffect(() => {
-    if (accessToken) {
-      checkAuth();
-    }
-  }, []);
+    checkAuth()
+  }, []); // ✅ Call checkAuth on mount
+
+// this is access token based authentication
+//   const checkAuth = async () => {
+//   setLoading(true); // ✅ শুরুতেই loader চালাও
+//   setMsg("Checking authentication...");
+
+//   try {
+//     const response = await api.get('/me');
+
+//     if (response.status === 200) {
+//       setUser(response.data.data.user);
+//       setMsg("✅ Authenticated successfully");
+//     }
+//   } catch (err) {
+//     setMsg('❌ Network Error !', err.message);
+//     setUser(null);
+//     console.log('❌ Auth check failed:', err);
+//   } finally {
+//     setTimeout(() => {
+//       setLoading(false); // ✅ যেকোনো অবস্থায় loader বন্ধ
+//     }, 1000); // Optional delay to show spinner smoothly
+//   }
+// };
+
+
+//   useEffect(() => {
+//     if (accessToken) {
+//       checkAuth();
+//     }
+//   }, []);
 
 
   return (

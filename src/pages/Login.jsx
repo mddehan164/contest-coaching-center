@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import UserForm from '../components/userForm';
 import { loginData } from '../data/login&RegisterData';
-import api from "../../api/axiosInstance"
+import api, { getCsrfToken } from "../../api/axiosInstance"
 import { useStateContext } from '../context/ContextProvider';
 import Loader from '../components/Loader';
 import { useLoader } from '../context/LoaderContext';
+import axios from 'axios';
 
 
 const Login = () => {
@@ -24,13 +25,17 @@ const Login = () => {
   setLoading(true);
 
   try {
+    // await getCsrfToken();
+    await axios.get("http://localhost:8000/sanctum/csrf-cookie", {
+      withCredentials: true,})
+
     const res = await api.post('/login', form);
     if (res.status === 200 || res.status === 201) {
       const { user, access_token, refresh_token } = res.data.data;
       setMsg(res.data.message || "Login Successful");
       user && setUser(user);
-      access_token && localStorage.setItem("access_token", access_token);
-      refresh_token && localStorage.setItem("refresh_token", refresh_token);
+      // access_token && localStorage.setItem("access_token", access_token);
+      // refresh_token && localStorage.setItem("refresh_token", refresh_token);
 
       // শুধু message এবং progress animation শেষ হলে hide
       setTimeout(() => {
