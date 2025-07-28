@@ -4,10 +4,8 @@ import { Home } from './pages';
 import MainLayout from './layout/MainLayout';
 import Dashboard from './layout/Dashboard';
 import DHome from './dashboardPages/DHome';
+import PrivateRoute from './components/PrivateRoute';
 import { dashboardPageRoutes, mainPageRoutes } from './data/routesData';
-
-
-
 
 const App = () => {
   return (
@@ -23,8 +21,12 @@ const App = () => {
             }
           </Route>
 
-          {/* 🔴 Dashboard layout - without header/footer */}
-          <Route path="dashboard" element={<Dashboard />}>
+          {/* 🔴 Dashboard layout - Protected Routes */}
+          <Route path="dashboard" element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }>
             <Route index element={<DHome />} />
             {
               dashboardPageRoutes.map((route, idx) => <Route key={idx} path={route.path} element={route.route}/>)
