@@ -5,11 +5,11 @@ import { ContextProvider } from './context/ContextProvider.jsx';
 import { LoaderProvider } from './context/LoaderContext.jsx';
 
 createRoot(document.getElementById('root')).render(
+  <LoaderProvider> 
    <ContextProvider>
-    <LoaderProvider>
       <App />
-    </LoaderProvider>
-   </ContextProvider>,
+   </ContextProvider>
+  </LoaderProvider>,
 )
 
 window.addEventListener('load', () => {
