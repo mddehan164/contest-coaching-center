@@ -3,7 +3,6 @@ import { registerData } from '../data/login&RegisterData';
 import UserForm from '../components/userForm';
 import { useStateContext } from '../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/axiosInstance';
 import { useLoader } from '../context/LoaderContext';
 import Loader from '../components/Loader';
 
@@ -11,7 +10,7 @@ import Loader from '../components/Loader';
 
 const RegisterForm = () => {
     const navigate = useNavigate()
-    const {msg, setMsg} = useStateContext();
+    const {msg, setMsg, register, setEmail} = useStateContext();
     const {loading, setLoading} = useLoader();
     const [formData, setFormData] = useState({
         name: "",
@@ -26,8 +25,6 @@ const RegisterForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setMsg("Registering...");
         if(formData.password.length < 6){
         alert("❌ Password must be 6 charecters");
         setLoading(false);
@@ -40,47 +37,22 @@ const RegisterForm = () => {
         return;
         }
 
-        try {
-
-        // Then call your register API
-        const res = await api.post("/register", formData);
-        if (res.data.data.user.mail_verify === false) {
-            setMsg("❌ Registration failed. Please enter a verified email");
+        const result = await register(formData);
+        if (result.success) {
+            setMsg(result.message);
+            setEmail(formData.email);
+            setTimeout(() => {
+                navigate("/before-verify");
+                setMsg("");
+                setLoading(false);
+            }, 2000);
+        } else {
+            setMsg(result.message);
             setTimeout(() => {
                 setMsg("");
                 setLoading(false);
-            }, 3000);
-        }if (res.data.data.user.mail_verify === true) {
-            setMsg(res.data.message);
-            setTimeout(() => {
-                navigate("/login");
-                setMsg("");
-                setLoading(false);
-            }, 3000);
+            }, 2000);
         }
-        } catch (err) {
-            let mainMsg = "Registration failed";
-            let detailMsg = "";
-
-            if (err.response?.data) {
-                const data = err.response.data;
-
-                mainMsg = data.message || mainMsg;
-
-                if (data.errors) {
-                if (data.errors.email) {
-                    detailMsg = data.errors.email.join(", ");
-                }
-                }
-            }
-
-            setMsg(mainMsg);
-            setLoading(false);
-
-            setTimeout(() => setMsg(""), 3000);
-
-            alert(detailMsg || "Please check your input");
-            }
 
     };
 

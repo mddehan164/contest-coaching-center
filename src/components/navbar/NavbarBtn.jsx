@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import api from "../../../api/axiosInstance"
 import { useStateContext } from '../../context/ContextProvider';
 import ConfirmModal from "../ConfirmModal"
 import { Link } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { useLoader } from '../../context/LoaderContext';
 
 const NavbarBtn = (props) => {
   const [click, setClick] = useState(false);
-  const {showConfirm , setShowConfirm, setMsg, user, setUser, msg} = useStateContext();
+  const {showConfirm , setShowConfirm, setMsg, user, setUser, msg, logout} = useStateContext();
   const {loading, setLoading} = useLoader();
 
   const handleLogout = async () => {
@@ -17,7 +16,7 @@ const NavbarBtn = (props) => {
 
   const confirmDelete = async() => {
     try {
-    await api.post("/logout");
+    await logout();
     localStorage.clear();
     setUser(null);
     setShowConfirm(false);

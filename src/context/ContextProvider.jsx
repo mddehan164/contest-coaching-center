@@ -14,6 +14,7 @@ export const ContextProvider = ({ children }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [scrollAnimatedSections, setScrollAnimatedSections] = useState({});
   const [isExpand, setIsExpand] = useState(true);
+  const [email, setEmail] = useState("");
   const { setLoading } = useLoader();
 
   // Authentication check function
@@ -94,6 +95,32 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  const register = async (credentials) => {
+    setLoading(true);
+    setMsg("Resistering...");
+
+    try {
+      const result = await authService.register(credentials);
+      
+      if (result.success) {
+        setMsg(result.message);
+        return { success: true, message: result.message };
+      } else {
+        setMsg(result.message);
+        return { success: false, message: result.message };
+      }
+    } catch (error) {
+      const errorMessage = "❌ Register failed. Please try again.";
+      setMsg(errorMessage);
+      console.error('Register error:', error);
+      return { success: false, message: errorMessage };
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+  };
+
   // Check authentication on mount
   useEffect(() => {
     // Only check auth if we have a token
@@ -118,6 +145,8 @@ export const ContextProvider = ({ children }) => {
     setMsg,
     showConfirm,
     setShowConfirm,
+    email,
+    setEmail,
     
     // Auth State & Functions
     user,
@@ -125,6 +154,7 @@ export const ContextProvider = ({ children }) => {
     login,
     logout,
     checkAuth,
+    register
   };
 
   return (

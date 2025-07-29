@@ -39,7 +39,7 @@ function Loader({ message = '', duration = 3000 }) {
         className={`
           w-24 h-24 md:w-32 md:h-32
           transition-opacity duration-500
-          ${fade ? 'opacity-100 animate-bounce' : 'opacity-20'}
+          ${fade ? 'opacity-100 animate-pulse' : 'opacity-20'}
         `}
       />
       <div className="w-3/4 md:w-1/2 bg-gray-900 rounded-full h-4 mt-6 overflow-hidden">

@@ -61,6 +61,24 @@ export const authService = {
     }
   },
 
+// register user
+  async register(credentials) {
+    try {
+      const response = await api.post('/auth/register', credentials);
+      if (response.status === 201) {
+        return {
+          success: true,
+          message: response.data.message || "Registration successful"
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message || "Login failed. Please try again."
+      };
+    }
+  },
+
   // Check if user is authenticated
   async checkAuth() {
     try {
