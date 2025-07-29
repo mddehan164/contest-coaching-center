@@ -1,71 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router';
-import UserForm from '../components/userForm';
+import { useNavigate, useLocation } from 'react-router-dom';
+import UserForm from '../components/UserForm';
 import { loginData } from '../data/login&RegisterData';
-import api, { getCsrfToken } from "../../api/axiosInstance"
 import { useStateContext } from '../context/ContextProvider';
 import Loader from '../components/Loader';
 import { useLoader } from '../context/LoaderContext';
-import axios from 'axios';
-
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const {msg, setMsg, setUser } = useStateContext()
-  const {loading, setLoading} = useLoader();
+  const { msg, setMsg, user, login } = useStateContext();
+  const { loading } = useLoader();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the intended destination or default to dashboard
+  const from = location.state?.from?.pathname || '/dashboard';
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setMsg("Logging in...");
-  setLoading(true);
-
-  try {
-    // await getCsrfToken();
-    await axios.get("http://localhost:8000/sanctum/csrf-cookie", {
-      withCredentials: true,})
-
-    const res = await api.post('/login', form);
-    if (res.status === 200 || res.status === 201) {
-      const { user, access_token, refresh_token } = res.data.data;
-      setMsg(res.data.message || "Login Successful");
-      user && setUser(user);
-      // access_token && localStorage.setItem("access_token", access_token);
-      // refresh_token && localStorage.setItem("refresh_token", refresh_token);
-
-      // শুধু message এবং progress animation শেষ হলে hide
+    e.preventDefault();
+    
+    const result = await login(form);
+    
+    if (result.success) {
+      // Redirect after successful login
       setTimeout(() => {
-        navigate("/");
+        navigate(from, { replace: true });
         setMsg("");
-        setLoading(false);
-      }, 2000); // duration টা match করবে Loader এর duration‑এর সাথে
-    } else {
-      throw new Error();
+      }, 2000);
     }
-  } catch (err) {
-    console.error(err);
-    setMsg("❌ Login failed. Try again.");
-    // fail হলেও একই delay ব্যবহার:
-    setTimeout(() => {
-      setLoading(false);
-      setMsg("");
-    }, 2000);
-  }
-};
+  };
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     setMsg("");
-    setLoading(false);
   }, [setMsg]);
 
   return (
-      <div className='flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4 relative'>
-         {loading && <Loader message={msg} duration={2000} />}
-        <h1 className='w-full text-xl font-semibold text-headerColor text-center'>Sign in</h1>
+    <div className='flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4 relative'>
+      {loading && <Loader message={msg} duration={2000} />}
+      <h1 className='w-full text-xl font-semibold text-headerColor text-center'>Sign in</h1>
       <UserForm data={loginData} handleChange={handleChange} handleSubmit={handleSubmit}/>
     </div>
   )
