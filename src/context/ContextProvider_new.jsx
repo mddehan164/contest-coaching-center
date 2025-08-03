@@ -18,7 +18,6 @@ export const ContextProvider = ({ children }) => {
 
   // Authentication check function
   const checkAuth = async () => {
-    setLoading(true);
     setMsg("Checking authentication...");
 
     try {
@@ -45,7 +44,6 @@ export const ContextProvider = ({ children }) => {
 
   // Login function
   const login = async (credentials) => {
-    setLoading(true);
     setMsg("Logging in...");
 
     try {
@@ -72,7 +70,6 @@ export const ContextProvider = ({ children }) => {
 
   // Logout function
   const logout = async () => {
-    setLoading(true);
     setMsg("Logging out...");
 
     try {

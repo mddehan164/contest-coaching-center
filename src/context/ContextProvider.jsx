@@ -19,7 +19,6 @@ export const ContextProvider = ({ children }) => {
 
   // Authentication check function
   const checkAuth = async () => {
-    setLoading(true);
     setMsg("Checking authentication...");
 
     try {
@@ -96,9 +95,6 @@ export const ContextProvider = ({ children }) => {
   };
 
   const register = async (credentials) => {
-    setLoading(true);
-    setMsg("Resistering...");
-
     try {
       const result = await authService.register(credentials);
       

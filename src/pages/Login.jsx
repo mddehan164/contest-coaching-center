@@ -9,7 +9,7 @@ import { useLoader } from '../context/LoaderContext';
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const { msg, setMsg, user, login } = useStateContext();
-  const { loading } = useLoader();
+  const { loading, setLoading } = useLoader();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,6 +30,7 @@ const Login = () => {
       setTimeout(() => {
         navigate(from, { replace: true });
         setMsg("");
+        setLoading(false);
       }, 2000);
     }
   };
@@ -38,12 +39,14 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
+      setLoading(false)
     }
   }, [user, navigate]);
 
   useEffect(() => {
     setMsg("");
-  }, [setMsg]);
+    setLoading(false);
+  }, [setMsg, setLoading]);
 
   return (
     <div className='flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4 relative'>

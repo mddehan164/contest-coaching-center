@@ -33,3 +33,4 @@ export {default as BranchEditor} from './BranchEditor';
 export {default as AllSuccessCard} from './successfullPerson/AllSuccessCard';
 export {default as CourseDetails} from './courses/CourseDetails';
 export {default as Customise} from './Customise';
+export {default as User} from './User';

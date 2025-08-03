@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { registerData } from '../data/login&RegisterData';
-import UserForm from '../components/userForm';
 import { useStateContext } from '../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { useLoader } from '../context/LoaderContext';
 import Loader from '../components/Loader';
+import UserForm from '../components/UserForm';
 
 
 
@@ -24,6 +24,8 @@ const RegisterForm = () => {
     };
 
     const handleSubmit = async (e) => {
+        setLoading(true);
+        setMsg("Registering...");
         e.preventDefault();
         if(formData.password.length < 6){
         alert("❌ Password must be 6 charecters");
@@ -62,7 +64,7 @@ const RegisterForm = () => {
       }, [setMsg]);
   return (
     <div className='flex justify-center items-center w-full xl:h-auto p-3 flex-wrap space-y-4 relative'>
-        {loading && <Loader message={msg} duration={3000} />}
+        {loading && <Loader message={msg} duration={2000} />}
         <h1 className='w-full text-xl font-semibold text-headerColor text-center'>Register</h1>
       <UserForm data={registerData} handleChange={handleChange} handleSubmit={handleSubmit}/>
     </div>

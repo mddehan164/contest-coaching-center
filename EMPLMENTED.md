@@ -18,3 +18,6 @@ I've implemented a register system for the React application with the following 
    - Added a new register function for register
    - A new state for setting a dynamic mail on "OPEN MAIL" button
 
+4. **Splited the User** (`src/components/NavbarBtn.jsx`)
+   - Added a new component for clean code
+
