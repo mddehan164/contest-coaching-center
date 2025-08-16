@@ -1,20 +1,20 @@
 import React from 'react'
-import { noticeData } from '../../data/data'
-import MainBtn from '../MainBtn'
+import { noticeBtnData } from '../../data/data'
 import { useStateContext } from '../../context/ContextProvider'
+import MainBtn from '../mainBtn';
 
 const NoticeBtn = () => {
     const {activeTab, setActiveTab} = useStateContext();
   return (
     <div className='flex flex-wrap gap-1 pt-2 w-full'>
-      {noticeData.btnData.btnName.map((btn, idx) => {
+      {noticeBtnData.btnName.map((btn, idx) => {
         const isActive = activeTab === btn;
         return (
           <MainBtn
             key={idx}
             btnName={btn}
             data={btn}
-            btnStyle={noticeData.btnData.btnStyle}
+            btnStyle={noticeBtnData.btnStyle}
             isActive={isActive}
             onClick={() => setActiveTab(btn)}
           />

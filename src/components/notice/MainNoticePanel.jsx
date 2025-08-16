@@ -1,5 +1,5 @@
 import React from 'react'
-import { noticeData } from '../../data/data'
+import { noticeData, noticeBtnData } from '../../data/data'
 import NoticePanel from './NoticePanel';
 import { useStateContext } from '../../context/ContextProvider';
 import MainBtn from '../mainBtn';
@@ -16,7 +16,7 @@ const MainNoticePanel = () => {
             
             <MainBtn 
                 data={tabLabelMap[activeTab]} // ✅ ট্যাব অনুযায়ী নাম
-                btnStyle={noticeBtn.btnData.btnStyle}
+                btnStyle={noticeBtnData.btnStyle}
             />
         </div>
     )

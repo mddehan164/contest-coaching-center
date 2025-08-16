@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
+import { DefaultEditor } from "react-simple-wysiwyg";
 
 const bulletStyles = {
   circle: 'list-disc',
@@ -228,7 +229,13 @@ const CourseEditor = () => {
           <input type="file" name="image" onChange={handleInputChange} className="block w-full" />
           <input name="title" value={newCourse.title} onChange={handleInputChange} placeholder="Title" className="block w-full p-2 border rounded" />
           <textarea name="shortDesc" value={newCourse.shortDesc} onChange={handleInputChange} placeholder="Short Description (one per line)" className="block w-full p-2 border rounded h-24" />
-          <textarea name="details" value={newCourse.details} onChange={handleInputChange} placeholder="Detail Description" className="block w-full p-2 border rounded h-20" />
+            <DefaultEditor
+              name="details"
+              placeholder="Detail Description"
+              className="w-full p-2 border rounded h-20 long-desc"
+              value={newCourse.details}
+              onChange={handleInputChange}
+            />
           <select name="bulletType" value={newCourse.bulletType} onChange={handleInputChange} className="block w-full p-2 border rounded">
             <option value="circle">Circle</option>
             <option value="arrow">Arrow</option>
@@ -334,7 +341,7 @@ const CourseEditor = () => {
       {/* Full Screen Preview */}
       {previewFull && (
         <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-4 w-[90%] md:w-[70%] lg:w-[50%] relative">
+          <div className="bg-white rounded-lg p-4 w-[90%] md:w-[70%] lg:w-[50%] relative h-[calc(100vh-50px)] overflow-y-auto">
             <button onClick={() => setPreviewFull(null)} className="absolute top-2 right-2 text-red-500 text-xl"><FaTimes /></button>
             <img src={previewFull.image} alt={previewFull.unit} className="w-full aspect-[3/2] object-cover rounded mb-2" />
             <h2 className="text-lg font-bold mb-2">{previewFull.unit}</h2>

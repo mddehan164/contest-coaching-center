@@ -1,16 +1,5 @@
 // dashboardData.js
 
-import {
-  User,
-  Layers,
-  Calendar,
-  DollarSign,
-  BookOpen,
-  ClipboardList,
-  FileText,
-  Users,
-} from "lucide-react";
-
 export const statsData = [
   {
     id: 1,

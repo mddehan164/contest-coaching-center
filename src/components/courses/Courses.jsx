@@ -1,5 +1,5 @@
 import React from 'react'
-import { courseData } from '../../data/courseData';
+import { courseData, btnData } from '../../data/courseData';
 import Card from '../Card';
 import MainBtn from '../mainBtn';
 import { NavLink } from 'react-router-dom';
@@ -23,8 +23,8 @@ const CourseMain = () => {
       <div className='w-full flex justify-end items-center absolute xl:-bottom-20 xl:right-20 max-sm:-bottom-10 max-sm:right-2 sm:-bottom-16 md:right-2'>
         <NavLink to="/courses">
           <MainBtn
-            data={courseData.btnData.btnName}
-            btnStyle={courseData.btnData.btnStyle}
+            data={btnData.btnName}
+            btnStyle={btnData.btnStyle}
           />
         </NavLink>
       </div>

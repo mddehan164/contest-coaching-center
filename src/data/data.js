@@ -81,16 +81,8 @@ import slider3 from "../assets/images/slider/slider-3.jpg";
   ];
 
 // start notice data from here
-  
-export const noticeData = {
-  btnData: {
-      btnName:['Admission', 'Administration', 'Department'],
-      btnStyle:{
-        btnBgColor:"headerColor",
-        btnHoverColor:"headerColorHover",
-      }
-  },
-  noticeBtn: {
+
+export const noticeBtnMore = {
       btnData: {
       btnName:['More Notices'],
       btnStyle:{
@@ -99,7 +91,17 @@ export const noticeData = {
         bgFull: true,
       }
   }
-  },
+  }
+
+export const noticeBtnData = {
+      btnName:['Admission', 'Administration', 'Department'],
+      btnStyle:{
+        btnBgColor:"headerColor",
+        btnHoverColor:"headerColorHover",
+      }
+  }
+  
+export const noticeData = {
   tabLabelMap : {
         Admission: "More Admission Notices..",
         Administration: "More Administration Notices..",
@@ -197,22 +199,21 @@ export const noticeData = {
 import card1 from "../assets/images/card/card-1.jpg";
 import card2 from "../assets/images/card/card-2.jpg";
 
-
-export const noticeStudyPrograms = [
-  {
-    titleStatus: true,
-    image: card1,
-    icon: true,
-    btnData: {
-      btnName: ['Undergraduate Study'],
+export const noticeStydyBtnData = {
+      btnName: ['Undergraduate Study','Graduate Study'],
       btnStyle: {
         btnBgColor: "headerColor",
         btnHoverColor: "headerColorHover",
         bgFull: true,
         fontBold: true,
       }
-    },
-    body: [
+    }
+export const noticeStudyPrograms = [
+  {
+    titleStatus: true,
+    image: card1,
+    icon: true,
+    short_des: [
       'Academic Programs',
       'Admission Requirements',
       'Apply Online',
@@ -222,16 +223,7 @@ export const noticeStudyPrograms = [
     titleStatus: true,
     image: card2,
     icon: true,
-    btnData: {
-      btnName: ['Graduate Study'],
-      btnStyle: {
-        btnBgColor: "headerColor",
-        btnHoverColor: "headerColorHover",
-        bgFull: true,
-        fontBold: true,
-      }
-    },
-    body: [
+    short_des: [
       'Academic Programs' ,
       'Admission Requirements' ,
       'Apply Online' ,

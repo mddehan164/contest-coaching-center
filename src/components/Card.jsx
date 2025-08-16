@@ -2,8 +2,9 @@ import React from 'react';
 import MainBtn from './mainBtn';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ data}) => {
+const Card = ({ data, btn}) => {
   const navigate = useNavigate();
+  console.log(data)
 
   const handleClick = (btn) => {
     if (btn === 'Details') {
@@ -39,8 +40,8 @@ const Card = ({ data}) => {
       {/* Body List */}
       <div className="p-4 md:p-2 xl:p-4">
           <ul className={`${bulletStyles[data.bulletType || 'circle']} list-inside text-sm text-gray-700 space-y-1`}>
-            {data.body.map((item, index) => (
-              <li key={index} className={`${data.btnData.btnStyle.fontBold ? "sm:font-bold xl:font-extrabold" : ""}`}>
+            {data.short_des.map((item, index) => (
+              <li key={index} className={`${btn?.btnStyle.fontBold ? "sm:font-bold xl:font-extrabold" : ""}`}>
                 {item}
               </li>
             ))}
@@ -58,7 +59,7 @@ const Card = ({ data}) => {
 
       {/* Button (if needed below) */}
       <div className="p-4 w-full flex justify-between items-center">
-        {data.btnData.btnStyle.btnStatus && data.btnData.btnName.map((name, idx) => (
+        {btn?.btnStyle.btnStatus && btn?.btnName.map((name, idx) => (
           <MainBtn
             key={idx}
             data={name}
