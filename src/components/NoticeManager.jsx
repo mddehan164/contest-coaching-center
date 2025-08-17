@@ -1,34 +1,44 @@
-import React, { useState } from 'react';
-import { noticeData } from '../data/data';
-import { FaEdit, FaTrash, FaDownload } from 'react-icons/fa';
+import React, { useState } from "react";
+import { noticeData, noticeBtnData } from "../data/data";
+import { FaEdit, FaTrash, FaDownload } from "react-icons/fa";
 
 const NoticeManager = () => {
-  const [type, setType] = useState('Admission');
+  const [type, setType] = useState("Admission");
   const [notices, setNotices] = useState(noticeData.notices);
   const [editIndex, setEditIndex] = useState(null);
-  const [formData, setFormData] = useState({ title: '', date: '', pdf: null });
+  const [formData, setFormData] = useState({ title: "", date: "", pdf: null });
 
   const keyMap = {
-    Admission: 'admissionNotices',
-    Administration: 'administrationNotices',
-    Department: 'departmentNotices',
+    Admission: "admissionNotices",
+    Administration: "administrationNotices",
+    Department: "departmentNotices",
   };
 
   const currentNotices = notices[keyMap[type]].slice(1); // skip currentDate
 
   const handleAddOrUpdate = () => {
-    if (!formData.title || !formData.date || (!formData.pdf && editIndex === null)) {
-      return alert('Fill all fields');
+    if (
+      !formData.title ||
+      !formData.date ||
+      (!formData.pdf && editIndex === null)
+    ) {
+      return alert("Fill all fields");
     }
 
-    if (formData.pdf && (formData.pdf.type !== 'application/pdf' || formData.pdf.size > 5 * 1024 * 1024)) {
-      return alert('Only PDF files under 5MB allowed');
+    if (
+      formData.pdf &&
+      (formData.pdf.type !== "application/pdf" ||
+        formData.pdf.size > 5 * 1024 * 1024)
+    ) {
+      return alert("Only PDF files under 5MB allowed");
     }
 
     const newNotice = {
       title: formData.title,
       date: formData.date,
-      link: formData.pdf ? URL.createObjectURL(formData.pdf) : currentNotices[editIndex].link,
+      link: formData.pdf
+        ? URL.createObjectURL(formData.pdf)
+        : currentNotices[editIndex].link,
     };
 
     const updatedNotices = [...notices[keyMap[type]]];
@@ -39,7 +49,7 @@ const NoticeManager = () => {
     }
 
     setNotices({ ...notices, [keyMap[type]]: updatedNotices });
-    setFormData({ title: '', date: '', pdf: null });
+    setFormData({ title: "", date: "", pdf: null });
     setEditIndex(null);
   };
 
@@ -60,16 +70,16 @@ const NoticeManager = () => {
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       {/* Buttons */}
       <div className="flex flex-wrap gap-2 justify-center">
-        {noticeData.btnData.btnName.map((btn, idx) => (
+        {noticeBtnData.btnName.map((btn, idx) => (
           <button
             key={idx}
             onClick={() => {
               setType(btn);
               setEditIndex(null);
-              setFormData({ title: '', date: '', pdf: null });
+              setFormData({ title: "", date: "", pdf: null });
             }}
             className={`px-4 py-2 rounded text-white font-medium ${
-              type === btn ? 'bg-headerColorHover' : 'bg-headerColor'
+              type === btn ? "bg-headerColorHover" : "bg-headerColor"
             }`}
           >
             {btn}
@@ -79,7 +89,9 @@ const NoticeManager = () => {
 
       {/* Form */}
       <div className="bg-white p-4 rounded-xl shadow space-y-4">
-        <h2 className="text-xl font-bold text-center">{editIndex !== null ? 'Edit Notice' : 'Add Notice'}</h2>
+        <h2 className="text-xl font-bold text-center">
+          {editIndex !== null ? "Edit Notice" : "Add Notice"}
+        </h2>
 
         <input
           type="text"
@@ -105,7 +117,7 @@ const NoticeManager = () => {
           onClick={handleAddOrUpdate}
           className="w-full bg-headerColorHover text-white font-bold py-2 px-4 rounded hover:bg-headerColor transition"
         >
-          {editIndex !== null ? 'Update Notice' : 'Add Notice'}
+          {editIndex !== null ? "Update Notice" : "Add Notice"}
         </button>
       </div>
 
@@ -123,13 +135,24 @@ const NoticeManager = () => {
                 <p className="text-sm text-gray-500">{notice.date}</p>
               </div>
               <div className="flex gap-2 mt-2 sm:mt-0">
-                <a href={notice.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800">
+                <a
+                  href={notice.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
                   <FaDownload />
                 </a>
-                <button onClick={() => handleEdit(idx)} className="text-green-600 hover:text-green-800">
+                <button
+                  onClick={() => handleEdit(idx)}
+                  className="text-green-600 hover:text-green-800"
+                >
                   <FaEdit />
                 </button>
-                <button onClick={() => handleDelete(idx)} className="text-red-600 hover:text-red-800">
+                <button
+                  onClick={() => handleDelete(idx)}
+                  className="text-red-600 hover:text-red-800"
+                >
                   <FaTrash />
                 </button>
               </div>
