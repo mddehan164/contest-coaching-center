@@ -14,7 +14,7 @@ const Login = () => {
   const location = useLocation();
 
   // Get the intended destination or default to dashboard
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/profile";
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,10 +38,9 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      navigate("/profile");
       setLoading(false);
     }
-  }, [user, navigate]);
+  }, [user]);
 
   useEffect(() => {
     setMsg("");

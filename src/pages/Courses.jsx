@@ -4,19 +4,42 @@ import Card from "../components/Card";
 import ScrollAnimatedSection from "../components/ScrollAnimatedSection";
 import Hero from "../components/Hero";
 import { fetchCourses } from "../services/course";
+import api from "../../api/axiosInstance";
 
 const Courses = () => {
   const [courses, setCourses] = useState(null);
-  const loadCourses = async () => {
-    const data = await fetchCourses();
-    setCourses(data);
-  };
+  // const loadCourses = async () => {
+  //   const data = await fetchCourses();
+  //   setCourses(data);
+  // };
 
-  console.log(courses);
+  // console.log(courses);
+
+  // useEffect(() => {
+  //   loadCourses();
+  // }, []);
 
   useEffect(() => {
-    loadCourses();
-  }, []);
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await api.get("/courses")
+        
+    //     const data = await response.json();
+    //     setCourses(data);
+    //     console.log(courses)
+    //   } catch (error) {
+    //     console.error("Failed to fetch courses:", error);
+    //   }}
+    // fetchData();
+
+    fetch("http://localhost:8000/api/courses")
+    .then((res) => res.json())
+    .then((data) => {
+      setCourses(data);
+      console.log(data);
+    })
+  }, [])
+  
 
   return (
     <div className="px-1 mt-1 sm:px-5 md:px-10 lg:px-20 xl:px-36 2xl:px-44">
