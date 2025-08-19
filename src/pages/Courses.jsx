@@ -1,9 +1,23 @@
+import { useEffect, useState } from "react";
 import { courseData, courseHeroData, btnData } from "../data/courseData";
 import Card from "../components/Card";
 import ScrollAnimatedSection from "../components/ScrollAnimatedSection";
 import Hero from "../components/Hero";
+import { fetchCourses } from "../services/course";
 
 const Courses = () => {
+  const [courses, setCourses] = useState(null);
+  const loadCourses = async () => {
+    const data = await fetchCourses();
+    setCourses(data);
+  };
+
+  console.log(courses);
+
+  useEffect(() => {
+    loadCourses();
+  }, []);
+
   return (
     <div className="px-1 mt-1 sm:px-5 md:px-10 lg:px-20 xl:px-36 2xl:px-44">
       <Hero data={courseHeroData} />
