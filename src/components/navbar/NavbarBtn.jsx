@@ -27,7 +27,7 @@ const NavbarBtn = (props) => {
       setMsg("");
     }, 2000);
   } catch (err) {
-    console.error("Logout error", err);
+
     setMsg("❌ Logout failed. Try again.");
     setTimeout(() => {
       setMsg("");

@@ -1,44 +1,68 @@
 import { useEffect, useState } from "react";
-import { courseData, courseHeroData, btnData } from "../data/courseData";
+import { courseHeroData, btnData } from "../data/courseData";
 import Card from "../components/Card";
 import ScrollAnimatedSection from "../components/ScrollAnimatedSection";
 import Hero from "../components/Hero";
-import { fetchCourses } from "../services/course";
-import api from "../../api/axiosInstance";
+import { fetchCourses } from "../services/courseService";
+import { useStateContext } from "../context/ContextProvider";
 
 const Courses = () => {
-  const [courses, setCourses] = useState(null);
-  // const loadCourses = async () => {
-  //   const data = await fetchCourses();
-  //   setCourses(data);
-  // };
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { user } = useStateContext();
 
-  // console.log(courses);
-
-  // useEffect(() => {
-  //   loadCourses();
-  // }, []);
+  // Transform API data to match Card component expectations
+  const transformCourseData = (courseData) => {
+    return courseData.map(course => ({
+      id: course.id,
+      title: course.title || course.name || 'Untitled Course',
+      short_des: course.description ? 
+        (Array.isArray(course.description) ? course.description : [course.description]) 
+        : ['Course description will be updated soon'],
+      price: course.price || 'Contact for pricing',
+      offer: course.offer || false,
+      offerPrice: course.offer_price || course.offerPrice,
+      image: course.image || null,
+      bulletType: 'circle'
+    }));
+  };
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await api.get("/courses")
+    const loadCourses = async () => {
+      try {
+        setLoading(true);
+        setError(null);
         
-    //     const data = await response.json();
-    //     setCourses(data);
-    //     console.log(courses)
-    //   } catch (error) {
-    //     console.error("Failed to fetch courses:", error);
-    //   }}
-    // fetchData();
+        const apiResponse = await fetchCourses();
+        
+        let transformedCourses = [];
+        
+        if (apiResponse && apiResponse.data && Array.isArray(apiResponse.data)) {
+          transformedCourses = transformCourseData(apiResponse.data);
+        } else if (apiResponse && Array.isArray(apiResponse)) {
+          transformedCourses = transformCourseData(apiResponse);
+        }
+        
+        setCourses(transformedCourses);
+        
+      } catch (error) {
+        if (error.response?.status === 401) {
+          setError("Authentication required. Please login first.");
+        } else if (error.response?.status === 500) {
+          setError(`Server error: ${error.response?.data?.message || "Internal server error"}`);
+        } else if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error')) {
+          setError("Cannot connect to server. Make sure your Laravel backend is running on http://localhost:8000");
+        } else {
+          setError(error.response?.data?.message || "Failed to load courses");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    fetch("http://localhost:8000/api/courses")
-    .then((res) => res.json())
-    .then((data) => {
-      setCourses(data);
-      console.log(data);
-    })
-  }, [])
+    loadCourses();
+  }, [user]);
   
 
   return (
@@ -47,13 +71,34 @@ const Courses = () => {
       <h1 className="mt-16 text-lg md:text-2xl xl:text-4xl sm:my-5 font-semibold text-headerColorHover">
         Explore Our Courses
       </h1>
-      <ScrollAnimatedSection id="all-course" direction="left">
-        <div className="grid grid-cols-1 gap-5 px-7 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:px-0 2xl:grid-cols-5 2xl:gap-7">
-          {courseData.courses.map((course, idx) => (
-            <Card key={idx} data={course} btn={btnData} />
-          ))}
+      
+      {loading && (
+        <div className="flex justify-center items-center py-10">
+          <div className="text-lg">Loading courses...</div>
         </div>
-      </ScrollAnimatedSection>
+      )}
+      
+      {error && (
+        <div className="flex justify-center items-center py-10">
+          <div className="text-red-500 text-lg">Error: {error}</div>
+        </div>
+      )}
+      
+      {!loading && !error && (
+        <ScrollAnimatedSection id="all-course" direction="left">
+          <div className="grid grid-cols-1 gap-5 px-7 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:px-0 2xl:grid-cols-5 2xl:gap-7">
+            {courses.length > 0 ? (
+              courses.map((course, idx) => (
+                <Card key={course.id || idx} data={course} btn={btnData} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10">
+                <p className="text-gray-500">No courses available at the moment.</p>
+              </div>
+            )}
+          </div>
+        </ScrollAnimatedSection>
+      )}
     </div>
   );
 };

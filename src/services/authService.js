@@ -50,7 +50,7 @@ export const authService = {
     try {
       await api.post('/auth/logout');
     } catch (error) {
-      console.error('Logout error:', error);
+
     } finally {
       // Clear all tokens regardless of API response
       Cookies.remove('access_token');
