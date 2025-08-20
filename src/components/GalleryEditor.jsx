@@ -376,7 +376,7 @@ const GalleryEditor = () => {
                   className="bg-headerColor text-white px-4 py-2 rounded-md"
                   onClick={() => {
                     // 👉 Do your save logic here
-                    console.log("✅ Final Save Confirmed!");
+
                     setIsSaveAllModalOpen(false);
                   }}
                 >

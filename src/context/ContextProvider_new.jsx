@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
       }
     } catch (error) {
       setUser(null);
-      console.log('❌ Auth check failed:', error);
+
       setMsg("❌ Authentication check failed");
     } finally {
       setTimeout(() => {
@@ -78,7 +78,7 @@ export const ContextProvider = ({ children }) => {
       setMsg("✅ Logged out successfully");
       return { success: true };
     } catch (error) {
-      console.error('Logout error:', error);
+
       // Even if logout API fails, clear local state
       setUser(null);
       setMsg("✅ Logged out");

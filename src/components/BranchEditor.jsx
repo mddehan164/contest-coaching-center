@@ -265,7 +265,7 @@ const BranchEditor = () => {
       <div className="text-center">
         <button
           className="px-8 py-2 bg-headerColorHover text-white rounded hover:bg-headerColor"
-          onClick={() => confirmAndExecute('Are you sure you want to save all changes?', () => console.log())}
+          onClick={() => confirmAndExecute('Are you sure you want to save all changes?', () => {})}
         >
           Save All Changes
         </button>

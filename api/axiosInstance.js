@@ -15,9 +15,9 @@ api.interceptors.request.use((config) => {
     config.headers['X-XSRF-TOKEN'] = decodeURIComponent(xsrfToken);
   }
   
-  // Add Authorization header for auth endpoints
+  // Add Authorization header for all protected endpoints
   const accessToken = Cookies.get("access_token");
-  if (accessToken && config.url?.includes('/auth/')) {
+  if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   
