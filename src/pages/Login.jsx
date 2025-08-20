@@ -8,8 +8,8 @@ import { useLoader } from "../context/LoaderContext";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const { msg, setMsg, user, login } = useStateContext();
-  const { loading, setLoading } = useLoader();
+  const { msg, setMsg, user, login, authActionInProgress } = useStateContext();
+  const { loading } = useLoader();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,34 +22,34 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.email || !form.password) {
+      alert("❌ Please fill in all fields");
+      return;
+    }
+    if (form.password.length < 6) {
+      alert("❌ Password must be at least 6 characters");
+      return;
+    }
 
     const result = await login(form);
 
     if (result.success) {
-      // Redirect after successful login
-      setTimeout(() => {
-        navigate(from, { replace: true });
-        setMsg("");
-        setLoading(false);
-      }, 2000);
+      navigate(from, { replace: true });
     }
   };
 
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      setLoading(false);
+      setMsg("");
     }
-  }, [user]);
-
-  useEffect(() => {
-    setMsg("");
-    setLoading(false);
-  }, [setMsg, setLoading]);
+  }, [user, setMsg]);
 
   return (
     <div className="flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4 relative">
-      {loading && <Loader message={msg} duration={2000} />}
+      {loading && !authActionInProgress && (
+        <Loader message={msg} duration={2000} />
+      )}
       <h1 className="w-full text-xl font-semibold text-headerColor text-center">
         Sign in
       </h1>
