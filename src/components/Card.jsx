@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
  */
 const Card = ({ data, btn }) => {
   const navigate = useNavigate();
+  console.log(data);
 
   /**
    * Handles button click events
@@ -41,18 +42,21 @@ const Card = ({ data, btn }) => {
       return (
         <p className="text-xs mt-4">
           <span className="line-through text-red-600 mr-1 sm:text-lg">
-            {data.price && "৳"}{data.price}
+            {data.price && "৳"}
+            {data.price}
           </span>
           <span className="text-headerColorHover font-semibold sm:text-lg">
-            {data.offerPrice && "৳"}{data.offerPrice}
+            {data.offerPrice && "৳"}
+            {data.offerPrice}
           </span>
         </p>
       );
     }
-    
+
     return (
       <p className="text-xs mt-2 text-headerColorHover font-semibold sm:text-lg">
-        {data.price && "৳"}{data.price}
+        {data.price && "৳"}
+        {data.price}
       </p>
     );
   };
@@ -79,15 +83,23 @@ const Card = ({ data, btn }) => {
       <div className="p-4 md:p-2 xl:p-4">
         {/* Course Title (if not in header) */}
         {!data.noticeBtn && data.title && (
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">{data.title}</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            {data.title}
+          </h3>
         )}
 
         {/* Course Description */}
-        <ul className={`${bulletStyles[data.bulletType || "circle"]} list-inside text-sm text-gray-700 space-y-1`}>
+        <ul
+          className={`${
+            bulletStyles[data.bulletType || "circle"]
+          } list-inside text-sm text-gray-700 space-y-1`}
+        >
           {(data.short_des || []).map((item, index) => (
             <li
               key={index}
-              className={btn?.btnStyle?.fontBold ? "sm:font-bold xl:font-extrabold" : ""}
+              className={
+                btn?.btnStyle?.fontBold ? "sm:font-bold xl:font-extrabold" : ""
+              }
             >
               {item}
             </li>

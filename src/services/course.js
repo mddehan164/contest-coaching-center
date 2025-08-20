@@ -44,6 +44,7 @@ const fetchCourseById = async (id) => {
 const addCourse = async (course) => {
   try {
     const response = await api.post("/courses", course);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error adding course:", error);

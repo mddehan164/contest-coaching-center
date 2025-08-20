@@ -1,14 +1,14 @@
 // context/ContextProvider.jsx
 
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authService } from '../services/authService';
-import { useLoader } from './LoaderContext';
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { authService } from "../services/authService";
+import { useLoader } from "./LoaderContext";
 
 const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [isActiveMenu, setIsActiveMenu] = useState(false);
-  const [activeTab, setActiveTab] = useState('Admission');
+  const [activeTab, setActiveTab] = useState("Admission");
   const [user, setUser] = useState(null);
   const [msg, setMsg] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
@@ -23,7 +23,7 @@ export const ContextProvider = ({ children }) => {
 
     try {
       const result = await authService.checkAuth();
-      
+
       if (result.success) {
         setUser(result.user);
         setMsg("✅ Authenticated successfully");
@@ -50,7 +50,7 @@ export const ContextProvider = ({ children }) => {
 
     try {
       const result = await authService.login(credentials);
-      
+
       if (result.success) {
         setUser(result.data.user);
         setMsg(result.message);
@@ -81,7 +81,6 @@ export const ContextProvider = ({ children }) => {
       setMsg("✅ Logged out successfully");
       return { success: true };
     } catch (error) {
-
       // Even if logout API fails, clear local state
       setUser(null);
       setMsg("✅ Logged out");
@@ -97,7 +96,7 @@ export const ContextProvider = ({ children }) => {
   const register = async (credentials) => {
     try {
       const result = await authService.register(credentials);
-      
+
       if (result.success) {
         setMsg(result.message);
         return { success: true, message: result.message };
@@ -143,20 +142,18 @@ export const ContextProvider = ({ children }) => {
     setShowConfirm,
     email,
     setEmail,
-    
+
     // Auth State & Functions
     user,
     setUser,
     login,
     logout,
     checkAuth,
-    register
+    register,
   };
 
   return (
-    <StateContext.Provider value={value}>
-      {children}
-    </StateContext.Provider>
+    <StateContext.Provider value={value}>{children}</StateContext.Provider>
   );
 };
 

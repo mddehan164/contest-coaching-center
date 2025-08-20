@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserForm from "../components/UserForm";
 import { loginData } from "../data/login&RegisterData";
 import { useStateContext } from "../context/ContextProvider";
@@ -11,10 +11,6 @@ const Login = () => {
   const { msg, setMsg, user, login } = useStateContext();
   const { loading, setLoading } = useLoader();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Get the intended destination or default to dashboard
-  const from = location.state?.from?.pathname || "/profile";
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,7 +24,11 @@ const Login = () => {
     if (result.success) {
       // Redirect after successful login
       setTimeout(() => {
-        navigate(from, { replace: true });
+        if (user.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
         setMsg("");
         setLoading(false);
       }, 2000);
