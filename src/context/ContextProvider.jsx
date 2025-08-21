@@ -16,9 +16,13 @@ export const ContextProvider = ({ children }) => {
   const [isExpand, setIsExpand] = useState(true);
   const [email, setEmail] = useState("");
   const { setLoading } = useLoader();
+  // Flag to prevent double loader
+  const [authActionInProgress, setAuthActionInProgress] = useState(false);
 
   // Authentication check function
   const checkAuth = async () => {
+    // Only show loader if not already in progress
+    if (!authActionInProgress) setLoading(true);
     setMsg("Checking authentication...");
 
     try {
@@ -33,11 +37,11 @@ export const ContextProvider = ({ children }) => {
       }
     } catch (error) {
       setUser(null);
-
+      console.log("❌ Auth check failed:", error);
       setMsg("❌ Authentication check failed");
     } finally {
       setTimeout(() => {
-        setLoading(false);
+        if (!authActionInProgress) setLoading(false);
         setMsg("");
       }, 800);
     }
@@ -45,12 +49,11 @@ export const ContextProvider = ({ children }) => {
 
   // Login function
   const login = async (credentials) => {
+    setAuthActionInProgress(true);
     setLoading(true);
     setMsg("Logging in...");
-
     try {
       const result = await authService.login(credentials);
-
       if (result.success) {
         setUser(result.data.user);
         setMsg(result.message);
@@ -66,21 +69,23 @@ export const ContextProvider = ({ children }) => {
     } finally {
       setTimeout(() => {
         setLoading(false);
+        setAuthActionInProgress(false);
       }, 2000);
     }
   };
 
   // Logout function
   const logout = async () => {
+    setAuthActionInProgress(true);
     setLoading(true);
     setMsg("Logging out...");
-
     try {
       await authService.logout();
       setUser(null);
       setMsg("✅ Logged out successfully");
       return { success: true };
     } catch (error) {
+      console.error("Logout error:", error);
       // Even if logout API fails, clear local state
       setUser(null);
       setMsg("✅ Logged out");
@@ -89,14 +94,17 @@ export const ContextProvider = ({ children }) => {
       setTimeout(() => {
         setLoading(false);
         setMsg("");
+        setAuthActionInProgress(false);
       }, 1500);
     }
   };
 
   const register = async (credentials) => {
+    setAuthActionInProgress(true);
+    setLoading(true);
+    setMsg("Registering...");
     try {
       const result = await authService.register(credentials);
-
       if (result.success) {
         setMsg(result.message);
         return { success: true, message: result.message };
@@ -107,11 +115,12 @@ export const ContextProvider = ({ children }) => {
     } catch (error) {
       const errorMessage = "❌ Register failed. Please try again.";
       setMsg(errorMessage);
-
+      console.error("Register error:", error);
       return { success: false, message: errorMessage };
     } finally {
       setTimeout(() => {
         setLoading(false);
+        setAuthActionInProgress(false);
       }, 2000);
     }
   };
@@ -150,6 +159,7 @@ export const ContextProvider = ({ children }) => {
     logout,
     checkAuth,
     register,
+    authActionInProgress,
   };
 
   return (
