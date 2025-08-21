@@ -1,5 +1,5 @@
-import MainBtn from "./mainBtn";
 import { useNavigate } from "react-router-dom";
+import MainBtn from "./MainBtn";
 
 /**
  * Card component for displaying course information
@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
  */
 const Card = ({ data, btn }) => {
   const navigate = useNavigate();
-  console.log(data);
 
   /**
    * Handles button click events

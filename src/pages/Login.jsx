@@ -30,7 +30,11 @@ const Login = () => {
     const result = await login(form);
 
     if (result.success) {
-      navigate(from, { replace: true });
+      if( user.role === "admin" || user.role === "superadmin" ){
+        navigate("/dashboard");
+      }else{
+        navigate("/profile");
+      }
     }
   };
 
