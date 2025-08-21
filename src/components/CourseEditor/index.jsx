@@ -1,30 +1,22 @@
 import React, { useState } from "react";
-import { courseData, courseHeroData } from "../data/courseData";
-import HeroSection from "./CourseEditor/HeroSection";
-import HeroEditModal from "./CourseEditor/HeroEditModal";
-import CourseForm from "./CourseEditor/CourseForm";
-import RecentCourses from "./CourseEditor/RecentCourses";
-import FullScreenPreview from "./CourseEditor/FullScreenPreview";
-
-const bulletStyles = {
-  circle: "list-disc",
-  arrow: 'list-[">>"]',
-  decimal: "list-decimal",
-  roman: "list-[upper-roman]",
-  alpha: "list-[upper-alpha]",
-};
+import {
+  courseHeroData,
+  courseTemplate,
+  sampleCourse,
+} from "../../data/courseData";
+import HeroSection from "./HeroSection";
+import HeroEditModal from "./HeroEditModal";
+import CourseForm from "./CourseForm";
+import RecentCourses from "./RecentCourses";
+import FullScreenPreview from "./FullScreenPreview";
+import MarkdownEditor from "../MarkdownEditor";
 
 const CourseEditor = () => {
-  const [courses, setCourses] = useState(courseData.courses);
+  const [courses, setCourses] = useState([sampleCourse]);
   const [newCourse, setNewCourse] = useState({
-    title: "",
-    shortDesc: "",
-    details: "",
-    bulletType: "circle",
-    price: "",
-    offer: false,
-    offerPrice: "",
-    image: "",
+    ...courseTemplate,
+    branch_id: [1], // default branch
+    group: "science", // default group
   });
   const [previewImage, setPreviewImage] = useState("");
   const [isChanged, setIsChanged] = useState(false);

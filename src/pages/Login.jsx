@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserForm from "../components/UserForm";
 import { loginData } from "../data/login&RegisterData";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../context/useStateContext";
 import Loader from "../components/Loader";
 import { useLoader } from "../context/LoaderContext";
 
@@ -21,10 +21,10 @@ const Login = () => {
 
     const result = await login(form);
 
-    if (result.success) {
-      // Redirect after successful login
+    if (result.success && result.data?.user) {
+      // Use the user data from the login response directly
       setTimeout(() => {
-        if (user.role === "admin") {
+        if (result.data.user.role === "admin") {
           navigate("/dashboard");
         } else {
           navigate("/");
@@ -37,10 +37,10 @@ const Login = () => {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, loading, setLoading]);
 
   useEffect(() => {
     setMsg("");

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useStateContext } from '../../context/ContextProvider';
+import { useStateContext } from '../../context/useStateContext';
 import ConfirmModal from "../ConfirmModal"
 import { Link } from 'react-router-dom';
 import Loader from '../Loader';

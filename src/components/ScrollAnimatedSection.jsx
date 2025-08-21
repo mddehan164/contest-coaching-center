@@ -1,9 +1,10 @@
 // ScrollAnimatedSection.jsx
 import { motion } from "motion/react";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../context/useStateContext";
 
 const ScrollAnimatedSection = ({ children, id, direction = "right" }) => {
-  const { scrollAnimatedSections, setScrollAnimatedSections } = useStateContext();
+  const { scrollAnimatedSections, setScrollAnimatedSections } =
+    useStateContext();
   const alreadyAnimated = scrollAnimatedSections[id] || false;
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -28,7 +29,7 @@ const ScrollAnimatedSection = ({ children, id, direction = "right" }) => {
       }
       onViewportEnter={() => {
         if (!alreadyAnimated) {
-          setScrollAnimatedSections(prev => ({ ...prev, [id]: true }));
+          setScrollAnimatedSections((prev) => ({ ...prev, [id]: true }));
         }
       }}
     >

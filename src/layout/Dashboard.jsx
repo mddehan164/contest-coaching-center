@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router'
 import DHeaderMain from '../components/DHeader/DHeaderMain'
 import DSidebar from '../components/DSidebar/DSidebar'
-import { useStateContext } from '../context/ContextProvider'
+import { useStateContext } from '../context/useStateContext'
 
 
 const Dashboard = () => {

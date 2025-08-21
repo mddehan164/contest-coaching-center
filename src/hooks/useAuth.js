@@ -1,5 +1,5 @@
 // src/hooks/useAuth.js
-import { useStateContext } from '../context/ContextProvider';
+import { useStateContext } from '../context/useStateContext';
 
 export const useAuth = () => {
   const { 

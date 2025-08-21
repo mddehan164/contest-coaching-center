@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { registerData } from '../data/login&RegisterData';
-import { useStateContext } from '../context/ContextProvider';
+import { useStateContext } from '../context/useStateContext';
 import { useNavigate } from 'react-router-dom';
 import { useLoader } from '../context/LoaderContext';
 import Loader from '../components/Loader';

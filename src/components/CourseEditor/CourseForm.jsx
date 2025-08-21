@@ -1,0 +1,196 @@
+import React from "react";
+import ErrorBoundary from "../ErrorBoundary";
+import MarkdownEditor from "../MarkdownEditor";
+
+const branchOptions = [
+  { id: 1, name: "Main Branch" },
+  { id: 2, name: "Second Branch" },
+  { id: 3, name: "Third Branch" },
+];
+
+const CourseForm = ({
+  newCourse = {},
+  handleInputChange,
+  handleAddOrEditCourse,
+  isEditing = false,
+  previewImage = "",
+}) => {
+  const handleMarkdownChange = (value) => {
+    handleInputChange({
+      target: {
+        name: "long_des",
+        value,
+      },
+    });
+  };
+
+  return (
+    <form
+      onSubmit={handleAddOrEditCourse}
+      className="grid md:grid-cols-3 gap-4"
+    >
+      <div className="space-y-4 col-span-2">
+        <h3 className="text-xl font-semibold">
+          {isEditing ? "Edit Course" : "Add a New Course"}
+        </h3>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Course Image
+          </label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleInputChange}
+            className="block w-full mt-1"
+            accept="image/*"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Title
+          </label>
+          <input
+            required
+            name="title"
+            value={newCourse.title || ""}
+            onChange={handleInputChange}
+            placeholder="Course Title"
+            className="block w-full p-2 border rounded mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Short Description
+          </label>
+          <input
+            required
+            name="short_des"
+            value={newCourse.short_des || ""}
+            onChange={handleInputChange}
+            placeholder="Brief course description"
+            className="block w-full p-2 border rounded mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Detailed Description
+          </label>
+          <ErrorBoundary>
+            <MarkdownEditor
+              value={newCourse.long_des || ""}
+              onChange={handleMarkdownChange}
+              placeholder="Write detailed course description..."
+            />
+          </ErrorBoundary>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Regular Price
+            </label>
+            <input
+              required
+              type="number"
+              name="price"
+              value={newCourse.price || ""}
+              onChange={handleInputChange}
+              placeholder="Regular Price"
+              className="block w-full p-2 border rounded mt-1"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Offer Price
+            </label>
+            <input
+              type="number"
+              name="offer_price"
+              value={newCourse.offer_price || ""}
+              onChange={handleInputChange}
+              placeholder="Offer Price (optional)"
+              className="block w-full p-2 border rounded mt-1"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Group
+          </label>
+          <select
+            required
+            name="group"
+            value={newCourse.group || "science"}
+            onChange={handleInputChange}
+            className="block w-full p-2 border rounded mt-1"
+          >
+            <option value="science">Science</option>
+            <option value="commerce">Commerce</option>
+            <option value="arts">Arts</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Branches
+          </label>
+          <div className="mt-2 space-y-2">
+            {branchOptions.map((branch) => (
+              <label key={branch.id} className="inline-flex items-center mr-4">
+                <input
+                  type="checkbox"
+                  name="branch_id"
+                  value={branch.id}
+                  checked={newCourse.branch_id?.includes(branch.id)}
+                  onChange={(e) => {
+                    const branchId = Number(e.target.value);
+                    const newBranches = e.target.checked
+                      ? [...(newCourse.branch_id || []), branchId]
+                      : newCourse.branch_id?.filter((id) => id !== branchId);
+                    handleInputChange({
+                      target: {
+                        name: "branch_id",
+                        value: newBranches,
+                      },
+                    });
+                  }}
+                  className="form-checkbox h-4 w-4 text-blue-600"
+                />
+                <span className="ml-2">{branch.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="pt-4">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            {isEditing ? "Update Course" : "Add Course"}
+          </button>
+        </div>
+      </div>
+
+      <div className="col-span-1">
+        {previewImage && (
+          <div className="sticky top-4">
+            <h4 className="text-lg font-medium mb-2">Preview Image</h4>
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="w-full rounded-lg shadow-lg"
+            />
+          </div>
+        )}
+      </div>
+    </form>
+  );
+};
+
+export default CourseForm;

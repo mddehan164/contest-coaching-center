@@ -1,6 +1,6 @@
 import React, { use } from "react";
 import { motion } from "framer-motion";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../context/useStateContext";
 
 const BeforeVerify = () => {
     const {email} = useStateContext();

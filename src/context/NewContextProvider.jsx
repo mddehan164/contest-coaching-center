@@ -29,11 +29,9 @@ export const ContextProvider = ({ children }) => {
 
         if (!accessToken && !refreshToken) {
           setUser(null);
-          setLoading(false);
           return false;
         }
 
-        // First try with current access token
         const result = await authService.checkAuth();
 
         if (result.success) {
@@ -41,30 +39,26 @@ export const ContextProvider = ({ children }) => {
           if (!checkOnly) {
             setMsg("✅ Authenticated successfully");
           }
-          setLoading(false);
           return true;
         }
 
-        // If that fails, try refreshing the token
-        if (refreshToken) {
-          const refreshResult = await authService.refreshToken();
-          if (refreshResult.success) {
-            setUser(refreshResult.user);
-            if (!checkOnly) {
-              setMsg("✅ Session refreshed");
-            }
-            setLoading(false);
-            return true;
+        // Try refreshing the token
+        const refreshResult = await authService.refreshToken();
+        if (refreshResult.success) {
+          setUser(refreshResult.user);
+          if (!checkOnly) {
+            setMsg("✅ Session refreshed");
           }
+          return true;
         }
 
-        // If both fail, clear everything
         setUser(null);
         if (!checkOnly) {
           setMsg("❌ Session expired");
         }
-        authService.clearTokens();
-        setLoading(false);
+        // Clear cookies on session expiry
+        Cookies.remove("access_token");
+        Cookies.remove("refresh_token");
         return false;
       } catch (err) {
         console.error("Auth error:", err);
@@ -128,11 +122,7 @@ export const ContextProvider = ({ children }) => {
         if (result.success) {
           setUser(result.data.user);
           setMsg("✅ " + result.message);
-          return {
-            success: true,
-            message: result.message,
-            data: result.data,
-          };
+          return { success: true, message: result.message };
         }
 
         setMsg("❌ " + result.message);

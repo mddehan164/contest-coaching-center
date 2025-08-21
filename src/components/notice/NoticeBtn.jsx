@@ -1,6 +1,6 @@
 import React from 'react'
 import { noticeBtnData } from '../../data/data'
-import { useStateContext } from '../../context/ContextProvider'
+import { useStateContext } from '../../context/useStateContext'
 import MainBtn from '../mainBtn';
 
 const NoticeBtn = () => {

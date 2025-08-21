@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router';
 import { navData } from '../../data/data';
 import NavbarBtn from './NavbarBtn';
-import { useStateContext } from '../../context/ContextProvider';
+import { useStateContext } from '../../context/useStateContext';
 import { MdCancel } from "react-icons/md";
 import { motion } from "motion/react"
 

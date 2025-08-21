@@ -1,4 +1,4 @@
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../context/useStateContext";
 
 export default function ProfileAvatar() {
     const { user } = useStateContext();

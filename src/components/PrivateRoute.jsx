@@ -1,7 +1,7 @@
 // src/components/PrivateRoute.jsx
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useStateContext } from '../context/ContextProvider';
+import { useStateContext } from '../context/useStateContext';
 import { useLoader } from '../context/LoaderContext';
 import Loader from './Loader';
 

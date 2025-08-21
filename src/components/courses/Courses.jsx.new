@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 const CourseMain = () => {
   const someCourse = courseData.courses?.slice(0, 4) || [];
-
+  
   return (
     <div className="w-full max-sm:p-3 sm:pt-10 relative min-h-[400px]">
       <h1 className="text-center max-sm:text-lg font-semibold text-headerColorHover sm:py-8 sm:text-2xl xl:text-3xl">

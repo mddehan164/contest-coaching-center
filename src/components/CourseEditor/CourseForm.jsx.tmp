@@ -1,0 +1,173 @@
+import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+const modules = {
+  toolbar: [
+    [{ header: "1"}, {header: "2"}, { font: [] }],
+    [{size: []}],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{list: "ordered"}, {list: "bullet"}, 
+     {indent: "-1"}, {indent: "+1"}],
+    ["link", "image"],
+    ["clean"]
+  ],
+};
+
+const formats = [
+  "header", "font", "size",
+  "bold", "italic", "underline", "strike", "blockquote",
+  "list", "bullet", "indent",
+  "link", "image"
+];
+
+const CourseForm = ({
+  newCourse,
+  handleInputChange,
+  handleAddOrEditCourse,
+  isEditing,
+  previewImage,
+  bulletStyles,
+}) => {
+  const handleQuillChange = (value) => {
+    const e = {
+      target: {
+        name: "details",
+        value: value
+      }
+    };
+    handleInputChange(e);
+  };
+
+  return (
+    <div className="grid md:grid-cols-3 gap-4">
+      <div className="space-y-2 col-span-2">
+        <h3 className="text-xl font-semibold">Add a New Course</h3>
+        <input
+          type="file"
+          name="image"
+          onChange={handleInputChange}
+          className="block w-full"
+        />
+        <input
+          name="title"
+          value={newCourse.title}
+          onChange={handleInputChange}
+          placeholder="Title"
+          className="block w-full p-2 border rounded"
+        />
+        <textarea
+          name="shortDesc"
+          value={newCourse.shortDesc}
+          onChange={handleInputChange}
+          placeholder="Short Description (one per line)"
+          className="block w-full p-2 border rounded h-24"
+        />
+        <div className="h-64">
+          <ReactQuill
+            theme="snow"
+            value={newCourse.details}
+            onChange={handleQuillChange}
+            modules={modules}
+            formats={formats}
+            placeholder="Detail Description"
+            className="h-48"
+          />
+        </div>
+        <select
+          name="bulletType"
+          value={newCourse.bulletType}
+          onChange={handleInputChange}
+          className="block w-full p-2 border rounded"
+        >
+          <option value="circle">Circle</option>
+          <option value="arrow">Arrow</option>
+          <option value="decimal">Decimal</option>
+          <option value="roman">Roman</option>
+          <option value="alpha">Alpha</option>
+        </select>
+        <input
+          name="price"
+          value={newCourse.price}
+          onChange={handleInputChange}
+          placeholder="Regular Price"
+          className="block w-full p-2 border rounded"
+        />
+        <div className="flex items-center space-x-2">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="offer"
+              checked={newCourse.offer}
+              onChange={handleInputChange}
+            />
+            <span>Offer</span>
+          </label>
+          {newCourse.offer && (
+            <input
+              name="offerPrice"
+              value={newCourse.offerPrice}
+              onChange={handleInputChange}
+              placeholder="Offer Price"
+              className="p-2 border rounded"
+            />
+          )}
+        </div>
+        <button
+          onClick={handleAddOrEditCourse}
+          className="bg-black text-white px-4 py-2 rounded"
+        >
+          {isEditing ? "Save Changes" : "Add"}
+        </button>
+      </div>
+      <div className="border p-4 rounded">
+        <h4 className="font-semibold mb-2">Preview</h4>
+        {previewImage && (
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="w-full aspect-[3/2] object-cover rounded"
+          />
+        )}
+        <p className="mt-2 font-bold">{newCourse.title}</p>
+        <ul
+          className={`${
+            bulletStyles[newCourse.bulletType]
+          } list-inside text-sm space-y-1`}
+        >
+          {newCourse.shortDesc.split("\n").map((item, idx) => (
+            <li key={idx}>{item}</li>
+          ))}
+        </ul>
+        <div 
+          className="text-sm mt-2"
+          dangerouslySetInnerHTML={{ __html: newCourse.details }}
+        />
+        {newCourse.offer ? (
+          <p className="text-sm mt-2">
+            <span className="line-through text-red-600 mr-2">
+              ৳{newCourse.price}
+            </span>
+            <span className="text-headerColorHover font-semibold">
+              ৳{newCourse.offerPrice}
+            </span>
+          </p>
+        ) : (
+          <p className="text-sm mt-2 text-headerColorHover font-semibold">
+            ৳ &nbsp;{newCourse.price}
+          </p>
+        )}
+        <div className="flex gap-2 mt-2">
+          <button className="text-white bg-headerColor px-2 py-1 text-xs rounded">
+            Enroll Now
+          </button>
+          <button className="text-white bg-headerColorHover px-2 py-1 text-xs rounded">
+            Details
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseForm;

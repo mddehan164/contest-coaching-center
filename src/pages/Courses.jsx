@@ -4,7 +4,7 @@ import Card from "../components/Card";
 import ScrollAnimatedSection from "../components/ScrollAnimatedSection";
 import Hero from "../components/Hero";
 import { fetchCourses } from "../services/course";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../context/useStateContext";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -13,15 +13,22 @@ const Courses = () => {
   const { user } = useStateContext();
 
   // Transform API data to match Card component expectations
-  const transformCourseData = (courseData) => {
-    return courseData.map((course) => ({
+  const transformCourseData = (apiData) => {
+    return apiData.map((course) => ({
       id: course.id,
-      title: course.title || course.name || "Untitled Course",
-      short_des: course.description
-        ? Array.isArray(course.description)
-          ? course.description
-          : [course.description]
-        : ["Course description will be updated soon"],
+      title: course.title || "Untitled Course",
+      image: course.image || null,
+      short_des: course.short_des || "No description available",
+      long_des: course.long_des || "",
+      price: Number(course.price) || 0,
+      offer_price: Number(course.offer_price) || null,
+      branch_id: Array.isArray(course.branch_id) ? course.branch_id : [],
+      group:
+        course.group || "science"
+          ? Array.isArray(course.description)
+            ? course.description
+            : [course.description]
+          : ["Course description will be updated soon"],
       price: course.price || "Contact for pricing",
       offer: course.offer || false,
       offerPrice: course.offer_price || course.offerPrice,

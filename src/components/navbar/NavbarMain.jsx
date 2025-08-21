@@ -2,7 +2,7 @@ import React from 'react'
 import NavbarLogo from './NavbarLogo'
 import NavbarLinks from './NavbarLinks'
 import { AiOutlineMenuUnfold } from "react-icons/ai";
-import { useStateContext } from '../../context/ContextProvider';
+import { useStateContext } from '../../context/useStateContext';
 
 
 

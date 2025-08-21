@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CourseEditor } from "../components";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../context/useStateContext";
 import { addCourse, fetchCourses } from "../services/course";
 
 const DCourse = () => {
