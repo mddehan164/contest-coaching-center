@@ -1,65 +1,96 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import UserForm from "../components/UserForm";
-import { loginData } from "../data/login&RegisterData";
-import { useStateContext } from "../context/ContextProvider";
-import Loader from "../components/Loader";
-import { useLoader } from "../context/LoaderContext";
+// src/pages/Login.jsx
+import { useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useLoginMutation } from "../redux-rtk/auth/authApi"
+import { setCredentials, setAuthChecked } from "../redux-rtk/auth/authSlice"
+import { setLoading, setMessage, clearUI } from "../redux-rtk/uiSlice"
+import UserForm from "../components/UserForm"
+import { loginData } from "../data/login&RegisterData"
+import Loader from "../components/Loader"
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const { msg, setMsg, user, login, authActionInProgress } = useStateContext();
-  const { loading } = useLoader();
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" })
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { isAuthenticated, user } = useSelector(state => state.auth)
+  const { isLoading: uiLoading, message } = useSelector(state => state.ui)
+
+  const from = location.state?.from?.pathname || "/"
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    
     if (!form.email || !form.password) {
-      alert("❌ Please fill in all fields");
-      return;
+      dispatch(setMessage("Please fill in all fields"))
+      return
     }
+
     if (form.password.length < 6) {
-      alert("❌ Password must be at least 6 characters");
-      return;
+      dispatch(setMessage("Password must be at least 6 characters"))
+      return
     }
 
-    const result = await login(form);
-
-    if (result.success) {
-      if( user.role === "admin" || user.role === "superadmin" ){
-        navigate("/dashboard");
-      }else{
-        navigate("/profile");
+    try {
+      dispatch(setLoading(true))
+      const result = await login(form).unwrap()
+      
+      if (result.success) {
+        dispatch(setCredentials({
+          user: result.data.user,
+          accessToken: result.data.access_token
+        }))
+        dispatch(setAuthChecked())
+        dispatch(setMessage(result.message))
+        
+        // Redirect based on role
+        const redirectPath = ["admin", "superadmin"].includes(result.data.user.role)
+          ? "/dashboard"
+          : "/profile"
+        
+        navigate(redirectPath, { replace: true })
       }
+    } catch (error) {
+      dispatch(setMessage(error.data?.message || "Login failed"))
+    } finally {
+      setTimeout(() => dispatch(setLoading(false)), 1000)
     }
-  };
+  }
 
-  // Redirect if already logged in
   useEffect(() => {
-    if (user) {
-      setMsg("");
+    if (isAuthenticated) {
+      const redirectPath = ["admin", "superadmin"].includes(user?.role)
+        ? "/dashboard"
+        : "/profile"
+      navigate(redirectPath, { replace: true })
     }
-  }, [user, setMsg]);
+  }, [isAuthenticated, user, navigate])
+
+  useEffect(() => {
+    return () => dispatch(clearUI())
+  }, [dispatch])
 
   return (
     <div className="flex justify-center items-center w-full flex-wrap px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 space-y-4 relative">
-      {loading && !authActionInProgress && (
-        <Loader message={msg} duration={2000} />
-      )}
+      {(isLoading || uiLoading) && <Loader message={message} />}
+      
       <h1 className="w-full text-xl font-semibold text-headerColor text-center">
         Sign in
       </h1>
+      
       <UserForm
         data={loginData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

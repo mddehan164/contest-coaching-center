@@ -12,9 +12,9 @@ export const authService = {
       const response = await api.post('/auth/login', credentials);
       
       if (response.status === 200 || response.status === 201) {
-        const { user, access_token, refresh_token } = response.data.data;
+        const { user, access_token, token_type } = response.data.data;
         
-        // Store tokens in cookies (more secure than localStorage)
+        // Store access token in cookies
         if (access_token) {
           Cookies.set('access_token', access_token, { 
             expires: 1, // 1 day
@@ -23,17 +23,9 @@ export const authService = {
           });
         }
         
-        if (refresh_token) {
-          Cookies.set('refresh_token', refresh_token, { 
-            expires: 7, // 7 days
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
-          });
-        }
-        
         return {
           success: true,
-          data: { user, access_token, refresh_token },
+          data: { user, access_token, token_type },
           message: response.data.message || "Login successful"
         };
       }
@@ -50,18 +42,13 @@ export const authService = {
     try {
       await api.post('/auth/logout');
     } catch (error) {
-
+      // Ignore errors, always clear tokens
     } finally {
-      // Clear all tokens regardless of API response
-      Cookies.remove('access_token');
-      Cookies.remove('refresh_token');
-      // Clear any Laravel session cookies
-      Cookies.remove('laravel_session');
-      Cookies.remove('XSRF-TOKEN');
+      this.clearTokens();
     }
   },
 
-// register user
+  // Register user
   async register(credentials) {
     try {
       const response = await api.post('/auth/register', credentials);
@@ -74,7 +61,7 @@ export const authService = {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || "Login failed. Please try again."
+        message: error.response?.data?.message || "Registration failed. Please try again."
       };
     }
   },
@@ -92,7 +79,6 @@ export const authService = {
         };
       }
     } catch (error) {
-      // If auth check fails, clear any stale tokens
       this.clearTokens();
       return {
         success: false,
@@ -101,39 +87,9 @@ export const authService = {
     }
   },
 
-  // Refresh access token
-  async refreshToken() {
-    try {
-      const refreshToken = Cookies.get('refresh_token');
-      if (!refreshToken) {
-        throw new Error('No refresh token available');
-      }
-
-      const response = await api.post('/auth/refresh', {
-        refresh_token: refreshToken
-      });
-
-      if (response.status === 200) {
-        const { access_token } = response.data.data;
-        
-        Cookies.set('access_token', access_token, { 
-          expires: 1,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict'
-        });
-        
-        return { success: true, access_token };
-      }
-    } catch (error) {
-      this.clearTokens();
-      return { success: false };
-    }
-  },
-
   // Clear all tokens
   clearTokens() {
     Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
     Cookies.remove('laravel_session');
     Cookies.remove('XSRF-TOKEN');
   },

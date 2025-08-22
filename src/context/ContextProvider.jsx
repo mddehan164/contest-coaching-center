@@ -1,6 +1,4 @@
-// context/ContextProvider.jsx
-
-import React, { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { authService } from "../services/authService";
 import { useLoader } from "./LoaderContext";
 
@@ -16,30 +14,29 @@ export const ContextProvider = ({ children }) => {
   const [isExpand, setIsExpand] = useState(true);
   const [email, setEmail] = useState("");
   const { setLoading } = useLoader();
-  // Flag to prevent double loader
   const [authActionInProgress, setAuthActionInProgress] = useState(false);
 
-  // Authentication check function
+  const [authChecked, setAuthChecked] = useState(false);
+
   const checkAuth = async () => {
-    // Only show loader if not already in progress
     if (!authActionInProgress) setLoading(true);
     setMsg("Checking authentication...");
 
     try {
       const result = await authService.checkAuth();
-
       if (result.success) {
         setUser(result.user);
-        setMsg("✅ Authenticated successfully");
+        setMsg("Authenticated successfully");
       } else {
         setUser(null);
-        setMsg("❌ Not authenticated");
+        setMsg("Not authenticated");
       }
     } catch (error) {
       setUser(null);
-      console.log("❌ Auth check failed:", error);
-      setMsg("❌ Authentication check failed");
+      console.log("Auth check failed:", error);
+      setMsg("Authentication check failed");
     } finally {
+      setAuthChecked(true);
       setTimeout(() => {
         if (!authActionInProgress) setLoading(false);
         setMsg("");
@@ -47,23 +44,24 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  // Login function
   const login = async (credentials) => {
     setAuthActionInProgress(true);
     setLoading(true);
     setMsg("Logging in...");
     try {
       const result = await authService.login(credentials);
+
       if (result.success) {
         setUser(result.data.user);
         setMsg(result.message);
-        return { success: true, message: result.message };
+
+        return { success: true, message: result.message, data: result.data };
       } else {
         setMsg(result.message);
         return { success: false, message: result.message };
       }
     } catch (error) {
-      const errorMessage = "❌ Login failed. Please try again.";
+      const errorMessage = "Login failed. Please try again.";
       setMsg(errorMessage);
       return { success: false, message: errorMessage };
     } finally {
@@ -74,6 +72,7 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+
   // Logout function
   const logout = async () => {
     setAuthActionInProgress(true);
@@ -82,13 +81,12 @@ export const ContextProvider = ({ children }) => {
     try {
       await authService.logout();
       setUser(null);
-      setMsg("✅ Logged out successfully");
+      setMsg("Logged out successfully");
       return { success: true };
     } catch (error) {
       console.error("Logout error:", error);
-      // Even if logout API fails, clear local state
       setUser(null);
-      setMsg("✅ Logged out");
+      setMsg("Logged out");
       return { success: true };
     } finally {
       setTimeout(() => {
@@ -113,7 +111,7 @@ export const ContextProvider = ({ children }) => {
         return { success: false, message: result.message };
       }
     } catch (error) {
-      const errorMessage = "❌ Register failed. Please try again.";
+      const errorMessage = "Register failed. Please try again.";
       setMsg(errorMessage);
       console.error("Register error:", error);
       return { success: false, message: errorMessage };
@@ -125,18 +123,11 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  // Check authentication on mount
   useEffect(() => {
-    // Only check auth if we have a token
-    if (authService.isAuthenticated()) {
-      checkAuth();
-    } else {
-      setLoading(false);
-    }
+    checkAuth();
   }, []);
 
   const value = {
-    // UI State
     isActiveMenu,
     setIsActiveMenu,
     activeTab,
@@ -152,7 +143,6 @@ export const ContextProvider = ({ children }) => {
     email,
     setEmail,
 
-    // Auth State & Functions
     user,
     setUser,
     login,
@@ -160,11 +150,10 @@ export const ContextProvider = ({ children }) => {
     checkAuth,
     register,
     authActionInProgress,
+    authChecked,
   };
 
-  return (
-    <StateContext.Provider value={value}>{children}</StateContext.Provider>
-  );
+  return <StateContext.Provider value={value}>{children}</StateContext.Provider>;
 };
 
 export const useStateContext = () => useContext(StateContext);
