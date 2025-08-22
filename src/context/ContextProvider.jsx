@@ -124,7 +124,9 @@ export const ContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkAuth();
+    // Don't automatically check auth since we're using Redux for authentication
+    // Only set authChecked to true for UI state management
+    setAuthChecked(true);
   }, []);
 
   const value = {

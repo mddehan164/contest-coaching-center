@@ -4,11 +4,13 @@ import Loader from "../Loader";
 import User from "../User";
 import ConfirmModal from "../ConfirmModal";
 import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../redux-rtk/auth/authApi";
 import { logout as logoutAction } from "../../redux-rtk/auth/authSlice";
 
 const NavbarBtn = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [logoutMutation] = useLogoutMutation();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
@@ -18,16 +20,25 @@ const NavbarBtn = (props) => {
 
   const handleLogout = () => setShowConfirm(true);
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     setLoading(true);
-    setTimeout(() => {
+    setMsg("Logging out...");
+    
+    try {
+      // Try to call logout API, but don't fail if it errors
+      await logoutMutation().unwrap();
+    } catch (error) {
+      // Ignore API errors during logout
+      console.log("Logout API call failed, but continuing with local logout");
+    } finally {
+      // Always clear local state regardless of API response
       dispatch(logoutAction());
       localStorage.clear();
       setShowConfirm(false);
       setLoading(false);
       setMsg("");
       navigate("/", { replace: true });
-    }, 1000);
+    }
   };
 
   const cancelDelete = () => setShowConfirm(false);

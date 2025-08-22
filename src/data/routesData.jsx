@@ -4,9 +4,35 @@ import { DCourse, DSlider, Help, Logout, Notice, Schedule, Settings, Student, Te
 import { Admission, BeforeVerify, Branches, Courses, Login, Profile, Register, Verify } from "../pages";
 
 export let mainPageRoutes = [
-    {route: <Courses/>, path: "courses"}, {route: <Admission/>, path: "admission"},{route: <GalleryMain/>, path: "gallery"}, {route: <Branches/>, path: "branches"},{route: <AllSuccessCard/>, path: "all-success"}, {route: <CourseDetails/>, path:"/courses/:id"}, {route: <Login/>, path: "login"}, {route: <Register/>, path: "register"}, {route: <Profile/>, path: "profile"}, {route: <BeforeVerify/>, path: "before-verify"}, {route: <Verify/>, path: "verify/:id/:hash"}, {route: <Error/>, path: "*"},
+    {element: <Courses/>, path: "courses"}, 
+    {element: <Admission/>, path: "admission"},
+    {element: <GalleryMain/>, path: "gallery"}, 
+    {element: <Branches/>, path: "branches"},
+    {element: <AllSuccessCard/>, path: "all-success"}, 
+    {element: <CourseDetails/>, path:"courses/:id"}, 
+    {element: <Login/>, path: "login"}, 
+    {element: <Register/>, path: "register"}, 
+    {element: <Profile/>, path: "profile"}, 
+    {element: <BeforeVerify/>, path: "before-verify"}, 
+    {element: <Verify/>, path: "verify/:id/:hash"}, 
+    {element: <Error/>, path: "*"},
 ];
 
 export let dashboardPageRoutes = [
-    {route: <Schedule/>, path: "schedule"}, {route: <Student/>, path: "student"}, {route: <Teacher/>, path: "teacher"}, {route: <DSlider/>, path: "slider"}, {route: <Notice/>, path: "notice"},{route: <DCourse/>, path: "course-editor"},{route: <SuccessEditor/>, path: "success-editor"},{route: <StatsEditor/>, path: "stats-editor"},{route: <ServiceEditor/>, path: "service-editor"}, {route: <SummaryEditor/>, path: "summary-editor"}, {route: <GalleryEditor/>, path: "gallery-editor"}, {route: <BranchEditor/>, path: "branch-editor"}, {route: <Customise/>, path: "customise"}, {route: <Settings/>, path: "settings"}, {route: <Help/>, path: "help"}, {route: <Logout/>, path: "logout"},
+    {element: <Schedule/>, path: "schedule"}, 
+    {element: <Student/>, path: "student"}, 
+    {element: <Teacher/>, path: "teacher"}, 
+    {element: <DSlider/>, path: "slider"}, 
+    {element: <Notice/>, path: "notice"},
+    {element: <DCourse/>, path: "course-editor"},
+    {element: <SuccessEditor/>, path: "success-editor"},
+    {element: <StatsEditor/>, path: "stats-editor"},
+    {element: <ServiceEditor/>, path: "service-editor"}, 
+    {element: <SummaryEditor/>, path: "summary-editor"}, 
+    {element: <GalleryEditor/>, path: "gallery-editor"}, 
+    {element: <BranchEditor/>, path: "branch-editor"}, 
+    {element: <Customise/>, path: "customise"}, 
+    {element: <Settings/>, path: "settings"}, 
+    {element: <Help/>, path: "help"}, 
+    {element: <Logout/>, path: "logout"},
 ];

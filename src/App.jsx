@@ -1,8 +1,9 @@
 // src/App.jsx
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
+import { setAuthChecked } from './redux-rtk/auth/authSlice'
 import MainLayout from './layout/MainLayout'
 import PrivateRoute from './components/PrivateRoute'
 import { mainPageRoutes, dashboardPageRoutes } from './data/routesData'
@@ -11,14 +12,29 @@ import { DHome } from './dashboardPages'
 import { Home } from './pages'
 
 const App = () => {
+  const dispatch = useDispatch()
   const { checkAuth } = useAuth()
   const authChecked = useSelector(state => state.auth.authChecked)
+  const accessToken = useSelector(state => state.auth.accessToken)
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+  const initialCheckDone = useRef(false)
 
   useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
+    // Only run initial auth check once on app start
+    if (!initialCheckDone.current) {
+      initialCheckDone.current = true
+      
+      if (accessToken) {
+        checkAuth()
+      } else {
+        // If no token, mark auth as checked to avoid loading state
+        dispatch(setAuthChecked())
+      }
+    }
+  }, [checkAuth, accessToken, dispatch])
 
-  if (!authChecked) {
+  // Don't show loading for public routes when there's no token
+  if (!authChecked && accessToken) {
     return <div>Loading...</div>
   }
 

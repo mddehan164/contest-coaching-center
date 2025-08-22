@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
-import { useStateContext } from '../context/ContextProvider';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 
 const User = ({logout}) => {
       const [click, setClick] = useState(false);
-      const { user } = useStateContext();
+      const { user } = useSelector(state => state.auth);
       const feature = [ 
         { feature: "Profile", action: "", link: "profile"}, { feature: "Logout", action: logout }
       ];
+
+      // Add null check for user
+      if (!user) {
+        return null; // or return a default avatar/login prompt
+      }
   return (
     <div
         className="rounded-full w-10 aspect-square cursor-pointer relative"
         onClick={() => setClick(!click)}
             >
         <img
-            src={`https://ui-avatars.com/api/?name=${user.name}&background=86defe&color=fff&rounded=true`}
+            src={`https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=86defe&color=fff&rounded=true`}
             alt="User Avatar"
             className="rounded-full w-10 aspect-square hover:bg-headerColor hover:w-12"
         />

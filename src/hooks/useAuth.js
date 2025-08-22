@@ -1,6 +1,6 @@
 // src/hooks/useAuth.js
 import { useDispatch, useSelector } from 'react-redux'
-import { useLoginMutation, useLogoutMutation, useGetProfileQuery } from '../redux-rtk/auth/authApi'
+import { useLoginMutation, useLogoutMutation, useLazyGetProfileQuery } from '../redux-rtk/auth/authApi'
 import { setCredentials, logout as logoutAction, setAuthChecked } from '../redux-rtk/auth/authSlice'
 import { setLoading, setMessage } from '../redux-rtk/uiSlice'
 
@@ -9,11 +9,12 @@ export const useAuth = () => {
   const [loginMutation] = useLoginMutation()
   const [logoutMutation] = useLogoutMutation()
   
-  // Use the query hook to start the query
-  const { data: profile, refetch: refetchProfile, isLoading: profileLoading } = useGetProfileQuery()
+  // Use lazy query to avoid automatic execution
+  const [getProfile, { data: profile, isLoading: profileLoading }] = useLazyGetProfileQuery()
   
   const user = useSelector(state => state.auth.user)
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+  const accessToken = useSelector(state => state.auth.accessToken)
 
   const login = async (credentials) => {
     try {
@@ -49,15 +50,28 @@ export const useAuth = () => {
   }
 
   const checkAuth = async () => {
-    try {
-      // Only refetch if the query has been started
-      if (!profileLoading) {
-        await refetchProfile()
-      }
+    // Only check auth if we have a token stored and are authenticated
+    if (!accessToken || !isAuthenticated) {
       dispatch(setAuthChecked())
+      return
+    }
+    
+    try {
+      const result = await getProfile().unwrap()
+      if (result && result.data) {
+        dispatch(setCredentials({
+          user: result.data.user || result.user,
+          accessToken: accessToken
+        }))
+      }
     } catch (error) {
       console.error("Auth check failed:", error)
-      dispatch(setAuthChecked()) // Still mark as checked even if failed
+      // Only clear credentials if it's a real auth failure, not a logout
+      if (error.status === 401 && isAuthenticated) {
+        dispatch(logoutAction())
+      }
+    } finally {
+      dispatch(setAuthChecked())
     }
   }
 
