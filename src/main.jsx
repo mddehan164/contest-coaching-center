@@ -5,18 +5,12 @@ import App from './App.jsx'
 import { Provider } from "react-redux"
 import { BrowserRouter } from 'react-router-dom'
 import { store } from './redux-rtk/store/store.jsx'
-import { ContextProvider } from './context/ContextProvider.jsx'
-import { LoaderProvider } from './context/LoaderContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <LoaderProvider>
-      <ContextProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ContextProvider>
-    </LoaderProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 )
 

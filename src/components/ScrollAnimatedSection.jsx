@@ -1,9 +1,11 @@
 // ScrollAnimatedSection.jsx
 import { motion } from "motion/react";
-import { useStateContext } from "../context/ContextProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { setScrollAnimatedSections } from "../redux-rtk/uiSlice";
 
 const ScrollAnimatedSection = ({ children, id, direction = "right" }) => {
-  const { scrollAnimatedSections, setScrollAnimatedSections } = useStateContext();
+  const dispatch = useDispatch();
+  const scrollAnimatedSections = useSelector(state => state.ui.scrollAnimatedSections);
   const alreadyAnimated = scrollAnimatedSections[id] || false;
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -28,7 +30,7 @@ const ScrollAnimatedSection = ({ children, id, direction = "right" }) => {
       }
       onViewportEnter={() => {
         if (!alreadyAnimated) {
-          setScrollAnimatedSections(prev => ({ ...prev, [id]: true }));
+          dispatch(setScrollAnimatedSections({ [id]: true }));
         }
       }}
     >

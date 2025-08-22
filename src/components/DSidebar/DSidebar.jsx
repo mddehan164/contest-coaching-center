@@ -1,14 +1,16 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { sidebarData } from '../../data/Dsidebar&Header';
 import { NavLink } from 'react-router-dom'; // ✅ use react-router-dom
 import { LuArrowRightLeft } from "react-icons/lu";
-import { useStateContext } from '../../context/ContextProvider';
+import { toggleExpand } from '../../redux-rtk/uiSlice';
 
 const DSidebar = () => {
-  const { isExpand, setIsExpand } = useStateContext();
+  const dispatch = useDispatch();
+  const isExpand = useSelector(state => state.ui.isExpand);
 
-  const toggleExpand = () => {
-    setIsExpand(!isExpand);
+  const handleToggleExpand = () => {
+    dispatch(toggleExpand());
   };
 
   return (
@@ -16,7 +18,7 @@ const DSidebar = () => {
       {/* Expand/Collapse Toggle Button */}
       <LuArrowRightLeft
         className='absolute top-0 right-0 cursor-pointer text-white'
-        onClick={toggleExpand}
+        onClick={handleToggleExpand}
       />
 
       {sidebarData.map((group, idx) => (

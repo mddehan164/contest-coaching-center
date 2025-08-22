@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { registerData } from "../data/login&RegisterData";
-import { useStateContext } from "../context/ContextProvider";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoader } from "../context/LoaderContext";
+import { useRegisterMutation } from "../redux-rtk/auth/authApi";
+import { setLoading, setMessage, clearUI, setEmail } from "../redux-rtk/uiSlice";
+import { registerData } from "../data/login&RegisterData";
 import Loader from "../components/Loader";
 import UserForm from "../components/UserForm";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const { msg, setMsg, register, setEmail, authActionInProgress } =
-    useStateContext();
-  const { loading } = useLoader();
+  const dispatch = useDispatch();
+  const [registerMutation, { isLoading }] = useRegisterMutation();
+  const { isLoading: uiLoading, message } = useSelector(state => state.ui);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,33 +26,40 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (formData.password.length < 6) {
-      alert("❌ Password must be 6 charecters");
+      dispatch(setMessage("❌ Password must be 6 characters"));
       return;
     }
 
     if (formData.password !== formData.password_confirmation) {
-      alert("❌ Passwords are not matching");
+      dispatch(setMessage("❌ Passwords are not matching"));
       return;
     }
 
-    const result = await register(formData);
-    if (result.success) {
-      setMsg(result.message);
-      setEmail(formData.email);
-      navigate("/before-verify");
-    } else {
-      setMsg(result.message);
+    try {
+      dispatch(setLoading(true));
+      const result = await registerMutation(formData).unwrap();
+      
+      if (result.success) {
+        dispatch(setMessage(result.message));
+        dispatch(setEmail(formData.email));
+        navigate("/before-verify");
+      }
+    } catch (error) {
+      dispatch(setMessage(error.data?.message || "Registration failed"));
+    } finally {
+      setTimeout(() => dispatch(setLoading(false)), 2000);
     }
   };
 
   useEffect(() => {
-    setMsg("");
-  }, [setMsg]);
+    return () => dispatch(clearUI());
+  }, [dispatch]);
   return (
     <div className="flex justify-center items-center w-full xl:h-auto p-3 flex-wrap space-y-4 relative">
-      {loading && !authActionInProgress && (
-        <Loader message={msg} duration={2000} />
+      {(isLoading || uiLoading) && (
+        <Loader message={message} duration={2000} />
       )}
       <h1 className="w-full text-xl font-semibold text-headerColor text-center">
         Register
