@@ -6,7 +6,7 @@ import StudentTeacherEditor from '../components/StudentTeacherEditor';
 
 const Student = () => {
   return (
-    <div className="max-w-6xl mx-auto mt-10">
+    <div className="lg:max-w-6xl mx-auto mt-10">
       <StudentTeacherEditor data={listDetails} type="student" />
     </div>
   );
