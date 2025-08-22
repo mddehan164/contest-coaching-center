@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
@@ -23,7 +22,7 @@ const App = () => {
     // Only run initial auth check once on app start
     if (!initialCheckDone.current) {
       initialCheckDone.current = true
-      
+
       if (accessToken) {
         checkAuth()
       } else {
@@ -35,7 +34,10 @@ const App = () => {
 
   // Don't show loading for public routes when there's no token
   if (!authChecked && accessToken) {
-    return <div>Loading...</div>
+    return <div className='h-screen w-screen flex justify-center items-center'><img src="/images/loading-logo.png"
+      class="w-[10%] aspect-square"
+      alt="Loading..." />
+      <p class="text-center text-headerColor">Please Wait..</p></div>
   }
 
   return (

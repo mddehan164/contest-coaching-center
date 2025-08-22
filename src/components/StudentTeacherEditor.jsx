@@ -1,6 +1,7 @@
 // src/components/StudentTeacherEditor.jsx
-
+import CustomTable from "../shared/custom/CustomTable"
 import React, { useState } from 'react';
+import { DeleteSvg, EditSvg, EyeSvg } from "../utils/svgs";
 
 const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
   const [entries, setEntries] = useState(data);
@@ -13,15 +14,15 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
   const getEmptyEntry = () => {
     return type === 'student'
       ? {
-          name: '', mobile: '', batch: '', branch: '', roll: '', group: '',
-          fatherName: '', motherName: '', gender: '', address: '',
-          sscResult: '', hscResult: '', totalFee: '',
-          installments: [], examResults: [], lectureSheets: []
-        }
+        name: '', mobile: '', batch: '', branch: '', roll: '', group: '',
+        fatherName: '', motherName: '', gender: '', address: '',
+        sscResult: '', hscResult: '', totalFee: '',
+        installments: [], examResults: [], lectureSheets: []
+      }
       : {
-          name: '', subject: '', totalClasses: '', totalPayment: '',
-          paidAmount: '', dueAmount: '', paymentRecords: []
-        };
+        name: '', subject: '', totalClasses: '', totalPayment: '',
+        paidAmount: '', dueAmount: '', paymentRecords: []
+      };
   };
 
   const handleInputChange = (e) => {
@@ -39,10 +40,10 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
     const newItem = key === 'installments'
       ? { installment: '', amount: '', status: '', paymentDate: '', nextPaymentDate: '' }
       : key === 'examResults'
-      ? { examName: '', marks: '', position: '', highestMarks: '' }
-      : key === 'lectureSheets'
-      ? { name: '', status: '', givenDate: '' }
-      : { id: '', classId: '', amount: '', paymentDate: '', status: '' };
+        ? { examName: '', marks: '', position: '', highestMarks: '' }
+        : key === 'lectureSheets'
+          ? { name: '', status: '', givenDate: '' }
+          : { id: '', classId: '', amount: '', paymentDate: '', status: '' };
 
     setSelectedEntry((prev) => ({ ...prev, [key]: [...prev[key], newItem] }));
   };
@@ -220,7 +221,7 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
   );
 
   const filteredEntries = entries.filter((entry, index, self) => {
-  const match = Object.entries(entry).some(([key, val]) => {
+    const match = Object.entries(entry).some(([key, val]) => {
       if (typeof val === 'string' || typeof val === 'number') {
         return val.toString().toLowerCase().includes(searchText.toLowerCase());
       }
@@ -248,49 +249,58 @@ const StudentTeacherEditor = ({ data, type, onSave, onDelete, onAdd }) => {
             className="border px-3 py-2 mb-4 w-full rounded"
           />
 
-          <table className="w-full table-auto border">
-            <thead className="bg-[#102542] text-white">
-              <tr>
+          <CustomTable
+            isPagination={true}
+            columns={type === 'student' ?
+              [
+                "Name",
+                "Roll",
+                "Branch",
+                "Actions"
+              ]
+              :
+              [
+                "ID",
+                "Name",
+                "Subject",
+                "Actions"
+              ]
+            }
+            dataLength={entries.length}
+          >
+            {filteredEntries.map((entry) => (
+              <tr key={entry.id + '_' + entry.name} className="hover:bg-contestLight">
                 {type === 'student' ? (
                   <>
-                    <th className="border px-3 py-2">Name</th>
-                    <th className="border px-3 py-2">Roll</th>
-                    <th className="border px-3 py-2">Branch</th>
+                    <td className="border px-3 py-2">{entry.name}</td>
+                    <td className="border px-3 py-2">{entry.roll}</td>
+                    <td className="border px-3 py-2">{entry.branch}</td>
                   </>
                 ) : (
                   <>
-                    <th className="border px-3 py-2">ID</th>
-                    <th className="border px-3 py-2">Name</th>
-                    <th className="border px-3 py-2">Subject</th>
+                    <td className="border px-3 py-2">{entry.id}</td>
+                    <td className="border px-3 py-2">{entry.name}</td>
+                    <td className="border px-3 py-2">{entry.subject}</td>
                   </>
                 )}
-                <th className="border px-3 py-2">Actions</th>
+                <td className="border px-3 py-2 space-x-2 text-center w-[100px]">
+                  <div className='flex items-center gap-x-3'>
+                    <button
+                      onClick={() => handleView(entry)}
+
+                    >
+                      <EyeSvg />
+                    </button>
+                    <button
+                      onClick={() => confirmDelete(entry)}
+                    >
+                      <DeleteSvg />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredEntries.map((entry) => (
-                <tr key={entry.id + '_' + entry.name} className="hover:bg-contestLight">
-                  {type === 'student' ? (
-                    <>
-                      <td className="border px-3 py-2">{entry.name}</td>
-                      <td className="border px-3 py-2">{entry.roll}</td>
-                      <td className="border px-3 py-2">{entry.branch}</td>
-                    </>
-                  ) : (
-                    <>
-                      <td className="border px-3 py-2">{entry.id}</td>
-                      <td className="border px-3 py-2">{entry.name}</td>
-                      <td className="border px-3 py-2">{entry.subject}</td>
-                    </>
-                  )}
-                  <td className="border px-3 py-2 space-x-2 text-center">
-                    <button onClick={() => handleView(entry)} className="bg-headerColor hover:bg-headerColorHover text-white px-3 py-1 rounded">View</button>
-                    <button onClick={() => confirmDelete(entry)} className="bg-contestRed hover:bg-red-700 text-white px-3 py-1 rounded">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </CustomTable>
         </div>
       )}
 
