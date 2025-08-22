@@ -116,12 +116,14 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
         }
       : {
           name: '',
+          image: '',
           subject: '',
-          totalClasses: '',
-          totalPayment: '',
-          paidAmount: '',
-          dueAmount: '',
-          paymentRecords: []
+          gender: 'male',
+          mobile: '',
+          address: '',
+          course_id: '',
+          batch_id: '',
+          status: 1
         };
   };
 
@@ -646,7 +648,7 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
           )
         ))}
       </div>
-
+{/* 
       {type === 'student' && selectedEntry?.installments?.length > 0 && (
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Payment Installments</h3>
@@ -671,9 +673,9 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
 
-      {type === 'teacher' && selectedEntry?.paymentRecords?.length > 0 && (
+      {/* {type === 'teacher' && selectedEntry?.paymentRecords?.length > 0 && (
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Payment Records</h3>
           <table className="table-auto border w-full">
@@ -696,7 +698,7 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
 
       <div className="mt-6 flex gap-4">
         <button onClick={handleEdit} className="bg-headerColorHover text-white px-4 py-2 rounded">Edit</button>
@@ -785,9 +787,11 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
                   </>
                 ) : (
                   <>
-                    <th className="border px-3 py-2">ID</th>
+                    <th className="border px-3 py-2">SN</th>
                     <th className="border px-3 py-2">Name</th>
                     <th className="border px-3 py-2">Subject</th>
+                    <th className="border px-3 py-2">Batch</th>
+                    <th className="border px-3 py-2">Status</th>
                   </>
                 )}
                 <th className="border px-3 py-2">Actions</th>
@@ -819,9 +823,23 @@ const StudentTeacherEditor = ({ data, type, onSave, onAdd }) => {
                     </>
                   ) : (
                     <>
-                      <td className="border px-3 py-2">{entry.id}</td>
+                      <td className="border px-3 py-2 text-center w-16 font-medium">
+                        {String(index + 1).padStart(2, '0')}
+                      </td>
                       <td className="border px-3 py-2">{entry.name}</td>
                       <td className="border px-3 py-2">{entry.subject}</td>
+                      <td className="border px-3 py-2">
+                        {(() => {
+                          const course = DUMMY_COURSES.find(c => c.id === parseInt(entry.course_id));
+                          const batch = course ? DUMMY_BATCHES[course.id]?.find(b => b.id === parseInt(entry.batch_id)) : null;
+                          return batch ? batch.name : '-';
+                        })()}
+                      </td>
+                      <td className="border px-3 py-2">
+                        <span className={`px-2 py-1 rounded text-sm ${entry.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                          {entry.status ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
                     </>
                   )}
                   <td className="border px-3 py-2 space-x-2 text-center">
