@@ -17,12 +17,22 @@ export const courseApi = apiSlice.injectEndpoints({
         try {
           const { data: apiData } = await queryFulfilled;
           dispatch(setCourseData(apiData));
-          dispatch(setCourseMetaData(apiData?.meta));
+          dispatch(setCourseMetaData(apiData?.data.pagination));
         } catch (err) {
           console.error(err);
         }
       },
     }),
+
+    // Get Batches for a Course
+    getCourseBatches: builder.query({
+      query: (encrypted_course_id) => `admin/courses/${encrypted_course_id}/batches`,
+      // Add proper error handling and caching
+      providesTags: (result, error, encrypted_course_id) => [
+        { type: 'CourseBatches', id: encrypted_course_id }
+      ],
+    }),
+
 
     // ADD A NEW COURSE
     addCourse: builder.mutation({
@@ -65,4 +75,5 @@ export const {
   useAddCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
+  useGetCourseBatchesQuery
 } = courseApi;

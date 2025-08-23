@@ -4,61 +4,61 @@ import { errorNotify, successNotify } from "../utils/notify";
 import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
-    addNewStudentToList,
-    removeStudentFromList,
-    setAddStudentModal,
-    setEditStudentModal,
-    setSelectedStudentData,
-    setStudentConfirmationModal,
-    setStudentMetaData,
-    updateStudentInList,
-    useAddStudentMutation,
-    useDeleteStudentMutation,
-    useGetAllStudentsQuery,
-    useUpdateStudentMutation,
-} from "../redux-rtk/student";
-import { CreateStudentSchema, EditStudentSchema, validateZodSchema } from "@utils/validations";
+    addNewTeacherToList,
+    removeTeacherFromList,
+    setAddTeacherModal,
+    setEditTeacherModal,
+    setSelectedTeacherData,
+    setTeacherConfirmationModal,
+    setTeacherMetaData,
+    updateTeacherInList,
+    useAddTeacherMutation,
+    useDeleteTeacherMutation,
+    useGetAllTeachersQuery,
+    useUpdateTeacherMutation,
+} from "../redux-rtk/teacher";
+import { CreateTeacherSchema, EditTeacherSchema, validateZodSchema } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
 import { useGetAllCoursesQuery, useGetCourseBatchesQuery } from "../redux-rtk/course";
 
-// ** Student List **
-export const useStudents = () => {
+// ** Teacher List **
+export const useTeachers = () => {
     const dispatch = useDispatch();
     const { isConfirmModalOpen, dataList, meta, selectedData } = useSelector(
-        (state) => state.student
+        (state) => state.teacher
     );
     const { currentPage, pageSize } = meta || {};
 
     const [searchKeyword, setSearchKeyword] = useState("");
     const debouncedSearch = useDebouncedSearch(searchKeyword, 1000);
 
-    const [deleteStudent, { isLoading: deleteLoading }] = useDeleteStudentMutation();
-    const { isLoading, isFetching, isError, error } = useGetAllStudentsQuery(
+    const [deleteTeacher, { isLoading: deleteLoading }] = useDeleteTeacherMutation();
+    const { isLoading, isFetching, isError, error } = useGetAllTeachersQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
         { refetchOnMountOrArgChange: true }
     );
 
-    const updatePageMeta = (value) => dispatch(setStudentMetaData(value));
-    const handleSetSelectedStudent = (data) => dispatch(setSelectedStudentData(data));
+    const updatePageMeta = (value) => dispatch(setTeacherMetaData(value));
+    const handleSetSelectedTeacher = (data) => dispatch(setSelectedTeacherData(data));
 
-    const handleOpenAddStudentModal = () => dispatch(setAddStudentModal(true));
-    const handleOpenEditStudentModal = () => dispatch(setEditStudentModal(true));
+    const handleOpenAddTeacherModal = () => dispatch(setAddTeacherModal(true));
+    const handleOpenEditTeacherModal = () => dispatch(setEditTeacherModal(true));
 
-    const handleOpenConfirmationModal = () => dispatch(setStudentConfirmationModal(true));
+    const handleOpenConfirmationModal = () => dispatch(setTeacherConfirmationModal(true));
     const handleCloseConfirmationModal = () => {
-        dispatch(setStudentConfirmationModal(false));
-        dispatch(setSelectedStudentData(null));
+        dispatch(setTeacherConfirmationModal(false));
+        dispatch(setSelectedTeacherData(null));
     };
 
-    const handleDelete = ({ studentId }) => {
-        if (!studentId) return errorNotify("Student ID is required.");
+    const handleDelete = ({ teacherId }) => {
+        if (!teacherId) return errorNotify("Teacher ID is required.");
 
-        deleteStudent({ studentId })
+        deleteTeacher({ teacherId })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
                     handleCloseConfirmationModal();
-                    dispatch(removeStudentFromList({ id: studentId }));
+                    dispatch(removeTeacherFromList({ id: teacherId }));
                     successNotify(response?.message);
                 }
             })
@@ -80,23 +80,23 @@ export const useStudents = () => {
         searchKeyword,
         setSearchKeyword,
         selectedData,
-        handleSetSelectedStudent,
+        handleSetSelectedTeacher,
         isConfirmModalOpen,
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
-        handleOpenAddStudentModal,
-        handleOpenEditStudentModal,
+        handleOpenAddTeacherModal,
+        handleOpenEditTeacherModal,
     };
 };
 
 
 
 
-// ** Add Student Modal **
-export const useAddStudent = () => {
+// ** Add Teacher Modal **
+export const useAddTeacher = () => {
     const dispatch = useDispatch();
-    const [addStudent, { isLoading: isAdding }] = useAddStudentMutation();
-    const { isAddModalOpen } = useSelector((state) => state.student);
+    const [addTeacher, { isLoading: isAdding }] = useAddTeacherMutation();
+    const { isAddModalOpen } = useSelector((state) => state.teacher);
 
     // State for batches options
     const [batchesOptions, setBatchesOptions] = useState([]);
@@ -201,11 +201,11 @@ export const useAddStudent = () => {
     const isActionBtnDisabled =
         !formValues.name || !formValues.course_id || !formValues.batch_id || !formValues.mobile;
 
-    const handleCloseAddStudentModal = () => {
+    const handleCloseAddTeacherModal = () => {
         reset();
         setSelectedCourseEncryptedId(null);
         setBatchesOptions([]);
-        dispatch(setAddStudentModal(false));
+        dispatch(setAddTeacherModal(false));
     };
 
     // Handle file upload with better error handling
@@ -238,17 +238,17 @@ export const useAddStudent = () => {
         }
     };
 
-    const handleAddStudent = (data) => {
-        const validatedData = validateZodSchema({ schema: CreateStudentSchema, data });
+    const handleAddTeacher = (data) => {
+        const validatedData = validateZodSchema({ schema: CreateTeacherSchema, data });
         if (!validatedData) return;
 
-        addStudent({ data: validatedData })
+        addTeacher({ data: validatedData })
             .unwrap()
             .then(response => {
                 if (response?.success) {
-                    handleCloseAddStudentModal();
-                    dispatch(addNewStudentToList(response.data));
-                    successNotify(response?.message || "Student added successfully");
+                    handleCloseAddTeacherModal();
+                    dispatch(addNewTeacherToList(response.data));
+                    successNotify(response?.message || "Teacher added successfully");
                 }
             })
             .catch(err => {
@@ -259,12 +259,12 @@ export const useAddStudent = () => {
 
     return {
         isAddModalOpen,
-        handleCloseAddStudentModal,
+        handleCloseAddTeacherModal,
         isLoading: isAdding || isCoursesLoading,
         control,
         handleSubmit,
         isActionBtnDisabled,
-        handleAddStudent,
+        handleAddTeacher,
         courseOptions,
         batchesOptions,
         handleImageUpload,
@@ -275,11 +275,11 @@ export const useAddStudent = () => {
 };
 
 
-// ** Edit Student Modal **
-export const useEditStudent = () => {
+// ** Edit Teacher Modal **
+export const useEditTeacher = () => {
     const dispatch = useDispatch();
-    const [updateStudent, { isLoading }] = useUpdateStudentMutation();
-    const { isEditModalOpen, selectedData } = useSelector((state) => state.student);
+    const [updateTeacher, { isLoading }] = useUpdateTeacherMutation();
+    const { isEditModalOpen, selectedData } = useSelector((state) => state.teacher);
 
     // State for batches options
     const [batchesOptions, setBatchesOptions] = useState([]);
@@ -411,11 +411,11 @@ export const useEditStudent = () => {
     const isActionBtnDisabled =
         !formValues.name || !formValues.course_id || !formValues.batch_id || !formValues.mobile;
 
-    const handleCloseEditStudentModal = () => {
+    const handleCloseEditTeacherModal = () => {
         reset();
         setSelectedCourseEncryptedId(null);
         setBatchesOptions([]);
-        dispatch(setEditStudentModal(false));
+        dispatch(setEditTeacherModal(false));
     };
 
     // Handle file upload with better error handling
@@ -448,21 +448,21 @@ export const useEditStudent = () => {
         }
     };
 
-    const handleEditStudent = (data) => {
+    const handleEditTeacher = (data) => {
         if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE) {
-            return errorNotify("Invalid student type.");
+            return errorNotify("Invalid teacher type.");
         }
 
-        const validatedData = validateZodSchema({ schema: EditStudentSchema, data });
+        const validatedData = validateZodSchema({ schema: EditTeacherSchema, data });
         if (!validatedData) return;
 
-        updateStudent({ data: validatedData, studentId: selectedData?.encrypted_id })
+        updateTeacher({ data: validatedData, teacherId: selectedData?.encrypted_id })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
-                    handleCloseEditStudentModal();
-                    dispatch(updateStudentInList(response?.data));
-                    successNotify(response?.message || "Student updated successfully");
+                    handleCloseEditTeacherModal();
+                    dispatch(updateTeacherInList(response?.data));
+                    successNotify(response?.message || "Teacher updated successfully");
                 }
             })
             .catch((err) => {
@@ -473,12 +473,12 @@ export const useEditStudent = () => {
 
     return {
         isEditModalOpen,
-        handleCloseEditStudentModal,
+        handleCloseEditTeacherModal,
         isLoading: isLoading || isCoursesLoading,
         control,
         handleSubmit,
         isActionBtnDisabled,
-        handleEditStudent,
+        handleEditTeacher,
         courseOptions,
         batchesOptions,
         handleImageUpload,

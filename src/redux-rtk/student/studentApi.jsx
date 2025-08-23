@@ -18,7 +18,7 @@ export const studentApi = apiSlice.injectEndpoints({
           const { data: apiData } = await queryFulfilled;
           console.log(apiData)
           dispatch(setStudentData(apiData));
-          dispatch(setStudentMetaData(apiData?.meta));
+          dispatch(setStudentMetaData(apiData?.data.pagination));
         } catch (err) {
           console.error(err);
         }

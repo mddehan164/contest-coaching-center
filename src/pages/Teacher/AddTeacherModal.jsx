@@ -1,48 +1,46 @@
 import { Controller } from "react-hook-form";
-import { useEditStudent } from "@hooks/useStudent";
+import { useAddTeacher } from "@hooks/useTeacher";
 import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect } from "@shared/forms";
 import NotifyContainer from "../../utils/notify";
 
-const EditStudentModal = () => {
+const AddTeacherModal = () => {
     const {
-        isEditModalOpen,
-        handleCloseEditStudentModal,
+        isAddModalOpen,
+        handleCloseAddTeacherModal,
         control,
         isActionBtnDisabled,
         isLoading,
         handleSubmit,
-        handleEditStudent,
+        handleAddTeacher,
         courseOptions,
         batchesOptions,
         handleImageUpload,
         formValues,
-    } = useEditStudent();
+    } = useAddTeacher();
 
     return (
         <CustomContainerModal
-            isOpen={isEditModalOpen}
-            onClose={handleCloseEditStudentModal}
-            title="Edit Student"
-            description="Update student details"
-            handler={handleSubmit(handleEditStudent)}
-            actionBtnText="Update Student"
+            isOpen={isAddModalOpen}
+            onClose={handleCloseAddTeacherModal}
+            title="Add New Teacher"
+            description="Enter teacher details"
+            handler={handleSubmit(handleAddTeacher)}
+            actionBtnText="Create Teacher"
             isActionBtnDisabled={isActionBtnDisabled}
             isLoading={isLoading}
         >
             <div className="my-10 space-y-5">
                 <Controller name="name" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        label="Student Name" 
-                        placeholder="Enter name" 
-                        {...field} 
-                    />
+                    isCol={true}  label="Teacher Name" placeholder="Enter name" {...field} />
                 )} />
+
+                
 
                 <Controller name="course_id" control={control} render={({ field }) => (
                     <FormSelect
-                        isCol={true} 
+                    isCol={true} 
                         label="Select Course"
                         options={courseOptions}
                         selectedOption={courseOptions.find(opt => opt.value === field.value)}
@@ -54,7 +52,7 @@ const EditStudentModal = () => {
 
                 <Controller name="batch_id" control={control} render={({ field }) => (
                     <FormSelect
-                        isCol={true} 
+                    isCol={true} 
                         label="Select Batch"
                         options={batchesOptions}
                         selectedOption={batchesOptions.find(opt => opt.value === field.value)}
@@ -66,25 +64,17 @@ const EditStudentModal = () => {
 
                 <Controller name="father_name" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        label="Father's Name" 
-                        placeholder="Enter father's name" 
-                        {...field} 
-                    />
+                    isCol={true}  label="Father's Name" placeholder="Enter father's name" {...field} />
                 )} />
 
                 <Controller name="mother_name" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        label="Mother's Name" 
-                        placeholder="Enter mother's name" 
-                        {...field} 
-                    />
+                    isCol={true}  label="Mother's Name" placeholder="Enter mother's name" {...field} />
                 )} />
 
                 <Controller name="gender" control={control} render={({ field }) => (
                     <FormSelect
-                        isCol={true} 
+                    isCol={true} 
                         label="Gender"
                         options={[
                             { value: "male", label: "Male" },
@@ -97,63 +87,46 @@ const EditStudentModal = () => {
 
                 <Controller name="mobile" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        label="Mobile" 
-                        placeholder="01712345678" 
-                        {...field} 
-                    />
+                    isCol={true}  label="Mobile" placeholder="01712345678" {...field} />
                 )} />
 
                 <Controller name="address" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        label="Address" 
-                        placeholder="Enter address" 
-                        {...field} 
-                    />
+                    isCol={true}  label="Address" placeholder="Enter address" {...field} />
                 )} />
 
                 <Controller name="ssc_result" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        type="number" 
-                        step="0.01" 
-                        label="SSC Result" 
-                        {...field} 
-                    />
+                    isCol={true}  type="number" step="0.01" label="SSC Result" {...field} />
                 )} />
 
                 <Controller name="hsc_result" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        type="number" 
-                        step="0.01" 
-                        label="HSC Result" 
-                        {...field} 
-                    />
+                    isCol={true}  type="number" step="0.01" label="HSC Result" {...field} />
                 )} />
 
                 <Controller name="total_amount" control={control} render={({ field }) => (
                     <FormInput
-                        isCol={true} 
-                        type="number" 
-                        label="Total Amount" 
-                        {...field} 
-                    />
+                    isCol={true}  type="number" label="Total Amount" {...field} />
                 )} />
 
-                <Controller name="status" control={control} render={({ field }) => (
+                <Controller name="status" isCol={true} control={control} render={({ field }) => (
                     <FormSelect
-                        isCol={true} 
+                    isCol={true} 
                         label="Status"
                         options={[{ value: 1, label: "Active" }, { value: 0, label: "Inactive" }]}
                         selectedOption={{ value: field.value, label: field.value === 1 ? "Active" : "Inactive" }}
                         handleChange={(opt) => field.onChange(opt.value)}
                     />
                 )} />
-
                 <Controller name="image" control={control} render={({ field }) => (
                     <div>
+                        {/* <FormInput
+                            label="Image URL"
+                            placeholder="teachers/john.jpg"
+                            value={field.value}
+                            readOnly
+                        /> */}
                         <input
                             type="file"
                             onChange={e => e.target.files[0] && handleImageUpload(e.target.files[0])}
@@ -167,4 +140,4 @@ const EditStudentModal = () => {
     );
 };
 
-export default EditStudentModal;
+export default AddTeacherModal;

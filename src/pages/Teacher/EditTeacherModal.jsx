@@ -1,32 +1,32 @@
 import { Controller } from "react-hook-form";
-import { useEditStudent } from "@hooks/useStudent";
+import { useEditTeacher } from "@hooks/useTeacher";
 import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect } from "@shared/forms";
 import NotifyContainer from "../../utils/notify";
 
-const EditStudentModal = () => {
+const EditTeacherModal = () => {
     const {
         isEditModalOpen,
-        handleCloseEditStudentModal,
+        handleCloseEditTeacherModal,
         control,
         isActionBtnDisabled,
         isLoading,
         handleSubmit,
-        handleEditStudent,
+        handleEditTeacher,
         courseOptions,
         batchesOptions,
         handleImageUpload,
         formValues,
-    } = useEditStudent();
+    } = useEditTeacher();
 
     return (
         <CustomContainerModal
             isOpen={isEditModalOpen}
-            onClose={handleCloseEditStudentModal}
-            title="Edit Student"
-            description="Update student details"
-            handler={handleSubmit(handleEditStudent)}
-            actionBtnText="Update Student"
+            onClose={handleCloseEditTeacherModal}
+            title="Edit Teacher"
+            description="Update teacher details"
+            handler={handleSubmit(handleEditTeacher)}
+            actionBtnText="Update Teacher"
             isActionBtnDisabled={isActionBtnDisabled}
             isLoading={isLoading}
         >
@@ -34,7 +34,7 @@ const EditStudentModal = () => {
                 <Controller name="name" control={control} render={({ field }) => (
                     <FormInput
                         isCol={true} 
-                        label="Student Name" 
+                        label="Teacher Name" 
                         placeholder="Enter name" 
                         {...field} 
                     />
@@ -167,4 +167,4 @@ const EditStudentModal = () => {
     );
 };
 
-export default EditStudentModal;
+export default EditTeacherModal;

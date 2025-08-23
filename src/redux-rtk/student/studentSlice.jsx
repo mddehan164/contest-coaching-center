@@ -36,7 +36,7 @@ const studentSlice = createSlice({
     },
 
     setStudentData: (state, action) => {
-      const { student, pagination } = action.payload.data;
+      const { students, pagination } = action.payload.data;
 
       const meta = {
         totalItems: pagination.total,
@@ -48,7 +48,7 @@ const studentSlice = createSlice({
       };
 
       const result = setPaginatedDataFromApi({
-        incomingData: student,
+        incomingData: students,
         incomingMeta: meta,
         existingData: state.data,
         existingMeta: state.meta,

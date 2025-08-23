@@ -1,14 +1,14 @@
 import FormInput from '../../shared/forms/FormInput';
 import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
-import AddStudentModal from './AddStudentModal';
-import EditStudentModal from './EditStudentModal';
+import AddCourseModal from './AddCourseModal';
+import EditCourseModal from './EditCourseModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
-import { useStudents } from '../../hooks/useStudent';
+import { useCourses } from '../../hooks/useCourse';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
 
-const Student = () => {
+const Course = () => {
     const {
         isLoading,
         isError,
@@ -19,26 +19,26 @@ const Student = () => {
         searchKeyword,
         deleteLoading,
         setSearchKeyword,
-        handleSetSelectedStudent,
+        handleSetSelectedCourse,
         updatePageMeta,
         handleDelete,
-        handleOpenEditStudentModal,
-        handleOpenAddStudentModal,
+        handleOpenEditCourseModal,
+        handleOpenAddCourseModal,
         isConfirmModalOpen,
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
-    } = useStudents();
+    } = useCourses();
 
     return (
         <div>
             <div className="card-cmn space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 className="title-cmn">Student List</h2>
+                    <h2 className="title-cmn">Course List</h2>
 
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="w-full md:w-[269px] relative">
                             <FormInput
-                                placeholder="Search Student"
+                                placeholder="Search Course"
                                 inputCss="pr-12 !py-2.5 !rounded-lg !bg-white"
                                 value={searchKeyword}
                                 onChange={(e) => setSearchKeyword(e.target.value)}
@@ -47,10 +47,10 @@ const Student = () => {
                         </div>
 
                         <SecondaryButton
-                            text="Add New Student"
+                            text="Add New Course"
                             width="w-full md:w-[167px]"
                             startIcon={<AddSvg />}
-                            onClick={() => handleOpenAddStudentModal()}
+                            onClick={() => handleOpenAddCourseModal()}
                         />
                     </div>
                 </div>
@@ -63,16 +63,16 @@ const Student = () => {
                     pageSize={meta?.pageSize || 10}
                     totalPages={meta?.totalPages || 1}
                     updatePageMeta={updatePageMeta}
-                    columns={["SL", "Student Name", "Mobile", "Address", "Course", "Status", "Action"]}
+                    columns={["SL", "Course Name", "Course Description", "Price", "Offer Price", "Status", "Action"]}
                     dataLength={dataList?.length || 0}
                 >
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
                             <td className="table_td">{index + 1}</td>
-                            <td className="table_td">{item?.name}</td>  
-                            <td className="table_td">{item?.mobile}</td>
-                            <td className="table_td truncate">{item?.address}</td>
-                            <td className="table_td">{item?.course?.title}</td>
+                            <td className="table_td">{item?.title}</td>
+                            <td className="table_td truncate">{item?.short_des}</td>
+                            <td className="table_td">{item?.price}</td>
+                            <td className="table_td">{item?.offer_price}</td>
                             <td className="table_td">
                                 {item?.status === 1 ? "Active" : "Inactive"}
                             </td>
@@ -80,20 +80,20 @@ const Student = () => {
                                 <div className="flex items-center gap-x-3">
                                     <button
                                         onClick={() => {
-                                            handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.UPDATE });
-                                            handleOpenEditStudentModal();
+                                            handleSetSelectedCourse({ ...item, type: SelectedSliceTypeEnum.UPDATE });
+                                            handleOpenEditCourseModal();
                                         }}
                                     >
                                         <EditSvg />
                                     </button>
-                                    <button
+                                    {/* <button
                                         onClick={() => {
-                                            handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.DELETE });
+                                            handleSetSelectedCourse({ ...item, type: SelectedSliceTypeEnum.DELETE });
                                             handleOpenConfirmationModal();
                                         }}
                                     >
                                         <DeleteSvg />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </td>
                         </tr>
@@ -101,11 +101,11 @@ const Student = () => {
                 </CustomTable>
             </div>
 
-            {/* add student modal */}
-            <AddStudentModal />
+            {/* add course modal */}
+            <AddCourseModal />
 
-            {/* edit student modal */}
-            <EditStudentModal data={selectedData} />
+            {/* edit course modal */}
+            <EditCourseModal data={selectedData} />
 
             {/* delete modal */}
             <CustomConfirmationModal
@@ -116,14 +116,14 @@ const Student = () => {
                 }
                 description={
                     selectedData?.type === SelectedSliceTypeEnum.DELETE
-                        ? 'You want to remove this student?'
+                        ? 'You want to remove this course?'
                         : selectedData?.type === SelectedSliceTypeEnum.UPDATE
                             ? 'Updated successfully.'
                             : 'Action completed.'
                 }
                 handler={() => {
                     if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
-                        handleDelete({ studentId: selectedData.id }); // ✅ studentId instead of adminId
+                        handleDelete({ courseId: selectedData.id }); // ✅ courseId instead of adminId
                     else handleCloseConfirmationModal();
                 }}
                 deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
@@ -134,4 +134,4 @@ const Student = () => {
     );
 };
 
-export default Student;
+export default Course;

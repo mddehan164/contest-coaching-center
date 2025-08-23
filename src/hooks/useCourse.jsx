@@ -4,61 +4,61 @@ import { errorNotify, successNotify } from "../utils/notify";
 import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
-    addNewBatchToList,
-    removeBatchFromList,
-    setAddBatchModal,
-    setEditBatchModal,
-    setSelectedBatchData,
-    setBatchConfirmationModal,
-    setBatchMetaData,
-    updateBatchInList,
-    useAddBatchMutation,
-    useDeleteBatchMutation,
-    useGetAllBatchsQuery,
-    useUpdateBatchMutation,
-} from "../redux-rtk/batch";
-import { CreateBatchSchema, EditBatchSchema, validateZodSchema } from "@utils/validations";
+    addNewCourseToList,
+    removeCourseFromList,
+    setAddCourseModal,
+    setEditCourseModal,
+    setSelectedCourseData,
+    setCourseConfirmationModal,
+    setCourseMetaData,
+    updateCourseInList,
+    useAddCourseMutation,
+    useDeleteCourseMutation,
+    useGetAllCoursesQuery,
+    useUpdateCourseMutation,
+    useGetCourseBatchesQuery
+} from "../redux-rtk/course";
+import { CreateCourseSchema, EditCourseSchema, validateZodSchema } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
-import { useGetAllCoursesQuery, useGetCourseBatchesQuery } from "../redux-rtk/course";
 
-// ** Batch List **
-export const useBatchs = () => {
+// ** Course List **
+export const useCourses = () => {
     const dispatch = useDispatch();
     const { isConfirmModalOpen, dataList, meta, selectedData } = useSelector(
-        (state) => state.batch
+        (state) => state.course
     );
     const { currentPage, pageSize } = meta || {};
 
     const [searchKeyword, setSearchKeyword] = useState("");
     const debouncedSearch = useDebouncedSearch(searchKeyword, 1000);
 
-    const [deleteBatch, { isLoading: deleteLoading }] = useDeleteBatchMutation();
-    const { isLoading, isFetching, isError, error } = useGetAllBatchsQuery(
+    const [deleteCourse, { isLoading: deleteLoading }] = useDeleteCourseMutation();
+    const { isLoading, isFetching, isError, error } = useGetAllCoursesQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
         { refetchOnMountOrArgChange: true }
     );
 
-    const updatePageMeta = (value) => dispatch(setBatchMetaData(value));
-    const handleSetSelectedBatch = (data) => dispatch(setSelectedBatchData(data));
+    const updatePageMeta = (value) => dispatch(setCourseMetaData(value));
+    const handleSetSelectedCourse = (data) => dispatch(setSelectedCourseData(data));
 
-    const handleOpenAddBatchModal = () => dispatch(setAddBatchModal(true));
-    const handleOpenEditBatchModal = () => dispatch(setEditBatchModal(true));
+    const handleOpenAddCourseModal = () => dispatch(setAddCourseModal(true));
+    const handleOpenEditCourseModal = () => dispatch(setEditCourseModal(true));
 
-    const handleOpenConfirmationModal = () => dispatch(setBatchConfirmationModal(true));
+    const handleOpenConfirmationModal = () => dispatch(setCourseConfirmationModal(true));
     const handleCloseConfirmationModal = () => {
-        dispatch(setBatchConfirmationModal(false));
-        dispatch(setSelectedBatchData(null));
+        dispatch(setCourseConfirmationModal(false));
+        dispatch(setSelectedCourseData(null));
     };
 
-    const handleDelete = ({ batchId }) => {
-        if (!batchId) return errorNotify("Batch ID is required.");
+    const handleDelete = ({ courseId }) => {
+        if (!courseId) return errorNotify("Course ID is required.");
 
-        deleteBatch({ batchId })
+        deleteCourse({ courseId })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
                     handleCloseConfirmationModal();
-                    dispatch(removeBatchFromList({ id: batchId }));
+                    dispatch(removeCourseFromList({ id: courseId }));
                     successNotify(response?.message);
                 }
             })
@@ -80,20 +80,20 @@ export const useBatchs = () => {
         searchKeyword,
         setSearchKeyword,
         selectedData,
-        handleSetSelectedBatch,
+        handleSetSelectedCourse,
         isConfirmModalOpen,
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
-        handleOpenAddBatchModal,
-        handleOpenEditBatchModal,
+        handleOpenAddCourseModal,
+        handleOpenEditCourseModal,
     };
 };
 
-// ** Add Batch Modal **
-export const useAddBatch = () => {
+// ** Add Course Modal **
+export const useAddCourse = () => {
     const dispatch = useDispatch();
-    const [addBatch, { isLoading: isAdding }] = useAddBatchMutation();
-    const { isAddModalOpen } = useSelector((state) => state.batch);
+    const [addCourse, { isLoading: isAdding }] = useAddCourseMutation();
+    const { isAddModalOpen } = useSelector((state) => state.course);
 
     const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({
         page: 1,
@@ -114,9 +114,9 @@ export const useAddBatch = () => {
     const isActionBtnDisabled =
         !formValues.name || !formValues.course_id || !formValues.start_date || !formValues.end_date;
 
-    const handleCloseAddBatchModal = () => {
+    const handleCloseAddCourseModal = () => {
         reset();
-        dispatch(setAddBatchModal(false));
+        dispatch(setAddCourseModal(false));
     };
 
     const courseOptions = coursesData?.data?.courses?.map(course => ({
@@ -143,7 +143,7 @@ export const useAddBatch = () => {
         return { before: today };
     };
 
-    const handleAddBatch = (data) => {
+    const handleAddCourse = (data) => {
         const startDate = new Date(data.start_date);
         const endDate = new Date(data.end_date);
         const today = new Date();
@@ -165,15 +165,15 @@ export const useAddBatch = () => {
             end_date: data.end_date ? data.end_date.toISOString().split("T")[0] : "",
         };
 
-        const validatedData = validateZodSchema({ schema: CreateBatchSchema, data: safeData });
+        const validatedData = validateZodSchema({ schema: CreateCourseSchema, data: safeData });
         if (!validatedData) return;
 
-        addBatch({ data: validatedData })
+        addCourse({ data: validatedData })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
-                    handleCloseAddBatchModal();
-                    dispatch(addNewBatchToList(response.data));
+                    handleCloseAddCourseModal();
+                    dispatch(addNewCourseToList(response.data));
                     successNotify(response?.message);
                 }
             })
@@ -184,12 +184,12 @@ export const useAddBatch = () => {
 
     return {
         isAddModalOpen,
-        handleCloseAddBatchModal,
+        handleCloseAddCourseModal,
         isLoading: isAdding || isCoursesLoading,
         control,
         handleSubmit,
         isActionBtnDisabled,
-        handleAddBatch,
+        handleAddCourse,
         courseOptions,
         isCoursesLoading,
         getStartDateDisabled,
@@ -198,11 +198,11 @@ export const useAddBatch = () => {
     };
 };
 
-// ** Edit Batch Modal **
-export const useEditBatch = ({ data }) => {
+// ** Edit Course Modal **
+export const useEditCourse = ({ data }) => {
     const dispatch = useDispatch();
-    const [updateBatch, { isLoading }] = useUpdateBatchMutation();
-    const { isEditModalOpen, selectedData } = useSelector((state) => state.batch);
+    const [updateCourse, { isLoading }] = useUpdateCourseMutation();
+    const { isEditModalOpen, selectedData } = useSelector((state) => state.course);
 
     const { control, handleSubmit, reset, watch, setValue } = useForm({
         defaultValues: {
@@ -228,11 +228,11 @@ export const useEditBatch = ({ data }) => {
     const isActionBtnDisabled =
         !formValues.name || !formValues.course_id || !formValues.start_date || !formValues.end_date;
 
-    const handleCloseEditBatchModal = () => {
+    const handleCloseEditCourseModal = () => {
         reset();
-        dispatch(setEditBatchModal(false));
+        dispatch(setEditCourseModal(false));
     };
-    const handleOpenConfirmationModal = () => dispatch(setBatchConfirmationModal(true));
+    const handleOpenConfirmationModal = () => dispatch(setCourseConfirmationModal(true));
 
     const getStartDateDisabled = () => {
         const today = new Date();
@@ -255,7 +255,7 @@ export const useEditBatch = ({ data }) => {
 
     const handleUpdate = (data) => {
         if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE)
-            return errorNotify("Invalid batch type.");
+            return errorNotify("Invalid course type.");
 
         const startDate = new Date(data.start_date);
         const endDate = new Date(data.end_date);
@@ -278,19 +278,19 @@ export const useEditBatch = ({ data }) => {
             end_date: data.end_date ? data.end_date.toISOString().split("T")[0] : "",
         };
 
-        const validatedData = validateZodSchema({ schema: EditBatchSchema, data: safeData });
+        const validatedData = validateZodSchema({ schema: EditCourseSchema, data: safeData });
         if (!validatedData) return;
 
         // FIX: Use selectedData.encrypted_id instead of selectedData.course.encrypted_id
-        updateBatch({ data: validatedData, batchId: selectedData?.encrypted_id })
+        updateCourse({ data: validatedData, courseId: selectedData?.encrypted_id })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
-                    handleCloseEditBatchModal();
+                    handleCloseEditCourseModal();
                     // Remove this line as it's likely causing issues
                     // handleOpenConfirmationModal();
                     console.log({...response?.data}, selectedData);
-                    dispatch(updateBatchInList(response?.data));
+                    dispatch(updateCourseInList(response?.data));
                     successNotify(response?.message);
                 }
             })
@@ -301,7 +301,7 @@ export const useEditBatch = ({ data }) => {
 
     return {
         isEditModalOpen,
-        handleCloseEditBatchModal,
+        handleCloseEditCourseModal,
         control,
         isActionBtnDisabled,
         isLoading,

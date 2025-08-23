@@ -1,23 +1,24 @@
-import { setBatchData, setBatchMetaData } from "./batchSlice";
+import { setTeacherData, setTeacherMetaData } from "./teacherSlice";
 import { apiSlice } from "../api/apiSlice";
 
-export const batchApi = apiSlice.injectEndpoints({
+export const teacherApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
 
     // GET ALL BATCHES
-    getAllBatchs: builder.query({
+    getAllTeachers: builder.query({
       query: (params = { page: 1, limit: 10 }) => {
         const queryString = new URLSearchParams(params).toString();
         return {
-          url: `admin/batches/?${queryString}`,
+          url: `teachers/?${queryString}`,
           method: "GET"
         };
       },
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
-          dispatch(setBatchData(apiData));
-          dispatch(setBatchMetaData(apiData?.data?.pagination));
+          console.log(apiData)
+          dispatch(setTeacherData(apiData));
+          dispatch(setTeacherMetaData(apiData?.data.pagination));
         } catch (err) {
           console.error(err);
         }
@@ -25,10 +26,10 @@ export const batchApi = apiSlice.injectEndpoints({
     }),
 
     // ADD A NEW BATCH
-    addBatch: builder.mutation({
+    addTeacher: builder.mutation({
       query: ({ data }) => {
         return {
-          url: "admin/batches",
+          url: "admin/teacheres",
           method: "POST",
           body: data
         };
@@ -36,10 +37,10 @@ export const batchApi = apiSlice.injectEndpoints({
     }),
 
     // UPDATE A BATCH
-    updateBatch: builder.mutation({
-      query: ({ data, batchId }) => {
+    updateTeacher: builder.mutation({
+      query: ({ data, teacherId }) => {
         return {
-          url: `admin/batches/${batchId}`,
+          url: `admin/teacheres/${teacherId}`,
           method: "PATCH",
           body: data
         };
@@ -47,10 +48,10 @@ export const batchApi = apiSlice.injectEndpoints({
     }),
 
     // DELETE A BATCH
-    deleteBatch: builder.mutation({
-      query: ({ batchId }) => {
+    deleteTeacher: builder.mutation({
+      query: ({ teacherId }) => {
         return {
-          url: `admin/batches/${batchId}`,
+          url: `admin/teacheres/${teacherId}`,
           method: "DELETE",
         };
       },
@@ -61,8 +62,8 @@ export const batchApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetAllBatchsQuery,
-  useAddBatchMutation,
-  useDeleteBatchMutation,
-  useUpdateBatchMutation,
-} = batchApi;
+  useGetAllTeachersQuery,
+  useAddTeacherMutation,
+  useDeleteTeacherMutation,
+  useUpdateTeacherMutation,
+} = teacherApi;

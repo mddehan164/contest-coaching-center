@@ -86,14 +86,14 @@ const Batch = () => {
                                     >
                                         <EditSvg />
                                     </button>
-                                    <button
+                                    {/* <button
                                         onClick={() => {
                                             handleSetSelectedBatch({ ...item, type: SelectedSliceTypeEnum.DELETE });
                                             handleOpenConfirmationModal();
                                         }}
                                     >
                                         <DeleteSvg />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </td>
                         </tr>

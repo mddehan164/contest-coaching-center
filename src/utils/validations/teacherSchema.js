@@ -13,9 +13,9 @@ const isNotPastDate = (dateStr) => {
     return date >= today;
 };
 
-// Create Student Schema - for adding new students
-export const CreateStudentSchema = z.object({
-    name: z.string().min(1, "Student name is required."),
+// Create Teacher Schema - for adding new teachers
+export const CreateTeacherSchema = z.object({
+    name: z.string().min(1, "Teacher name is required."),
     image: z.string().optional().default(""),
     course_id: z.number().min(1, "Course ID is required."),
     batch_id: z.number().min(1, "Batch ID is required."),
@@ -30,9 +30,9 @@ export const CreateStudentSchema = z.object({
     status: z.number().optional().default(1),
 });
 
-// Edit Student Schema - for updating existing students (all fields optional for partial updates)
-export const EditStudentSchema = z.object({
-    name: z.string().min(1, "Student name is required.").optional(),
+// Edit Teacher Schema - for updating existing teachers (all fields optional for partial updates)
+export const EditTeacherSchema = z.object({
+    name: z.string().min(1, "Teacher name is required.").optional(),
     image: z.string().optional(),
     course_id: z.number().min(1, "Course ID is required.").optional(),
     batch_id: z.number().min(1, "Batch ID is required.").optional(),
@@ -72,6 +72,6 @@ export const EditStudentSchema = z.object({
 );
 
 // Legacy aliases for backward compatibility
-export const StudentSchema = CreateStudentSchema;
-export const AddStudentSchema = CreateStudentSchema;
-export const UpdateStudentSchema = EditStudentSchema;
+export const TeacherSchema = CreateTeacherSchema;
+export const AddTeacherSchema = CreateTeacherSchema;
+export const UpdateTeacherSchema = EditTeacherSchema;
