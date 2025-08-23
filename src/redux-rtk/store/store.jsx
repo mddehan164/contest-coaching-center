@@ -4,6 +4,7 @@ import authReducer from '../auth/authSlice'
 import uiReducer from '../uiSlice'
 import batchReducer from '../batch/batchSlice'
 import courseReducer from '../course/courseSlice'
+import studentReducer from '../student/studentSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     ui: uiReducer,
     batch: batchReducer,
     course: courseReducer,
+    student: studentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

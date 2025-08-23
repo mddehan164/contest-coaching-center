@@ -1,8 +1,10 @@
 import { AllSuccessCard, BranchEditor, CourseDetails, Customise, Error, GalleryEditor, GalleryMain, ServiceEditor, StatsEditor, SuccessEditor, SummaryEditor } from "../components";
-import { DCourse, DSlider, Help, Logout, Notice, Schedule, Settings, Student, Teacher } from "../dashboardPages";
+import { DCourse, DSlider, Help, Logout, Notice, Schedule, Settings, Teacher } from "../dashboardPages";
 
 import { Admission, BeforeVerify, Branches, Courses, Login, Profile, Register, Verify } from "../pages";
-import Batch from "../pages/User/Batch";
+import Batch from "../pages/Batch/Batch";
+import Student from "../pages/Student/Student";
+// import { Student } from "../pages/Student";
 
 export let mainPageRoutes = [
     { element: <Courses />, path: "courses" },
