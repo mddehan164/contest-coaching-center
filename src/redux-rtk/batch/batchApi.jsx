@@ -40,7 +40,7 @@ export const batchApi = apiSlice.injectEndpoints({
       query: ({ data, batchId }) => {
         return {
           url: `admin/batches/${batchId}`,
-          method: "PATCH",
+          method: "PUT",
           body: data
         };
       },
@@ -56,6 +56,16 @@ export const batchApi = apiSlice.injectEndpoints({
       },
     }),
 
+    toggleBatchStatus: builder.mutation({
+      query: ({ batchId }) => {
+        return {
+          url: `admin/batches/${batchId}/toggle-status`,
+          method: 'POST',
+        };
+      },
+      // Invalidate the cache to refetch the updated data
+      invalidatesTags: ['Batch'],
+    }),
 
   }),
 });
@@ -65,4 +75,5 @@ export const {
   useAddBatchMutation,
   useDeleteBatchMutation,
   useUpdateBatchMutation,
+  useToggleBatchStatusMutation
 } = batchApi;

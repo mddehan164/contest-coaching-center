@@ -16,7 +16,6 @@ export const teacherApi = apiSlice.injectEndpoints({
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
-          console.log(apiData)
           dispatch(setTeacherData(apiData));
           dispatch(setTeacherMetaData(apiData?.data.pagination));
         } catch (err) {
@@ -29,7 +28,7 @@ export const teacherApi = apiSlice.injectEndpoints({
     addTeacher: builder.mutation({
       query: ({ data }) => {
         return {
-          url: "admin/teacheres",
+          url: "/teachers",
           method: "POST",
           body: data
         };
@@ -40,8 +39,8 @@ export const teacherApi = apiSlice.injectEndpoints({
     updateTeacher: builder.mutation({
       query: ({ data, teacherId }) => {
         return {
-          url: `admin/teacheres/${teacherId}`,
-          method: "PATCH",
+          url: `teachers/${teacherId}`,
+          method: "PUT",
           body: data
         };
       },

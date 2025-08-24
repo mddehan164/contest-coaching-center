@@ -7,6 +7,7 @@ import { CustomConfirmationModal, CustomTable } from '@shared/custom';
 import { useBatchs } from '../../hooks/useBatch';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
+import { BatchStatusToggleSelect } from '../../components/statusToggleSelect';
 
 const Batch = () => {
     const {
@@ -74,7 +75,13 @@ const Batch = () => {
                             <td className="table_td">{new Date(item?.start_date).toLocaleDateString()}</td>
                             <td className="table_td">{new Date(item?.end_date).toLocaleDateString()}</td>
                             <td className="table_td">
-                                {item?.status === 1 ? "Active" : "Inactive"}
+                                <BatchStatusToggleSelect
+                                    batchId={item.encrypted_id}
+                                    currentStatus={item.status}
+                                    onStatusChange={(newStatus) => {
+                                        const updatedItem = { ...item, status: newStatus };
+                                    }}
+                                />
                             </td>
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">

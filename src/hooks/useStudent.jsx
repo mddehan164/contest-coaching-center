@@ -97,17 +97,19 @@ export const useAddStudent = () => {
     const dispatch = useDispatch();
     const [addStudent, { isLoading: isAdding }] = useAddStudentMutation();
     const { isAddModalOpen } = useSelector((state) => state.student);
+    const [isUploading, setIsUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState("");
 
     // State for batches options
     const [batchesOptions, setBatchesOptions] = useState([]);
     const [selectedCourseEncryptedId, setSelectedCourseEncryptedId] = useState(null);
 
     // Fetch courses
-    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({ 
-        page: 1, 
-        limit: 100 
+    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({
+        page: 1,
+        limit: 100
     });
-    
+
     // Memoize course options to prevent infinite re-renders
     const courseOptions = useMemo(() => {
         return coursesData?.data?.courses?.map(course => ({
@@ -116,18 +118,18 @@ export const useAddStudent = () => {
             encrypted_id: course.encrypted_id
         })) || [];
     }, [coursesData?.data?.courses]);
-    
+
     // Use the RTK Query hook for batches
-    const { 
-        data: batchesData, 
-        isLoading: isBatchesLoading, 
+    const {
+        data: batchesData,
+        isLoading: isBatchesLoading,
         error: batchesError,
-        isFetching: isBatchesFetching 
+        isFetching: isBatchesFetching
     } = useGetCourseBatchesQuery(selectedCourseEncryptedId, {
         skip: !selectedCourseEncryptedId,
         refetchOnMountOrArgChange: false,
     });
-    
+
     const { control, handleSubmit, reset, watch, setValue } = useForm({
         defaultValues: {
             name: "",
@@ -146,16 +148,75 @@ export const useAddStudent = () => {
         },
     });
 
+
     const formValues = watch();
+
+    // Dummy image upload handler - simulates upload process
+    const handleImageUpload = async (file) => {
+        if (!file) return;
+
+        setIsUploading(true);
+
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        try {
+            // Create a dummy URL for the uploaded image
+            const dummyImageUrl = URL.createObjectURL(file);
+
+            // For demo purposes, we'll use a placeholder URL that includes the filename
+            const demoImageUrl = `https://example.com/courses/${file.name.replace(/\s+/g, '-').toLowerCase()}`;
+
+            setValue('image', demoImageUrl);
+            setImagePreview(dummyImageUrl);
+            successNotify('Image uploaded successfully! (Demo)');
+        } catch (error) {
+            errorNotify('Failed to process image');
+            console.error('Image processing error:', error);
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    // Handle file selection
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            // Validate file type and size
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (!validTypes.includes(file.type)) {
+                errorNotify('Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                errorNotify('Image size should be less than 5MB');
+                return;
+            }
+
+            handleImageUpload(file);
+        }
+    };
+
+    // Manual URL input handler
+    const handleManualUrlInput = (url) => {
+        if (url) {
+            setValue('image', url);
+            setImagePreview(url);
+            successNotify('Image URL set successfully!');
+        }
+    };
 
     // Update selected course encrypted_id when course changes
     useEffect(() => {
         const currentCourseId = formValues.course_id;
-        
+
         if (currentCourseId && courseOptions.length > 0) {
             const selectedCourse = courseOptions.find(course => course.value === currentCourseId);
             const newEncryptedId = selectedCourse?.encrypted_id || null;
-            
+
             if (newEncryptedId && newEncryptedId !== selectedCourseEncryptedId) {
                 setSelectedCourseEncryptedId(newEncryptedId);
                 // Reset batch selection when course changes
@@ -179,7 +240,7 @@ export const useAddStudent = () => {
                 value: batch.id,
                 label: batch.title || batch.name || `Batch ${batch.id}`,
             }));
-            
+
             setBatchesOptions(prevOptions => {
                 // Only update if options have actually changed
                 const optionsChanged = JSON.stringify(prevOptions) !== JSON.stringify(newOptions);
@@ -189,7 +250,7 @@ export const useAddStudent = () => {
             // API returned success but no batches
             setBatchesOptions([]);
         }
-        
+
         // Handle errors
         if (batchesError) {
             console.error("Error fetching batches:", batchesError);
@@ -208,38 +269,23 @@ export const useAddStudent = () => {
         dispatch(setAddStudentModal(false));
     };
 
-    // Handle file upload with better error handling
-    const handleImageUpload = async (file) => {
-        if (!file) return;
-        
-        const formData = new FormData();
-        formData.append("file", file);
-        
-        try {
-            const res = await fetch("/api/upload", { 
-                method: "POST", 
-                body: formData 
-            });
-            
-            if (!res.ok) {
-                throw new Error(`Upload failed with status: ${res.status}`);
-            }
-            
-            const data = await res.json();
-            if (data?.url) {
-                setValue("image", data.url);
-                successNotify("Image uploaded successfully");
-            } else {
-                throw new Error("No URL returned from upload");
-            }
-        } catch (err) {
-            console.error("Image upload failed:", err);
-            errorNotify("Image upload failed. Please try again.");
-        }
-    };
 
     const handleAddStudent = (data) => {
-        const validatedData = validateZodSchema({ schema: CreateStudentSchema, data });
+
+
+        const processedData = {
+            ...data,
+            course_id: Number(data.course_id),
+            batch_id: Number(data.batch_id),
+            ssc_result: Number(data.ssc_result) || 0,
+            hsc_result: Number(data.hsc_result) || 0,
+            total_amount: Number(data.total_amount) || 0,
+            status: Number(data.status) || 0,
+
+        };
+        console.log(data);
+        const validatedData = validateZodSchema({ schema: CreateStudentSchema, data: processedData });
+        console.log(processedData);
         if (!validatedData) return;
 
         addStudent({ data: validatedData })
@@ -247,7 +293,7 @@ export const useAddStudent = () => {
             .then(response => {
                 if (response?.success) {
                     handleCloseAddStudentModal();
-                    dispatch(addNewStudentToList(response.data));
+                    dispatch(addNewStudentToList(response.data.student));
                     successNotify(response?.message || "Student added successfully");
                 }
             })
@@ -271,26 +317,32 @@ export const useAddStudent = () => {
         formValues,
         isBatchesLoading: isBatchesLoading || isBatchesFetching,
         selectedCourseEncryptedId,
+        isUploading,
+        imagePreview,
+        handleFileSelect,
+        handleManualUrlInput,
     };
 };
 
 
 // ** Edit Student Modal **
-export const useEditStudent = () => {
+export const useEditStudent = ({ data }) => {
     const dispatch = useDispatch();
     const [updateStudent, { isLoading }] = useUpdateStudentMutation();
     const { isEditModalOpen, selectedData } = useSelector((state) => state.student);
+    const [isUploading, setIsUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState("");
 
     // State for batches options
     const [batchesOptions, setBatchesOptions] = useState([]);
     const [selectedCourseEncryptedId, setSelectedCourseEncryptedId] = useState(null);
 
     // Fetch courses
-    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({ 
-        page: 1, 
-        limit: 100 
+    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({
+        page: 1,
+        limit: 100
     });
-    
+
     // Memoize course options to prevent infinite re-renders
     const courseOptions = useMemo(() => {
         return coursesData?.data?.courses?.map(course => ({
@@ -301,11 +353,11 @@ export const useEditStudent = () => {
     }, [coursesData?.data?.courses]);
 
     // Use the RTK Query hook for batches
-    const { 
-        data: batchesData, 
-        isLoading: isBatchesLoading, 
+    const {
+        data: batchesData,
+        isLoading: isBatchesLoading,
         error: batchesError,
-        isFetching: isBatchesFetching 
+        isFetching: isBatchesFetching
     } = useGetCourseBatchesQuery(selectedCourseEncryptedId, {
         skip: !selectedCourseEncryptedId,
         refetchOnMountOrArgChange: false,
@@ -333,8 +385,8 @@ export const useEditStudent = () => {
 
     // Initialize form with existing data when selectedData changes
     useEffect(() => {
-        if (selectedData?.data) {
-            const data = selectedData.data;
+        if (data) {
+
             setValue("name", data.name || "");
             setValue("image", data.image || "");
             setValue("course_id", data.course?.id || null);
@@ -349,6 +401,11 @@ export const useEditStudent = () => {
             setValue("total_amount", data.total_amount || "");
             setValue("status", data.status ?? 1);
 
+            // Set image preview if image exists
+            if (data.image) {
+                setImagePreview(data.image);
+            }
+
             // Set initial encrypted course ID if course exists
             if (data.course?.encrypted_id) {
                 setSelectedCourseEncryptedId(data.course.encrypted_id);
@@ -356,14 +413,72 @@ export const useEditStudent = () => {
         }
     }, [selectedData, setValue]);
 
+    // Dummy image upload handler - simulates upload process
+    const handleImageUpload = async (file) => {
+        if (!file) return;
+
+        setIsUploading(true);
+
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        try {
+            // Create a dummy URL for the uploaded image
+            const dummyImageUrl = URL.createObjectURL(file);
+
+            // For demo purposes, we'll use a placeholder URL that includes the filename
+            const demoImageUrl = `https://example.com/students/${file.name.replace(/\s+/g, '-').toLowerCase()}`;
+
+            setValue('image', demoImageUrl);
+            setImagePreview(dummyImageUrl);
+            successNotify('Image uploaded successfully! (Demo)');
+        } catch (error) {
+            errorNotify('Failed to process image');
+            console.error('Image processing error:', error);
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    // Handle file selection
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            // Validate file type and size
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (!validTypes.includes(file.type)) {
+                errorNotify('Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                errorNotify('Image size should be less than 5MB');
+                return;
+            }
+
+            handleImageUpload(file);
+        }
+    };
+
+    // Manual URL input handler
+    const handleManualUrlInput = (url) => {
+        if (url) {
+            setValue('image', url);
+            setImagePreview(url);
+            successNotify('Image URL set successfully!');
+        }
+    };
+
     // Update selected course encrypted_id when course changes
     useEffect(() => {
         const currentCourseId = formValues.course_id;
-        
+
         if (currentCourseId && courseOptions.length > 0) {
             const selectedCourse = courseOptions.find(course => course.value === currentCourseId);
             const newEncryptedId = selectedCourse?.encrypted_id || null;
-            
+
             if (newEncryptedId && newEncryptedId !== selectedCourseEncryptedId) {
                 setSelectedCourseEncryptedId(newEncryptedId);
                 // Reset batch selection when course changes (but not on initial load)
@@ -389,7 +504,7 @@ export const useEditStudent = () => {
                 value: batch.id,
                 label: batch.title || batch.name || `Batch ${batch.id}`,
             }));
-            
+
             setBatchesOptions(prevOptions => {
                 // Only update if options have actually changed
                 const optionsChanged = JSON.stringify(prevOptions) !== JSON.stringify(newOptions);
@@ -399,7 +514,7 @@ export const useEditStudent = () => {
             // API returned success but no batches
             setBatchesOptions([]);
         }
-        
+
         // Handle errors
         if (batchesError) {
             console.error("Error fetching batches:", batchesError);
@@ -415,37 +530,9 @@ export const useEditStudent = () => {
         reset();
         setSelectedCourseEncryptedId(null);
         setBatchesOptions([]);
+        setImagePreview("");
+        setIsUploading(false);
         dispatch(setEditStudentModal(false));
-    };
-
-    // Handle file upload with better error handling
-    const handleImageUpload = async (file) => {
-        if (!file) return;
-        
-        const formData = new FormData();
-        formData.append("file", file);
-        
-        try {
-            const res = await fetch("/api/upload", { 
-                method: "POST", 
-                body: formData 
-            });
-            
-            if (!res.ok) {
-                throw new Error(`Upload failed with status: ${res.status}`);
-            }
-            
-            const data = await res.json();
-            if (data?.url) {
-                setValue("image", data.url);
-                successNotify("Image uploaded successfully");
-            } else {
-                throw new Error("No URL returned from upload");
-            }
-        } catch (err) {
-            console.error("Image upload failed:", err);
-            errorNotify("Image upload failed. Please try again.");
-        }
     };
 
     const handleEditStudent = (data) => {
@@ -453,7 +540,7 @@ export const useEditStudent = () => {
             return errorNotify("Invalid student type.");
         }
 
-        const validatedData = validateZodSchema({ schema: EditStudentSchema, data });
+        const validatedData = validateZodSchema({ schema: CreateStudentSchema, data });
         if (!validatedData) return;
 
         updateStudent({ data: validatedData, studentId: selectedData?.encrypted_id })
@@ -461,7 +548,7 @@ export const useEditStudent = () => {
             .then((response) => {
                 if (response?.success) {
                     handleCloseEditStudentModal();
-                    dispatch(updateStudentInList(response?.data));
+                    dispatch(updateStudentInList(response?.data.student));
                     successNotify(response?.message || "Student updated successfully");
                 }
             })
@@ -485,5 +572,9 @@ export const useEditStudent = () => {
         formValues,
         isBatchesLoading: isBatchesLoading || isBatchesFetching,
         selectedCourseEncryptedId,
+        isUploading,
+        imagePreview,
+        handleFileSelect,
+        handleManualUrlInput,
     };
 };

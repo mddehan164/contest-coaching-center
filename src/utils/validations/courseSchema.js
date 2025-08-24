@@ -1,77 +1,34 @@
 import { z } from "zod";
 
+// ---------- Schemas ----------
 
-const isValidDateString = (dateStr) => {
-    const date = new Date(dateStr);
-    return !isNaN(date.getTime()) && dateStr.length === 10;
-};
-
-const isNotPastDate = (dateStr) => {
-    const date = new Date(dateStr);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    date.setHours(0, 0, 0, 0);
-    return date >= today;
-};
-
+// Create Schema
 export const CourseSchema = z.object({
-    name: z.string().min(1, "Course name is required."),
-    course_id: z.number().min(1, "Course ID is required."),
-    start_date: z
-        .string()
-        .min(1, "Start date is required.")
-        .refine(isValidDateString, "Invalid date format. Use YYYY-MM-DD.")
-        .refine(isNotPastDate, "Start date cannot be before today's date."),
-    end_date: z
-        .string()
-        .min(1, "End date is required.")
-        .refine(isValidDateString, "Invalid date format. Use YYYY-MM-DD."),
-    status: z.number().optional().default(1),
-}).refine(
-    (data) => {
-        if (data.start_date && data.end_date) {
-            const startDate = new Date(data.start_date);
-            const endDate = new Date(data.end_date);
-            return endDate >= startDate;
-        }
-        return true;
-    },
-    {
-        message: "End date cannot be before start date.",
-        path: ["end_date"],
-    }
-);
+  title: z.string().min(1, "Course title is required."),
+  image: z.string().min(1, "Course image is required."),
+  short_des: z.string().min(1, "Short description is required."),
+  long_des: z.string().min(1, "Long description is required."),
+  price: z.number().min(0, "Price must be a positive number."),
+  offer_price: z.number().min(0, "Offer price must be a positive number.").optional(),
+  branch_id: z.array(z.number()).min(1, "At least one branch must be selected."),
+  group: z.string().optional(),
+  status: z.number().optional().default(1),
+});
 
+// Edit Schema (all optional but still validated if present)
 export const EditCourseSchema = z.object({
-    name: z.string().min(1, "Course name is required.").optional(),
-    course_id: z.number().min(1, "Course ID is required.").optional(),
-    start_date: z
-        .string()
-        .min(1, "Start date is required.")
-        .refine(isValidDateString, "Invalid date format. Use YYYY-MM-DD.")
-        .refine(isNotPastDate, "Start date cannot be before today's date.")
-        .optional(),
-    end_date: z
-        .string()
-        .min(1, "End date is required.")
-        .refine(isValidDateString, "Invalid date format. Use YYYY-MM-DD.")
-        .optional(),
-    status: z.number().optional(),
-}).refine(
-    (data) => {
-        if (data.start_date && data.end_date) {
-            const startDate = new Date(data.start_date);
-            const endDate = new Date(data.end_date);
-            return endDate >= startDate;
-        }
-        return true;
-    },
-    {
-        message: "End date cannot be before start date.",
-        path: ["end_date"],
-    }
-);
+  title: z.string().min(1, "Course title is required.").optional(),
+  image: z.string().min(1, "Course image is required.").optional(),
+  short_des: z.string().min(1, "Short description is required.").optional(),
+  long_des: z.string().min(1, "Long description is required.").optional(),
+  price: z.number().min(0, "Price must be a positive number.").optional(),
+  offer_price: z.number().min(0, "Offer price must be a positive number.").optional(),
+  branch_id: z.array(z.number()).min(1, "At least one branch must be selected.").optional(),
+  group: z.string().optional(),
+  status: z.number().optional(),
+});
 
+// Aliases
 export const CreateCourseSchema = CourseSchema;
 export const AddCourseSchema = CreateCourseSchema;
 export const UpdateCourseSchema = EditCourseSchema;
