@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-// ---------- Schemas ----------
-
-// Create Schema
 export const CourseSchema = z.object({
   title: z.string().min(1, "Course title is required."),
   image: z.string().min(1, "Course image is required."),
@@ -15,7 +12,6 @@ export const CourseSchema = z.object({
   status: z.number().optional().default(1),
 });
 
-// Edit Schema (all optional but still validated if present)
 export const EditCourseSchema = z.object({
   title: z.string().min(1, "Course title is required.").optional(),
   image: z.string().min(1, "Course image is required.").optional(),
@@ -28,7 +24,6 @@ export const EditCourseSchema = z.object({
   status: z.number().optional(),
 });
 
-// Aliases
 export const CreateCourseSchema = CourseSchema;
 export const AddCourseSchema = CreateCourseSchema;
 export const UpdateCourseSchema = EditCourseSchema;

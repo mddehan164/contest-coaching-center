@@ -1,4 +1,3 @@
-// utils/validations.ts
 import { z } from 'zod';
 
 export const CreateTeacherSchema = z.object({

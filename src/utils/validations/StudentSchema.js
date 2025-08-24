@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 
-// Create Student Schema - for adding new students
 export const CreateStudentSchema = z.object({
     name: z.string().min(1, "Student name is required."),
     image: z.string().optional().default(""),
