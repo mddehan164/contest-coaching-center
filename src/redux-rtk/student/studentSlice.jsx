@@ -106,8 +106,7 @@ const studentSlice = createSlice({
       state.meta = { ...state.meta, ...action.payload };
       const updateKey = Object.keys(action.payload)[0];
       if (updateKey === "currentPage") {
-        state.dataList =
-          state.data[`page${action.payload.currentPage}`] || [];
+        state.dataList = state.data[`page${action.payload.currentPage}`] || [];
       }
 
       if (updateKey === "pageSize") {
