@@ -130,6 +130,21 @@ const courseSlice = createSlice({
     setEditCourseModal: (state, action) => {
       state.isEditModalOpen = action.payload;
     },
+    updateCourseStatus: (state, action) => {
+      const { courseId, status } = action.payload;
+
+      // Update in dataList
+      state.dataList = state.dataList.map(item =>
+        item.encrypted_id === courseId ? { ...item, status } : item
+      );
+
+      // Update in paginated data
+      Object.keys(state.data).forEach(pageKey => {
+        state.data[pageKey] = state.data[pageKey].map(item =>
+          item.encrypted_id === courseId ? { ...item, status } : item
+        );
+      });
+    },
   },
 });
 
@@ -144,6 +159,7 @@ export const {
   setCourseConfirmationModal,
   setAddCourseModal,
   setEditCourseModal,
+  updateCourseStatus
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

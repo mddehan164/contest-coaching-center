@@ -69,7 +69,7 @@ const Teacher = () => {
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
                             <td className="table_td">{index + 1}</td>
-                            <td className="table_td">{item?.name}</td>  
+                            <td className="table_td">{item?.name}</td>
                             <td className="table_td">{item?.mobile}</td>
                             <td className="table_td truncate">{item?.address}</td>
                             <td className="table_td">{item?.course?.title}</td>
@@ -86,14 +86,14 @@ const Teacher = () => {
                                     >
                                         <EditSvg />
                                     </button>
-                                    <button
+                                    {/* <button
                                         onClick={() => {
                                             handleSetSelectedTeacher({ ...item, type: SelectedSliceTypeEnum.DELETE });
                                             handleOpenConfirmationModal();
                                         }}
                                     >
                                         <DeleteSvg />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </td>
                         </tr>

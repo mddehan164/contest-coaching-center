@@ -16,7 +16,6 @@ export const studentApi = apiSlice.injectEndpoints({
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
-          console.log(apiData)
           dispatch(setStudentData(apiData));
           dispatch(setStudentMetaData(apiData?.data.pagination));
         } catch (err) {
@@ -29,7 +28,7 @@ export const studentApi = apiSlice.injectEndpoints({
     addStudent: builder.mutation({
       query: ({ data }) => {
         return {
-          url: "admin/studentes",
+          url: "students",
           method: "POST",
           body: data
         };
@@ -40,8 +39,8 @@ export const studentApi = apiSlice.injectEndpoints({
     updateStudent: builder.mutation({
       query: ({ data, studentId }) => {
         return {
-          url: `admin/studentes/${studentId}`,
-          method: "PATCH",
+          url: `students/${studentId}`,
+          method: "PUT",
           body: data
         };
       },

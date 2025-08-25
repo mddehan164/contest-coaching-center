@@ -16,7 +16,8 @@ import {
     useDeleteCourseMutation,
     useGetAllCoursesQuery,
     useUpdateCourseMutation,
-    useGetCourseBatchesQuery
+    useGetCourseBatchesQuery,
+    useGetBranchesQuery
 } from "../redux-rtk/course";
 import { CreateCourseSchema, EditCourseSchema, validateZodSchema } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
@@ -95,77 +96,108 @@ export const useAddCourse = () => {
     const [addCourse, { isLoading: isAdding }] = useAddCourseMutation();
     const { isAddModalOpen } = useSelector((state) => state.course);
 
-    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({
-        page: 1,
-        limit: 100
-    });
+    // Fetch branches from API
+    const { data: branchesData, isLoading: isBranchesLoading } = useGetBranchesQuery();
+
+    const [isUploading, setIsUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState("");
 
     const { control, handleSubmit, reset, watch, setValue } = useForm({
         defaultValues: {
-            name: "",
-            course_id: null,
-            start_date: "",
-            end_date: "",
-            status: 1,
+            title: "",
+            image: "",
+            short_des: "",
+            long_des: "",
+            price: "",
+            offer_price: "",
+            branch_id: [],
+            group: "",
         },
     });
 
     const formValues = watch();
-    const isActionBtnDisabled =
-        !formValues.name || !formValues.course_id || !formValues.start_date || !formValues.end_date;
+    const isActionBtnDisabled = !formValues.title || !formValues.short_des || !formValues.long_des || !formValues.image;
 
     const handleCloseAddCourseModal = () => {
         reset();
+        setImagePreview("");
         dispatch(setAddCourseModal(false));
     };
 
-    const courseOptions = coursesData?.data?.courses?.map(course => ({
-        value: course.id,
-        label: course.title,
+    // Prepare branch options from API response
+    const branchOptions = branchesData?.data?.branches?.map(branch => ({
+        value: branch.id,
+        label: branch.name,
     })) || [];
 
-    const getStartDateDisabled = () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        return { before: today };
+    // Dummy image upload handler - simulates upload process
+    const handleImageUpload = async (file) => {
+        if (!file) return;
+
+        setIsUploading(true);
+
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        try {
+            // Create a dummy URL for the uploaded image
+            const dummyImageUrl = URL.createObjectURL(file);
+
+            // For demo purposes, we'll use a placeholder URL that includes the filename
+            const demoImageUrl = `https://example.com/courses/${file.name.replace(/\s+/g, '-').toLowerCase()}`;
+
+            setValue('image', demoImageUrl);
+            setImagePreview(dummyImageUrl);
+            successNotify('Image uploaded successfully! (Demo)');
+        } catch (error) {
+            errorNotify('Failed to process image');
+            console.error('Image processing error:', error);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
-    const getEndDateDisabled = () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    // Handle file selection
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            // Validate file type and size
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
 
-        if (formValues.start_date) {
-            const startDate = new Date(formValues.start_date);
-            startDate.setHours(0, 0, 0, 0);
-            return { before: startDate };
+            if (!validTypes.includes(file.type)) {
+                errorNotify('Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                errorNotify('Image size should be less than 5MB');
+                return;
+            }
+
+            handleImageUpload(file);
         }
+    };
 
-        return { before: today };
+    // Manual URL input handler
+    const handleManualUrlInput = (url) => {
+        if (url) {
+            setValue('image', url);
+            setImagePreview(url);
+            successNotify('Image URL set successfully!');
+        }
     };
 
     const handleAddCourse = (data) => {
-        const startDate = new Date(data.start_date);
-        const endDate = new Date(data.end_date);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        if (startDate < today) {
-            errorNotify("Start date cannot be before today's date.");
-            return;
-        }
-
-        if (endDate < startDate) {
-            errorNotify("End date cannot be before start date.");
-            return;
-        }
-
-        const safeData = {
+        // Convert price and offer_price to numbers
+        const processedData = {
             ...data,
-            start_date: data.start_date ? data.start_date.toISOString().split("T")[0] : "",
-            end_date: data.end_date ? data.end_date.toISOString().split("T")[0] : "",
+            price: Number(data.price) || 0,
+            offer_price: Number(data.offer_price) || 0,
+            branch_id: Array.isArray(data.branch_id) ? data.branch_id : [],
         };
 
-        const validatedData = validateZodSchema({ schema: CreateCourseSchema, data: safeData });
+        const validatedData = validateZodSchema({ schema: CreateCourseSchema, data: processedData });
         if (!validatedData) return;
 
         addCourse({ data: validatedData })
@@ -185,16 +217,19 @@ export const useAddCourse = () => {
     return {
         isAddModalOpen,
         handleCloseAddCourseModal,
-        isLoading: isAdding || isCoursesLoading,
+        isLoading: isAdding || isBranchesLoading || isUploading,
         control,
         handleSubmit,
         isActionBtnDisabled,
         handleAddCourse,
-        courseOptions,
-        isCoursesLoading,
-        getStartDateDisabled,
-        getEndDateDisabled,
         formValues,
+        branchOptions,
+        isBranchesLoading,
+        handleFileSelect,
+        imagePreview,
+        isUploading,
+        setValue,
+        handleManualUrlInput,
     };
 };
 
@@ -204,92 +239,134 @@ export const useEditCourse = ({ data }) => {
     const [updateCourse, { isLoading }] = useUpdateCourseMutation();
     const { isEditModalOpen, selectedData } = useSelector((state) => state.course);
 
+    // Fetch branches from API
+    const { data: branchesData, isLoading: isBranchesLoading } = useGetBranchesQuery();
+
+    const [isUploading, setIsUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState("");
+
     const { control, handleSubmit, reset, watch, setValue } = useForm({
         defaultValues: {
-            name: "",
-            course_id: null,
-            start_date: "",
-            end_date: "",
-            status: 1,
+            title: "",
+            image: "",
+            short_des: "",
+            long_des: "",
+            price: "",
+            offer_price: "",
+            branch_id: [],
+            group: "",
         },
     });
 
     useEffect(() => {
         if (data) {
-            setValue("name", data.name);
-            setValue("course_id", data.course?.id || null);
-            setValue("start_date", data.start_date ? new Date(data.start_date) : null);
-            setValue("end_date", data.end_date ? new Date(data.end_date) : null);
-            setValue("status", data.status);
+            setValue("title", data.title || "");
+            setValue("image", data.image || "");
+            setValue("short_des", data.short_des || "");
+            setValue("long_des", data.long_des || "");
+            setValue("price", data.price?.toString() || "");
+            setValue("offer_price", data.offer_price?.toString() || "");
+            setValue("branch_id", data.branch_id || []);
+            setValue("group", data.group || "");
+            setImagePreview(data.image || "");
         }
     }, [data, setValue]);
 
     const formValues = watch();
-    const isActionBtnDisabled =
-        !formValues.name || !formValues.course_id || !formValues.start_date || !formValues.end_date;
+    const isActionBtnDisabled = !formValues.title || !formValues.short_des || !formValues.long_des || !formValues.image;
 
     const handleCloseEditCourseModal = () => {
         reset();
+        setImagePreview("");
         dispatch(setEditCourseModal(false));
     };
-    const handleOpenConfirmationModal = () => dispatch(setCourseConfirmationModal(true));
 
-    const getStartDateDisabled = () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        return { before: today };
+    // Prepare branch options from API response
+    const branchOptions = branchesData?.data?.branches?.map(branch => ({
+        value: branch.id,
+        label: branch.name,
+    })) || [];
+
+    // Dummy image upload handler
+    const handleImageUpload = async (file) => {
+        if (!file) return;
+
+        setIsUploading(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        try {
+            const dummyImageUrl = URL.createObjectURL(file);
+            const demoImageUrl = `https://example.com/courses/${file.name.replace(/\s+/g, '-').toLowerCase()}`;
+
+            setValue('image', demoImageUrl);
+            setImagePreview(dummyImageUrl);
+            successNotify('Image uploaded successfully! (Demo)');
+        } catch (error) {
+            errorNotify('Failed to process image');
+            console.error('Image processing error:', error);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
-    const getEndDateDisabled = () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            const maxSize = 5 * 1024 * 1024;
 
-        if (formValues.start_date) {
-            const startDate = new Date(formValues.start_date);
-            startDate.setHours(0, 0, 0, 0);
-            return { before: startDate };
+            if (!validTypes.includes(file.type)) {
+                errorNotify('Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                errorNotify('Image size should be less than 5MB');
+                return;
+            }
+
+            handleImageUpload(file);
         }
+    };
 
-        return { before: today };
+    // Manual URL input handler for edit
+    const handleManualUrlInput = (url) => {
+        if (url) {
+            setValue('image', url);
+            setImagePreview(url);
+            successNotify('Image URL updated successfully!');
+        }
     };
 
     const handleUpdate = (data) => {
         if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE)
             return errorNotify("Invalid course type.");
 
-        const startDate = new Date(data.start_date);
-        const endDate = new Date(data.end_date);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        if (startDate < today) {
-            errorNotify("Start date cannot be before today's date.");
-            return;
-        }
-
-        if (endDate < startDate) {
-            errorNotify("End date cannot be before start date.");
-            return;
-        }
-
-        const safeData = {
+        // Convert price and offer_price to numbers
+        const processedData = {
             ...data,
-            start_date: data.start_date ? data.start_date.toISOString().split("T")[0] : "",
-            end_date: data.end_date ? data.end_date.toISOString().split("T")[0] : "",
+            price: Number(data.price) || 0,
+            offer_price: Number(data.offer_price) || 0,
+            branch_id: (() => {
+                try {
+                    const parsed = JSON.parse(data.branch_id); // "[2]" -> [2]
+                    return Array.isArray(parsed) ? parsed.map(Number) : [];
+                } catch (e) {
+                    return [];
+                }
+            })(),
         };
 
-        const validatedData = validateZodSchema({ schema: EditCourseSchema, data: safeData });
+        console.log(processedData);
+
+        const validatedData = validateZodSchema({ schema: EditCourseSchema, data: processedData });
         if (!validatedData) return;
 
-        // FIX: Use selectedData.encrypted_id instead of selectedData.course.encrypted_id
         updateCourse({ data: validatedData, courseId: selectedData?.encrypted_id })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
                     handleCloseEditCourseModal();
-                    // Remove this line as it's likely causing issues
-                    // handleOpenConfirmationModal();
-                    console.log({...response?.data}, selectedData);
                     dispatch(updateCourseInList(response?.data));
                     successNotify(response?.message);
                 }
@@ -304,11 +381,15 @@ export const useEditCourse = ({ data }) => {
         handleCloseEditCourseModal,
         control,
         isActionBtnDisabled,
-        isLoading,
+        isLoading: isLoading || isBranchesLoading || isUploading,
         handleUpdate,
         handleSubmit,
-        getStartDateDisabled,
-        getEndDateDisabled,
         formValues,
+        branchOptions,
+        handleFileSelect,
+        imagePreview,
+        isUploading,
+        handleManualUrlInput,
+        isBranchesLoading
     };
 };

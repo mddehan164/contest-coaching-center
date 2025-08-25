@@ -7,6 +7,7 @@ import { CustomConfirmationModal, CustomTable } from '@shared/custom';
 import { useCourses } from '../../hooks/useCourse';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
+import { CourseStatusToggleSelect } from '../../components/statusToggleSelect';
 
 const Course = () => {
     const {
@@ -28,6 +29,8 @@ const Course = () => {
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
     } = useCourses();
+
+
 
     return (
         <div>
@@ -74,7 +77,13 @@ const Course = () => {
                             <td className="table_td">{item?.price}</td>
                             <td className="table_td">{item?.offer_price}</td>
                             <td className="table_td">
-                                {item?.status === 1 ? "Active" : "Inactive"}
+                                <CourseStatusToggleSelect
+                                    courseId={item.encrypted_id}
+                                    currentStatus={item.status}
+                                    onStatusChange={(newStatus) => {
+                                        const updatedItem = { ...item, status: newStatus };
+                                    }}
+                                />
                             </td>
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">

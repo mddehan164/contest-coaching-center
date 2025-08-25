@@ -23,6 +23,10 @@ export const courseApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    getBranches: builder.query({
+      query: () => '/branches',
+      providesTags: ['Branches'],
+    }),
 
     // Get Batches for a Course
     getCourseBatches: builder.query({
@@ -50,7 +54,7 @@ export const courseApi = apiSlice.injectEndpoints({
       query: ({ data, courseId }) => {
         return {
           url: `admin/courses/${courseId}`,
-          method: "PATCH",
+          method: "PUT",
           body: data
         };
       },
@@ -66,6 +70,17 @@ export const courseApi = apiSlice.injectEndpoints({
       },
     }),
 
+    toggleCourseStatus: builder.mutation({
+      query: ({ courseId }) => {
+        return {
+          url: `admin/courses/${courseId}/toggle-status`,
+          method: 'POST',
+        };
+      },
+      // Invalidate the cache to refetch the updated data
+      invalidatesTags: ['Courses'],
+    }),
+
 
   }),
 });
@@ -75,5 +90,7 @@ export const {
   useAddCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
-  useGetCourseBatchesQuery
+  useGetCourseBatchesQuery,
+  useGetBranchesQuery,
+  useToggleCourseStatusMutation
 } = courseApi;
