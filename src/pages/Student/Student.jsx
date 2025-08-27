@@ -1,14 +1,14 @@
 import FormInput from '../../shared/forms/FormInput';
 import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
-import AddBatchModal from './AddBatchModal';
-import EditBatchModal from './EditBatchModal';
+import AddStudentModal from './AddStudentModal';
+import EditStudentModal from './EditStudentModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
-import { useBatchs } from '../../hooks/useBatch';
+import { useStudents } from '../../hooks/useStudent';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
 
-const Batch = () => {
+const Student = () => {
     const {
         isLoading,
         isError,
@@ -19,26 +19,26 @@ const Batch = () => {
         searchKeyword,
         deleteLoading,
         setSearchKeyword,
-        handleSetSelectedBatch,
+        handleSetSelectedStudent,
         updatePageMeta,
         handleDelete,
-        handleOpenEditBatchModal,
-        handleOpenAddBatchModal,
+        handleOpenEditStudentModal,
+        handleOpenAddStudentModal,
         isConfirmModalOpen,
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
-    } = useBatchs();
+    } = useStudents();
 
     return (
         <div>
             <div className="card-cmn space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 className="title-cmn">Batch List</h2>
+                    <h2 className="title-cmn">Student List</h2>
 
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="w-full md:w-[269px] relative">
                             <FormInput
-                                placeholder="Search Batch"
+                                placeholder="Search Student"
                                 inputCss="pr-12 !py-2.5 !rounded-lg !bg-white"
                                 value={searchKeyword}
                                 onChange={(e) => setSearchKeyword(e.target.value)}
@@ -47,10 +47,10 @@ const Batch = () => {
                         </div>
 
                         <SecondaryButton
-                            text="Add New Batch"
+                            text="Add New Student"
                             width="w-full md:w-[167px]"
                             startIcon={<AddSvg />}
-                            onClick={() => handleOpenAddBatchModal()}
+                            onClick={() => handleOpenAddStudentModal()}
                         />
                     </div>
                 </div>
@@ -63,16 +63,16 @@ const Batch = () => {
                     pageSize={meta?.pageSize || 10}
                     totalPages={meta?.totalPages || 1}
                     updatePageMeta={updatePageMeta}
-                    columns={["SL", "Batch Name", "Course", "Start Date", "End Date", "Status", "Action"]}
+                    columns={["SL", "Student Name", "Mobile", "Address", "Course", "Status", "Action"]}
                     dataLength={dataList?.length || 0}
                 >
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
                             <td className="table_td">{index + 1}</td>
                             <td className="table_td">{item?.name}</td>
+                            <td className="table_td">{item?.mobile}</td>
+                            <td className="table_td truncate">{item?.address}</td>
                             <td className="table_td">{item?.course?.title}</td>
-                            <td className="table_td">{new Date(item?.start_date).toLocaleDateString()}</td>
-                            <td className="table_td">{new Date(item?.end_date).toLocaleDateString()}</td>
                             <td className="table_td">
                                 {item?.status === 1 ? "Active" : "Inactive"}
                             </td>
@@ -80,20 +80,20 @@ const Batch = () => {
                                 <div className="flex items-center gap-x-3">
                                     <button
                                         onClick={() => {
-                                            handleSetSelectedBatch({ ...item, type: SelectedSliceTypeEnum.UPDATE });
-                                            handleOpenEditBatchModal();
+                                            handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.UPDATE });
+                                            handleOpenEditStudentModal();
                                         }}
                                     >
                                         <EditSvg />
                                     </button>
-                                    <button
+                                    {/* <button
                                         onClick={() => {
-                                            handleSetSelectedBatch({ ...item, type: SelectedSliceTypeEnum.DELETE });
+                                            handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.DELETE });
                                             handleOpenConfirmationModal();
                                         }}
                                     >
                                         <DeleteSvg />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </td>
                         </tr>
@@ -101,11 +101,11 @@ const Batch = () => {
                 </CustomTable>
             </div>
 
-            {/* add batch modal */}
-            <AddBatchModal />
+            {/* add student modal */}
+            <AddStudentModal />
 
-            {/* edit batch modal */}
-            <EditBatchModal data={selectedData} />
+            {/* edit student modal */}
+            <EditStudentModal data={selectedData} />
 
             {/* delete modal */}
             <CustomConfirmationModal
@@ -116,14 +116,14 @@ const Batch = () => {
                 }
                 description={
                     selectedData?.type === SelectedSliceTypeEnum.DELETE
-                        ? 'You want to remove this batch?'
+                        ? 'You want to remove this student?'
                         : selectedData?.type === SelectedSliceTypeEnum.UPDATE
                             ? 'Updated successfully.'
                             : 'Action completed.'
                 }
                 handler={() => {
                     if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
-                        handleDelete({ batchId: selectedData.id }); // ✅ batchId instead of adminId
+                        handleDelete({ studentId: selectedData.id }); // ✅ studentId instead of adminId
                     else handleCloseConfirmationModal();
                 }}
                 deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
@@ -134,4 +134,4 @@ const Batch = () => {
     );
 };
 
-export default Batch;
+export default Student;

@@ -19,7 +19,7 @@ import {
 } from "../redux-rtk/batch";
 import { CreateBatchSchema, EditBatchSchema, validateZodSchema } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
-import { useGetAllCoursesQuery } from "../redux-rtk/course";
+import { useGetAllCoursesQuery, useGetCourseBatchesQuery } from "../redux-rtk/course";
 
 // ** Batch List **
 export const useBatchs = () => {
@@ -281,13 +281,16 @@ export const useEditBatch = ({ data }) => {
         const validatedData = validateZodSchema({ schema: EditBatchSchema, data: safeData });
         if (!validatedData) return;
 
-        updateBatch({ data: validatedData, batchId: selectedData?.id })
+        // FIX: Use selectedData.encrypted_id instead of selectedData.course.encrypted_id
+        updateBatch({ data: validatedData, batchId: selectedData?.encrypted_id })
             .unwrap()
             .then((response) => {
                 if (response?.success) {
                     handleCloseEditBatchModal();
-                    handleOpenConfirmationModal();
-                    dispatch(updateBatchInList({ ...response?.data, id: selectedData?.id }));
+                    // Remove this line as it's likely causing issues
+                    // handleOpenConfirmationModal();
+                    console.log({...response?.data}, selectedData);
+                    dispatch(updateBatchInList(response?.data));
                     successNotify(response?.message);
                 }
             })

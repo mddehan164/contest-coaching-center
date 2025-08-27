@@ -17,12 +17,26 @@ export const courseApi = apiSlice.injectEndpoints({
         try {
           const { data: apiData } = await queryFulfilled;
           dispatch(setCourseData(apiData));
-          dispatch(setCourseMetaData(apiData?.meta));
+          dispatch(setCourseMetaData(apiData?.data.pagination));
         } catch (err) {
           console.error(err);
         }
       },
     }),
+    getBranches: builder.query({
+      query: () => '/branches',
+      providesTags: ['Branches'],
+    }),
+
+    // Get Batches for a Course
+    getCourseBatches: builder.query({
+      query: (encrypted_course_id) => `admin/courses/${encrypted_course_id}/batches`,
+      // Add proper error handling and caching
+      providesTags: (result, error, encrypted_course_id) => [
+        { type: 'CourseBatches', id: encrypted_course_id }
+      ],
+    }),
+
 
     // ADD A NEW COURSE
     addCourse: builder.mutation({
@@ -40,7 +54,7 @@ export const courseApi = apiSlice.injectEndpoints({
       query: ({ data, courseId }) => {
         return {
           url: `admin/courses/${courseId}`,
-          method: "PATCH",
+          method: "PUT",
           body: data
         };
       },
@@ -56,6 +70,17 @@ export const courseApi = apiSlice.injectEndpoints({
       },
     }),
 
+    toggleCourseStatus: builder.mutation({
+      query: ({ courseId }) => {
+        return {
+          url: `admin/courses/${courseId}/toggle-status`,
+          method: 'POST',
+        };
+      },
+      // Invalidate the cache to refetch the updated data
+      invalidatesTags: ['Courses'],
+    }),
+
 
   }),
 });
@@ -65,4 +90,7 @@ export const {
   useAddCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
+  useGetCourseBatchesQuery,
+  useGetBranchesQuery,
+  useToggleCourseStatusMutation
 } = courseApi;

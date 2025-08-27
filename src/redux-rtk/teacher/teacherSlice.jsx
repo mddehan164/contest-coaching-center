@@ -26,17 +26,17 @@ const initialState = {
   },
 };
 
-const courseSlice = createSlice({
-  name: "course",
+const teacherSlice = createSlice({
+  name: "teacher",
   initialState,
   reducers: {
-    setCourseDataList: (state, action) => {
+    setTeacherDataList: (state, action) => {
       // directly assign plain list
       state.dataList = action.payload.data;
     },
 
-    setCourseData: (state, action) => {
-      const { courses, pagination } = action.payload.data;
+    setTeacherData: (state, action) => {
+      const { teachers, pagination } = action.payload.data;
 
       const meta = {
         totalItems: pagination.total,
@@ -48,7 +48,7 @@ const courseSlice = createSlice({
       };
 
       const result = setPaginatedDataFromApi({
-        incomingData: courses,
+        incomingData: teachers,
         incomingMeta: meta,
         existingData: state.data,
         existingMeta: state.meta,
@@ -59,8 +59,8 @@ const courseSlice = createSlice({
       state.dataList = result.dataList;
     },
 
-    addNewCourseToList: (state, action) => {
-      const newCourse = {
+    addNewTeacherToList: (state, action) => {
+      const newTeacher = {
         ...action.payload,
       };
 
@@ -68,7 +68,7 @@ const courseSlice = createSlice({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
-        newItem: newCourse,
+        newItem: newTeacher,
       });
 
       state.meta = result.meta;
@@ -76,7 +76,7 @@ const courseSlice = createSlice({
       state.dataList = result.dataList;
     },
 
-    updateCourseInList: (state, action) => {
+    updateTeacherInList: (state, action) => {
       state.dataList = updateDataInDataList({
         dataList: state.dataList,
         updatedItem: action.payload,
@@ -89,12 +89,12 @@ const courseSlice = createSlice({
       });
     },
 
-    removeCourseFromList: (state, action) => {
+    removeTeacherFromList: (state, action) => {
       const result = removeDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
-        idToRemove: action.payload.id, // your API uses "id" not "_id"
+        idToRemove: action.payload.id,
       });
 
       state.meta = result.meta;
@@ -102,7 +102,7 @@ const courseSlice = createSlice({
       state.dataList = result.dataList;
     },
 
-    setCourseMetaData: (state, action) => {
+    setTeacherMetaData: (state, action) => {
       state.meta = { ...state.meta, ...action.payload };
       const updateKey = Object.keys(action.payload)[0];
       if (updateKey === "currentPage") {
@@ -115,51 +115,35 @@ const courseSlice = createSlice({
       }
     },
 
-    setSelectedCourseData: (state, action) => {
+    setSelectedTeacherData: (state, action) => {
       state.selectedData = action.payload;
     },
 
-    setCourseConfirmationModal: (state, action) => {
+    setTeacherConfirmationModal: (state, action) => {
       state.isConfirmModalOpen = action.payload;
     },
 
-    setAddCourseModal: (state, action) => {
+    setAddTeacherModal: (state, action) => {
       state.isAddModalOpen = action.payload;
     },
 
-    setEditCourseModal: (state, action) => {
+    setEditTeacherModal: (state, action) => {
       state.isEditModalOpen = action.payload;
-    },
-    updateCourseStatus: (state, action) => {
-      const { courseId, status } = action.payload;
-
-      // Update in dataList
-      state.dataList = state.dataList.map(item =>
-        item.encrypted_id === courseId ? { ...item, status } : item
-      );
-
-      // Update in paginated data
-      Object.keys(state.data).forEach(pageKey => {
-        state.data[pageKey] = state.data[pageKey].map(item =>
-          item.encrypted_id === courseId ? { ...item, status } : item
-        );
-      });
     },
   },
 });
 
 export const {
-  setCourseDataList,
-  setCourseData,
-  addNewCourseToList,
-  updateCourseInList,
-  removeCourseFromList,
-  setCourseMetaData,
-  setSelectedCourseData,
-  setCourseConfirmationModal,
-  setAddCourseModal,
-  setEditCourseModal,
-  updateCourseStatus
-} = courseSlice.actions;
+  setTeacherDataList,
+  setTeacherData,
+  addNewTeacherToList,
+  updateTeacherInList,
+  removeTeacherFromList,
+  setTeacherMetaData,
+  setSelectedTeacherData,
+  setTeacherConfirmationModal,
+  setAddTeacherModal,
+  setEditTeacherModal,
+} = teacherSlice.actions;
 
-export default courseSlice.reducer;
+export default teacherSlice.reducer;

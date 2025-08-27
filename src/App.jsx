@@ -35,9 +35,9 @@ const App = () => {
   // Don't show loading for public routes when there's no token
   if (!authChecked && accessToken) {
     return <div className='h-screen w-screen flex justify-center items-center'><img src="/images/loading-logo.png"
-      class="w-[10%] aspect-square"
+      className="w-[10%] aspect-square"
       alt="Loading..." />
-      <p class="text-center text-headerColor">Please Wait..</p></div>
+      <p className="text-center text-headerColor">Please Wait..</p></div>
   }
 
   return (

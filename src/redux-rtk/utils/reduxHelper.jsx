@@ -115,25 +115,23 @@ export const removeDataFromPaginatedList = ({ idToRemove, meta, data }) => {
 };
 
 // *update data only in dataList 
-export const updateDataInDataList = ({ updatedItem, dataList }) => {
-    return dataList.map(item =>
-        item._id === updatedItem._id ? { ...item, ...updatedItem } : item
-    );
+export const updateDataInDataList = ({ dataList, updatedItem, matchKey = "id" }) => {
+  return dataList.map((item) =>
+    item[matchKey] === updatedItem[matchKey] ? updatedItem : item
+  );
 };
+
 
 // *update item in all pages of paginated data
-export const updateDataInPaginatedPages = ({ updatedItem, data, meta }) => {
-    const { totalPages } = meta;
-    const updatedData = {};
+export const updateDataInPaginatedPages = ({ data, meta, updatedItem, matchKey = "id" }) => {
+  const newData = { ...data };
 
-    for (let i = 1; i <= totalPages; i++) {
-        const pageKey = `page${i}`;
-        if (data[pageKey]) {
-            updatedData[pageKey] = data[pageKey].map(item =>
-                item._id === updatedItem._id ? { ...item, ...updatedItem } : item
-            );
-        }
-    }
+  for (let key in newData) {
+    newData[key] = newData[key].map((item) =>
+      item[matchKey] === updatedItem[matchKey] ? updatedItem : item
+    );
+  }
 
-    return updatedData;
+  return newData;
 };
+

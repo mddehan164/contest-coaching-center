@@ -1,6 +1,6 @@
 import { MdOutlineMessage, MdOutlineNotificationsActive } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaBook } from "react-icons/fa";
 import logo from "../assets/images/logo.png"
 
 
@@ -28,7 +28,7 @@ export const sidebarData = [
     {
         title: "Menu",
         items: [
-            { icon: RiDashboardHorizontalFill, title: "Dashboard", link: "/dashboard" }, { icon: SiGoogleclassroom, title: "Student", link: "student" }, { icon: GiTeacher, title: "Teacher", link: "teacher" }, { icon: MdBatchPrediction, title: "Batches", link: "batch" }, { icon: CgWebsite, title: "Customise", link: "customise" }, { icon: GrSchedules, title: "Schedule", link: "schedule" }
+            { icon: RiDashboardHorizontalFill, title: "Dashboard", link: "/dashboard" }, { icon: SiGoogleclassroom, title: "Student", link: "student" }, { icon: GiTeacher, title: "Teacher", link: "teacher" }, { icon: FaBook, title: "Courses", link: "course" }, { icon: MdBatchPrediction, title: "Batches", link: "batch" }, { icon: CgWebsite, title: "Customise", link: "customise" }, { icon: GrSchedules, title: "Schedule", link: "schedule" }
         ]
     },
     {
