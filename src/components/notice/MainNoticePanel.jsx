@@ -1,12 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { noticeData, noticeBtnData } from "../../data/data";
 import NoticePanel from "./NoticePanel";
-import { useStateContext } from "../../context/ContextProvider";
 import MainBtn from "../mainBtn";
 
 const MainNoticePanel = () => {
   const { notices, tabLabelMap } = noticeData;
-  const { activeTab } = useStateContext();
+  const activeTab = useSelector(state => state.ui.activeTab);
 
   return (
     <div>

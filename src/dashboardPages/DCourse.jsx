@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { CourseEditor } from "../components";
-import { useStateContext } from "../context/ContextProvider";
 import { addCourse, fetchCourses } from "../services/course";
 
 const DCourse = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useStateContext();
+  const { user } = useSelector(state => state.auth);
 
   // Transform API data to match Card component expectations
   const transformCourseData = (courseData) => {

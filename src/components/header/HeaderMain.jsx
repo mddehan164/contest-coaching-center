@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import HeaderDetails from './HeaderDetails.jsx';
 import HeaderIcons from './HeaderIcons.jsx';
 import { motion, useAnimation } from "framer-motion";
@@ -23,22 +23,38 @@ const rightChildVariants = { hidden: { opacity: 0, x: 50 }, visible: { opacity: 
 
 const Header = () => {
   const controls = useAnimation();
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    if (currentScrollY > lastScrollY && currentScrollY > 50) {
-      controls.start({ y: '-100%', transition: { duration: 0.4 } });
-    } else {
-      controls.start({ y: '0%', transition: { duration: 0.4 } });
-    }
-    setLastScrollY(currentScrollY);
-  };
+  const lastScrollYRef = useRef(0);
+  const isMountedRef = useRef(false);
 
   useEffect(() => {
+    // Use a small delay to ensure Framer Motion controls are fully initialized
+    const timer = setTimeout(() => {
+      isMountedRef.current = true;
+    }, 100);
+    
+    const handleScroll = () => {
+      // Only proceed if component is mounted and controls are available
+      if (!isMountedRef.current || !controls) return;
+      
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollYRef.current && currentScrollY > 50) {
+        controls.start({ y: '-100%', transition: { duration: 0.4 } });
+      } else {
+        controls.start({ y: '0%', transition: { duration: 0.4 } });
+      }
+      lastScrollYRef.current = currentScrollY;
+    };
+    
+    // Add scroll listener
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    
+    return () => {
+      // Cleanup
+      clearTimeout(timer);
+      isMountedRef.current = false;
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [controls]); // Remove lastScrollY from dependencies
 
   return (
     <motion.header

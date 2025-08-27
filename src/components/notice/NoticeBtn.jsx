@@ -1,10 +1,16 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { noticeBtnData } from '../../data/data'
-import { useStateContext } from '../../context/ContextProvider'
+import { setActiveTab } from '../../redux-rtk/uiSlice';
 import MainBtn from '../mainBtn';
 
 const NoticeBtn = () => {
-    const {activeTab, setActiveTab} = useStateContext();
+    const dispatch = useDispatch();
+    const activeTab = useSelector(state => state.ui.activeTab);
+    
+    const handleSetActiveTab = (tab) => {
+        dispatch(setActiveTab(tab));
+    };
   return (
     <div className='flex flex-wrap gap-1 pt-2 w-full'>
       {noticeBtnData.btnName.map((btn, idx) => {
@@ -16,7 +22,7 @@ const NoticeBtn = () => {
             data={btn}
             btnStyle={noticeBtnData.btnStyle}
             isActive={isActive}
-            onClick={() => setActiveTab(btn)}
+            onClick={() => handleSetActiveTab(btn)}
           />
         )
       })}

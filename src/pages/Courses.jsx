@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { courseHeroData, btnData } from "../data/courseData";
 import Card from "../components/Card";
 import ScrollAnimatedSection from "../components/ScrollAnimatedSection";
 import Hero from "../components/Hero";
 import { fetchCourses } from "../services/course";
-import { useStateContext } from "../context/ContextProvider";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useStateContext();
+  const { user } = useSelector(state => state.auth);
 
   // Transform API data to match Card component expectations
   const transformCourseData = (courseData) => {

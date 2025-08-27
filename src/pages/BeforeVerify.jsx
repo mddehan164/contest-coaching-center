@@ -1,9 +1,9 @@
 import React, { use } from "react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { useStateContext } from "../context/ContextProvider";
 
 const BeforeVerify = () => {
-    const {email} = useStateContext();
+    const email = useSelector(state => state.ui.email);
     const userEmail = email || ""; // Fallback to empty string if email is not set
     const getInboxLink = (email) => {
     if (!email) return "https://mail.google.com/mail/u/0/#inbox"; // fallback

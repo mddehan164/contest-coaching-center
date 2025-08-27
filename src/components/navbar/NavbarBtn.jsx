@@ -1,66 +1,60 @@
-import React, { useEffect } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import ConfirmModal from "../ConfirmModal";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader";
-import { useLoader } from "../../context/LoaderContext";
 import User from "../User";
+import ConfirmModal from "../ConfirmModal";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../redux-rtk/auth/authApi";
+import { logout as logoutAction } from "../../redux-rtk/auth/authSlice";
 
 const NavbarBtn = (props) => {
-  const { showConfirm, setShowConfirm, setMsg, user, setUser, msg, logout } =
-    useStateContext();
-  const { loading, setLoading } = useLoader();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [logoutMutation] = useLogoutMutation();
 
-  const handleLogout = async () => {
-    setShowConfirm(true);
-  };
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleLogout = () => setShowConfirm(true);
 
   const confirmDelete = async () => {
+    setLoading(true);
+    setMsg("Logging out...");
+    
     try {
-      await logout();
+      // Try to call logout API, but don't fail if it errors
+      await logoutMutation().unwrap();
+    } catch (error) {
+      // Ignore API errors during logout
+      console.log("Logout API call failed, but continuing with local logout");
+    } finally {
+      // Always clear local state regardless of API response
+      dispatch(logoutAction());
       localStorage.clear();
-      setUser(null);
       setShowConfirm(false);
-      setMsg("Logged out successfully");
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setMsg("");
-        navigate("/", { replace: true });
-      }, 2000);
-    } catch (err) {
-      console.error("Logout error", err);
-      setMsg("❌ Logout failed. Try again.");
-      setTimeout(() => {
-        setMsg("");
-      }, 2000);
+      setLoading(false);
+      setMsg("");
+      navigate("/", { replace: true });
     }
   };
 
-  const cancelDelete = () => {
-    setShowConfirm(false);
-  };
-  useEffect(() => {
-    setMsg("");
-    setLoading(false);
-  }, [setMsg, setLoading]);
+  const cancelDelete = () => setShowConfirm(false);
+
   return (
     <div>
-      {!user && (
+      {!isAuthenticated && (
         <Link
           to="/login"
-          className={`max-sm:py-2 max-sm:px-6 max-sm:rounded-none sm:py-2 sm:px-4 bg-${
-            !user ? props.data.data.btnStyle.btnColor : "transparent"
-          } px-6 py-4 text-white rounded-lg ${
-            !user ? "hover:bg-headerColorHover" : " "
-          }`}
+          className={`max-sm:py-2 max-sm:px-6 max-sm:rounded-none sm:py-2 sm:px-4 bg-${props.data.data.btnStyle.btnColor} px-6 py-4 text-white rounded-lg hover:bg-headerColorHover`}
         >
           {props.data.data.btnName}
         </Link>
       )}
-      {loading && <Loader message={msg} duration={2000} />}
-      {user && <User logout={handleLogout} />}
+      {loading && <Loader message={msg || "Processing..."} duration={2000} />}
+      {isAuthenticated && <User logout={handleLogout} />}
 
       <ConfirmModal
         show={showConfirm}
