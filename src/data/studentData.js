@@ -17,13 +17,41 @@ export const listDetails = [
     hscResult: "GPA 5.00",
     totalFee: 3000,
     installments: [
-      { installment: "1st", amount: 1000, status: "Paid", paymentDate: "12/06/25", nextPaymentDate: null },
-      { installment: "2nd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "25/06/25" },
-      { installment: "3rd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "10/07/25" },
+      {
+        installment: "1st",
+        amount: 1000,
+        status: "Paid",
+        paymentDate: "12/06/25",
+        nextPaymentDate: null,
+      },
+      {
+        installment: "2nd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "25/06/25",
+      },
+      {
+        installment: "3rd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "10/07/25",
+      },
     ],
     examResults: [
-      { examName: "Bangla-001", marks: "45/50", position: "5th", highestMarks: 49 },
-      { examName: "Math-002", marks: "48/50", position: "3rd", highestMarks: 50 },
+      {
+        examName: "Bangla-001",
+        marks: "45/50",
+        position: "5th",
+        highestMarks: 49,
+      },
+      {
+        examName: "Math-002",
+        marks: "48/50",
+        position: "3rd",
+        highestMarks: 50,
+      },
       { examName: "GK-03", marks: "40/50", position: "7th", highestMarks: 48 },
     ],
     lectureSheets: [
@@ -32,7 +60,7 @@ export const listDetails = [
       { name: "English-003", status: "Given", givenDate: "16/06/25" },
       { name: "Physics-004", status: "Not Given", givenDate: null },
       { name: "Chemistry-005", status: "Not Given", givenDate: null },
-    ]
+    ],
   },
   {
     id: 2,
@@ -49,14 +77,19 @@ export const listDetails = [
     sscResult: "GPA 5.00",
     hscResult: "GPA 5.00",
     totalFee: 3000,
-    installments: [
-      { installment: "1st", amount: 1000, status: "Paid", paymentDate: "12/06/25", nextPaymentDate: null },
-      { installment: "2nd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "25/06/25" },
-      { installment: "3rd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "10/07/25" },
-    ],
     examResults: [
-      { examName: "Bangla-001", marks: "45/50", position: "5th", highestMarks: 49 },
-      { examName: "Math-002", marks: "48/50", position: "3rd", highestMarks: 50 },
+      {
+        examName: "Bangla-001",
+        marks: "45/50",
+        position: "5th",
+        highestMarks: 49,
+      },
+      {
+        examName: "Math-002",
+        marks: "48/50",
+        position: "3rd",
+        highestMarks: 50,
+      },
       { examName: "GK-03", marks: "40/50", position: "7th", highestMarks: 48 },
     ],
     lectureSheets: [
@@ -65,7 +98,7 @@ export const listDetails = [
       { name: "English-003", status: "Given", givenDate: "16/06/25" },
       { name: "Physics-004", status: "Not Given", givenDate: null },
       { name: "Chemistry-005", status: "Not Given", givenDate: null },
-    ]
+    ],
   },
   {
     id: 3,
@@ -83,13 +116,41 @@ export const listDetails = [
     hscResult: "GPA 5.00",
     totalFee: 3000,
     installments: [
-      { installment: "1st", amount: 1000, status: "Paid", paymentDate: "12/06/25", nextPaymentDate: null },
-      { installment: "2nd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "25/06/25" },
-      { installment: "3rd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "10/07/25" },
+      {
+        installment: "1st",
+        amount: 1000,
+        status: "Paid",
+        paymentDate: "12/06/25",
+        nextPaymentDate: null,
+      },
+      {
+        installment: "2nd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "25/06/25",
+      },
+      {
+        installment: "3rd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "10/07/25",
+      },
     ],
     examResults: [
-      { examName: "Bangla-001", marks: "45/50", position: "5th", highestMarks: 49 },
-      { examName: "Math-002", marks: "48/50", position: "3rd", highestMarks: 50 },
+      {
+        examName: "Bangla-001",
+        marks: "45/50",
+        position: "5th",
+        highestMarks: 49,
+      },
+      {
+        examName: "Math-002",
+        marks: "48/50",
+        position: "3rd",
+        highestMarks: 50,
+      },
       { examName: "GK-03", marks: "40/50", position: "7th", highestMarks: 48 },
     ],
     lectureSheets: [
@@ -98,7 +159,7 @@ export const listDetails = [
       { name: "English-003", status: "Given", givenDate: "16/06/25" },
       { name: "Physics-004", status: "Not Given", givenDate: null },
       { name: "Chemistry-005", status: "Not Given", givenDate: null },
-    ]
+    ],
   },
   {
     id: 4,
@@ -116,13 +177,41 @@ export const listDetails = [
     hscResult: "GPA 5.00",
     totalFee: 3000,
     installments: [
-      { installment: "1st", amount: 1000, status: "Paid", paymentDate: "12/06/25", nextPaymentDate: null },
-      { installment: "2nd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "25/06/25" },
-      { installment: "3rd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "10/07/25" },
+      {
+        installment: "1st",
+        amount: 1000,
+        status: "Paid",
+        paymentDate: "12/06/25",
+        nextPaymentDate: null,
+      },
+      {
+        installment: "2nd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "25/06/25",
+      },
+      {
+        installment: "3rd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "10/07/25",
+      },
     ],
     examResults: [
-      { examName: "Bangla-001", marks: "45/50", position: "5th", highestMarks: 49 },
-      { examName: "Math-002", marks: "48/50", position: "3rd", highestMarks: 50 },
+      {
+        examName: "Bangla-001",
+        marks: "45/50",
+        position: "5th",
+        highestMarks: 49,
+      },
+      {
+        examName: "Math-002",
+        marks: "48/50",
+        position: "3rd",
+        highestMarks: 50,
+      },
       { examName: "GK-03", marks: "40/50", position: "7th", highestMarks: 48 },
     ],
     lectureSheets: [
@@ -131,7 +220,7 @@ export const listDetails = [
       { name: "English-003", status: "Given", givenDate: "16/06/25" },
       { name: "Physics-004", status: "Not Given", givenDate: null },
       { name: "Chemistry-005", status: "Not Given", givenDate: null },
-    ]
+    ],
   },
   {
     id: 5,
@@ -149,13 +238,41 @@ export const listDetails = [
     hscResult: "GPA 5.00",
     totalFee: 3000,
     installments: [
-      { installment: "1st", amount: 1000, status: "Paid", paymentDate: "12/06/25", nextPaymentDate: null },
-      { installment: "2nd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "25/06/25" },
-      { installment: "3rd", amount: 1000, status: "Due", paymentDate: null, nextPaymentDate: "10/07/25" },
+      {
+        installment: "1st",
+        amount: 1000,
+        status: "Paid",
+        paymentDate: "12/06/25",
+        nextPaymentDate: null,
+      },
+      {
+        installment: "2nd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "25/06/25",
+      },
+      {
+        installment: "3rd",
+        amount: 1000,
+        status: "Due",
+        paymentDate: null,
+        nextPaymentDate: "10/07/25",
+      },
     ],
     examResults: [
-      { examName: "Bangla-001", marks: "45/50", position: "5th", highestMarks: 49 },
-      { examName: "Math-002", marks: "48/50", position: "3rd", highestMarks: 50 },
+      {
+        examName: "Bangla-001",
+        marks: "45/50",
+        position: "5th",
+        highestMarks: 49,
+      },
+      {
+        examName: "Math-002",
+        marks: "48/50",
+        position: "3rd",
+        highestMarks: 50,
+      },
       { examName: "GK-03", marks: "40/50", position: "7th", highestMarks: 48 },
     ],
     lectureSheets: [
@@ -164,6 +281,6 @@ export const listDetails = [
       { name: "English-003", status: "Given", givenDate: "16/06/25" },
       { name: "Physics-004", status: "Not Given", givenDate: null },
       { name: "Chemistry-005", status: "Not Given", givenDate: null },
-    ]
-  }
+    ],
+  },
 ];

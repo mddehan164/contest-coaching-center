@@ -308,19 +308,16 @@ import { BsClipboardData } from "react-icons/bs";
 import { GiTeacher } from "react-icons/gi";
 import { BiBookOpen } from "react-icons/bi";
 
-export const services = {
-  title: "আমাদের সেবা সমূহ",
-  data: [
-    { title: "অনলাইন গ্রন্থাগার", icon: FaBookOpen },
-    { title: "মেধাবী ও অভিজ্ঞ শিক্ষক", icon: GiTeacher },
-    { title: "মানসম্পন্ন অডিও ম্যাটেরিয়ালস", icon: FaHeadphones },
-    { title: "কনসেপ্ট হেইভড ক্লাস", icon: MdOutlineVideoLibrary },
-    { title: "ইউনিক এপ্রোচ সিস্টেম", icon: FaFileAlt },
-    { title: "সার্বজনিক Q&A সেবা", icon: FaQuestion },
-    { title: "Auto SMS রেজাল্ট", icon: FaSms },
-    { title: "এপ্রোচ এনালাইসিস রিপোর্ট", icon: FaChartBar },
-  ],
-};
+export const services = [
+  { title: "অনলাইন গ্রন্থাগার", icon: FaBookOpen },
+  { title: "মেধাবী ও অভিজ্ঞ শিক্ষক", icon: GiTeacher },
+  { title: "মানসম্পন্ন অডিও ম্যাটেরিয়ালস", icon: FaHeadphones },
+  { title: "কনসেপ্ট হেইভড ক্লাস", icon: MdOutlineVideoLibrary },
+  { title: "ইউনিক এপ্রোচ সিস্টেম", icon: FaFileAlt },
+  { title: "সার্বজনিক Q&A সেবা", icon: FaQuestion },
+  { title: "Auto SMS রেজাল্ট", icon: FaSms },
+  { title: "এপ্রোচ এনালাইসিস রিপোর্ট", icon: FaChartBar },
+];
 
 // summary data from here
 

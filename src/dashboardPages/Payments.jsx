@@ -1,21 +1,24 @@
 import React from "react";
-import QuickStat from "../QuickStat";
-import { services } from "../../data/data";
+import { persons } from "../data/payments";
+import { QuickStat } from "../components";
+import { Link } from "react-router";
 
-const ServicesStats = () => {
+const Payments = () => {
   return (
-    <div className="w-full mt-20 p-3 sm:mt-24 xl:mt-28">
+    <div className="w-full mt-20 ">
       <h1 className="text-center text-2xl font-semibold text-headerColorHover my-5 xl:mb-10 xl:text-3xl">
-        আমাদের সেবা সমূহ
+        Select a Option
       </h1>
 
       <div className="w-full flex justify-center flex-wrap gap-2 sm:gap-4">
-        {services.map((service, index) => (
+        {persons.map((person, index) => (
           <div
             key={index}
             className="aspect-3/2 w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md cursor-pointer"
           >
-            <QuickStat data={service} />
+            <Link to={person.link}>
+              <QuickStat data={person} />
+            </Link>
           </div>
         ))}
       </div>
@@ -23,4 +26,4 @@ const ServicesStats = () => {
   );
 };
 
-export default ServicesStats;
+export default Payments;
