@@ -16,7 +16,7 @@ const Payments = () => {
             key={index}
             className="aspect-3/2 w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md cursor-pointer"
           >
-            <Link to={person.link}>
+            <Link to={`/dashboard/${person.link}`}>
               <QuickStat data={person} />
             </Link>
           </div>
