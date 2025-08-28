@@ -8,8 +8,10 @@ import {
   GalleryMain,
   ServiceEditor,
   StatsEditor,
+  StudentPay,
   SuccessEditor,
   SummaryEditor,
+  TeacherPay,
 } from "../components";
 import {
   DCourse,
@@ -73,4 +75,6 @@ export let dashboardPageRoutes = [
   { element: <Help />, path: "help" },
   { element: <Logout />, path: "logout" },
   { element: <Payments />, path: "payments" },
+  { element: <TeacherPay />, path: "teacher-pay" },
+  { element: <StudentPay />, path: "student-pay" },
 ];

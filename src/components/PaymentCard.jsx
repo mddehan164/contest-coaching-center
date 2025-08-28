@@ -1,23 +1,26 @@
-import React from "react";
-import img from "../assets/images/successful-person/p-1.png";
+import img from "../assets/images/gallery/photo(1).jpg";
 
-const PaymentCard = ({ status = 1, type = "student" }) => {
+const PaymentCard = ({ status = 1, type = "student", data }) => {
   return (
     <div className="border flex justify-between gap-2 px-2 py-2 rounded-md hover:shadow-md hover:scale-105 transition-all duration-100 max-w-72 aspect-video text-[0.85rem]">
-      <div className="w-[40%] h-full overflow-hidden flex">
+      <div className="w-[40%] h-full overflow-hidden rounded-sm">
         <img
           className="w-full h-full object-cover object-center"
           src={img}
           alt="img"
         />
       </div>
-      <div className="w-[58%] p-2">
+      <div className="w-[58%] p-2 flex flex-col justify-center ">
         <h1 className="text-[1.05rem] font-semibold leading-4 text-headerColor">
-          name
+          {data?.name || "Name Here"}
         </h1>
-        <p>Mobile</p>
-        <p>Batch</p>
-        {type === "student" ? <p>Roll</p> : <p>Subject</p>}
+        <p>{data?.mobile || "mobile"}</p>
+        <p>{data?.batch || "Batch"}</p>
+        {type === "student" ? (
+          <p>{data?.roll || "roll"}</p>
+        ) : (
+          <p>{data?.subject || "subject"}</p>
+        )}
         <div className="flex justify-between items-center mt-1">
           <p
             className={`${
