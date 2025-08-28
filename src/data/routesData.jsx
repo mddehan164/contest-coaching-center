@@ -18,7 +18,7 @@ import {
   DSlider,
   Help,
   Logout,
-  Notice,
+  // Notice,
   Payments,
   Schedule,
   Settings,
@@ -36,6 +36,7 @@ import {
 } from "../pages";
 import Batch from "../pages/Batch/Batch";
 import { Course } from "../pages/Course";
+import { Notice } from "../pages/Notice";
 import Student from "../pages/Student/Student";
 import { Teacher } from "../pages/Teacher";
 // import { Student } from "../pages/Student";

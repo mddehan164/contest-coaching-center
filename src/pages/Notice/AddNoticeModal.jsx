@@ -4,6 +4,7 @@ import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
 import NotifyContainer from "../../utils/notify";
 import { useState } from "react";
+import CustomDatePicker from "@shared/custom/CustomDatePicker";
 
 const AddNoticeModal = () => {
   const {
@@ -14,6 +15,7 @@ const AddNoticeModal = () => {
     isLoading,
     handleSubmit,
     handleAddNotice,
+    getStartDateDisabled,
     formValues,
     branchOptions,
     isBranchesLoading,
@@ -27,19 +29,17 @@ const AddNoticeModal = () => {
 
   // Group options
   const groupOptions = [
-    { value: "science", label: "Science" },
-    { value: "arts", label: "Arts" },
-    { value: "commerce", label: "Commerce" },
-    { value: "technology", label: "Technology" },
-    { value: "business", label: "Business" },
+    { value: 1, label: "Admission" },
+    { value: 2, label: "Administration" },
+    { value: 3, label: "Department" },
   ];
 
-  const handleManualUrlSubmit = () => {
-    if (manualUrl.trim()) {
-      handleManualUrlInput(manualUrl.trim());
-      setManualUrl("");
-    }
-  };
+  // const handleManualUrlSubmit = () => {
+  //   if (manualUrl.trim()) {
+  //     handleManualUrlInput(manualUrl.trim());
+  //     setManualUrl("");
+  //   }
+  // };
 
   return (
     <CustomContainerModal
@@ -70,13 +70,13 @@ const AddNoticeModal = () => {
 
         {/* Image Upload Field */}
         <div>
-          <label className="block text-sm font-medium text-text-600 mb-2">
+          {/* <label className="block text-sm font-medium text-text-600 mb-2">
             Notice Image *
-          </label>
+          </label> */}
 
           {/* Image Upload Area */}
           <div className="flex items-center space-x-4 mb-4">
-            <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+            {/* <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
               {isUploading ? (
                 <div className="text-gray-500 text-sm">Uploading...</div>
               ) : imagePreview ? (
@@ -112,8 +112,8 @@ const AddNoticeModal = () => {
                 onChange={handleFileSelect}
                 disabled={isUploading}
               />
-            </label>
-            <div className="flex-1">
+            </label> */}
+            {/* <div className="flex-1">
               <p className="text-sm text-gray-600 mb-2">
                 Upload a notice image (JPEG, PNG, JPG, GIF, WEBP - max 5MB)
               </p>
@@ -127,11 +127,11 @@ const AddNoticeModal = () => {
                   Simulating upload... (Demo)
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Manual URL Input */}
-          <div className="flex space-x-2">
+          {/* <div className="flex space-x-2">
             <FormInput
               label="Or enter image URL manually"
               placeholder="https://example.com/image.jpg"
@@ -149,24 +149,23 @@ const AddNoticeModal = () => {
             >
               Set URL
             </button>
-          </div>
+          </div> */}
         </div>
 
         <Controller
-          name="short_des"
+          name="date"
           control={control}
           render={({ field }) => (
-            <FormTextarea
-              label="Short Description"
-              placeholder="Enter short description"
-              id="short_des"
-              rows={3}
-              {...field}
+            <CustomDatePicker
+              selectedDate={field.value}
+              setSelectedDate={field.onChange}
+              id="date"
+              isLoading={isLoading}
             />
           )}
         />
 
-        <Controller
+        {/* <Controller
           name="long_des"
           control={control}
           render={({ field }) => (
@@ -179,9 +178,9 @@ const AddNoticeModal = () => {
               {...field}
             />
           )}
-        />
+        /> */}
 
-        <Controller
+        {/* <Controller
           name="price"
           control={control}
           render={({ field }) => (
@@ -195,9 +194,9 @@ const AddNoticeModal = () => {
               {...field}
             />
           )}
-        />
+        /> */}
 
-        <Controller
+        {/* <Controller
           name="offer_price"
           control={control}
           render={({ field }) => (
@@ -211,9 +210,9 @@ const AddNoticeModal = () => {
               {...field}
             />
           )}
-        />
+        /> */}
 
-        <Controller
+        {/* <Controller
           name="branch_id"
           control={control}
           render={({ field }) => (
@@ -235,14 +234,14 @@ const AddNoticeModal = () => {
               isSearchable={true}
             />
           )}
-        />
+        /> */}
 
         <Controller
-          name="group"
+          name="type"
           control={control}
           render={({ field }) => (
             <FormSelect
-              label="Group"
+              label="Type"
               options={groupOptions}
               selectedOption={groupOptions.find(
                 (opt) => opt.value === field.value
@@ -251,7 +250,7 @@ const AddNoticeModal = () => {
                 field.onChange(selectedOption?.value)
               }
               isLoading={isLoading}
-              placeholder="Select group"
+              placeholder="Select Type"
               isCol={true}
               isSearchable={true}
             />

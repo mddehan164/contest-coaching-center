@@ -27,6 +27,7 @@ import { MdOutlineLiveHelp } from "react-icons/md";
 import { GrLogout } from "react-icons/gr";
 import { CgWebsite } from "react-icons/cg";
 import { MdBatchPrediction } from "react-icons/md";
+import { AiOutlineNotification } from "react-icons/ai";
 
 export const sidebarData = [
   {
@@ -41,6 +42,7 @@ export const sidebarData = [
       { icon: GiTeacher, title: "Teacher", link: "teacher" },
       { icon: FaBook, title: "Courses", link: "course" },
       { icon: MdBatchPrediction, title: "Batches", link: "batch" },
+      { icon: AiOutlineNotification, title: "Notices", link: "notice" },
       { icon: CgWebsite, title: "Customise", link: "customise" },
       { icon: GrSchedules, title: "Schedule", link: "schedule" },
       { icon: RiSecurePaymentFill, title: "Payments", link: "payments" },

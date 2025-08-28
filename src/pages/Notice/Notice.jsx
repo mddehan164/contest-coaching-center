@@ -67,9 +67,9 @@ const Notice = () => {
           columns={[
             "SL",
             "Notice Name",
-            "Notice Description",
-            "Price",
-            "Offer Price",
+            "Type",
+            "Published At",
+            "Branch",
             "Status",
             "Action",
           ]}
@@ -79,9 +79,11 @@ const Notice = () => {
             <tr className="table_row" key={index}>
               <td className="table_td">{index + 1}</td>
               <td className="table_td">{item?.title}</td>
-              <td className="table_td truncate">{item?.short_des}</td>
-              <td className="table_td">{item?.price}</td>
-              <td className="table_td">{item?.offer_price}</td>
+              <td className="table_td truncate">{item?.type_name}</td>
+              <td className="table_td">{item?.created_at.split("T")[0]}</td>
+              <td className="table_td">
+                {item?.branch.name},{item?.branch.location}
+              </td>
               <td className="table_td">
                 <NoticeStatusToggleSelect
                   noticeId={item.encrypted_id}
@@ -143,7 +145,8 @@ const Notice = () => {
           if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
             handleDelete({
               noticeId: selectedData.id,
-            }); // ✅ noticeId instead of adminId
+            });
+          // ✅ noticeId instead of adminId
           else handleCloseConfirmationModal();
         }}
         deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
