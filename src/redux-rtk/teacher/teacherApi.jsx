@@ -13,6 +13,8 @@ export const teacherApi = apiSlice.injectEndpoints({
           method: "GET"
         };
       },
+      providesTags: ['Teachers'],
+      keepUnusedDataFor: 300, // Keep cache for 5 minutes
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
@@ -33,6 +35,7 @@ export const teacherApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Teachers'],
     }),
 
     // UPDATE A BATCH
@@ -44,6 +47,7 @@ export const teacherApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Teachers'],
     }),
 
     // DELETE A BATCH
@@ -54,6 +58,7 @@ export const teacherApi = apiSlice.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: ['Teachers'],
     }),
 
 

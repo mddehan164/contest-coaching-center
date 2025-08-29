@@ -35,7 +35,11 @@ export const useTeachers = () => {
     const [deleteTeacher, { isLoading: deleteLoading }] = useDeleteTeacherMutation();
     const { isLoading, isFetching, isError, error } = useGetAllTeachersQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
-        { refetchOnMountOrArgChange: true }
+        { 
+            refetchOnMountOrArgChange: false, // Don't refetch on every mount
+            refetchOnFocus: false,
+            refetchOnReconnect: true
+        }
     );
 
     const updatePageMeta = (value) => dispatch(setTeacherMetaData(value));

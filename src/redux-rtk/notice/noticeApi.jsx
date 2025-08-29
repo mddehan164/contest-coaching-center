@@ -12,6 +12,12 @@ export const noticeApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: (result, error, arg) => [
+        { type: 'Notice', id: 'LIST' },
+        { type: 'Notice', id: `PAGE_${arg.page || 1}` },
+      ],
+      // Keep data fresh for 5 minutes
+      keepUnusedDataFor: 300,
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
@@ -39,23 +45,37 @@ export const noticeApi = apiSlice.injectEndpoints({
     // ADD A NEW COURSE
     addNotice: builder.mutation({
       query: ({ data }) => {
+        // Check if data is FormData or JSON
+        const isFormData = data instanceof FormData;
+        
         return {
           url: "notices",
           method: "POST",
           body: data,
+          headers: isFormData ? {} : {
+            'Content-Type': 'application/json',
+          },
         };
       },
+      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
     }),
 
     // UPDATE A COURSE
     updateNotice: builder.mutation({
       query: ({ data, noticeId }) => {
+        // Check if data is FormData or JSON
+        const isFormData = data instanceof FormData;
+        
         return {
           url: `notices/${noticeId}`,
           method: "PUT",
           body: data,
+          headers: isFormData ? {} : {
+            'Content-Type': 'application/json',
+          },
         };
       },
+      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
     }),
 
     // DELETE A COURSE
@@ -66,17 +86,18 @@ export const noticeApi = apiSlice.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
     }),
 
     toggleNoticeStatus: builder.mutation({
       query: ({ noticeId }) => {
         return {
-          url: `notices/${noticeId}/toggle-status`,
+          url: `notices/${noticeId}/status`,
           method: "PATCH",
         };
       },
       // Invalidate the cache to refetch the updated data
-      invalidatesTags: ["Notices"],
+      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
     }),
   }),
 });

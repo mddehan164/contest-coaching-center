@@ -36,7 +36,11 @@ export const useCourses = () => {
     const [deleteCourse, { isLoading: deleteLoading }] = useDeleteCourseMutation();
     const { isLoading, isFetching, isError, error } = useGetAllCoursesQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
-        { refetchOnMountOrArgChange: true }
+        { 
+            refetchOnMountOrArgChange: false, // Don't refetch on every mount
+            refetchOnFocus: false,
+            refetchOnReconnect: true
+        }
     );
 
     const updatePageMeta = (value) => dispatch(setCourseMetaData(value));

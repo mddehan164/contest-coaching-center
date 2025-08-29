@@ -7,6 +7,7 @@ import courseReducer from "../course/courseSlice";
 import studentReducer from "../student/studentSlice";
 import teacherReducer from "../teacher/teacherSlice";
 import noticeReducer from "../notice/noticeSlice";
+import reviewReducer from "../review/reviewSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     student: studentReducer,
     teacher: teacherReducer,
     notice: noticeReducer,
+    review: reviewReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

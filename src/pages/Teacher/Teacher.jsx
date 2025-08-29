@@ -68,7 +68,7 @@ const Teacher = () => {
                 >
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
-                            <td className="table_td">{index + 1}</td>
+                            <td className="table_td">{(meta?.current_page - 1) * meta?.per_page + index + 1}</td>
                             <td className="table_td">{item?.name}</td>
                             <td className="table_td">{item?.mobile}</td>
                             <td className="table_td truncate">{item?.address}</td>

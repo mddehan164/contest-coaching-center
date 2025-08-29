@@ -3,7 +3,6 @@ import { useEditNotice } from "@hooks/useNotice";
 import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
 import NotifyContainer from "../../utils/notify";
-import { useState } from "react";
 import CustomDatePicker from "@shared/custom/CustomDatePicker";
 
 const EditNoticeModal = ({ data }) => {
@@ -19,10 +18,7 @@ const EditNoticeModal = ({ data }) => {
     handleFileSelect,
     imagePreview,
     isUploading,
-    handleManualUrlInput,
   } = useEditNotice({ data });
-
-  //   const [manualUrl, setManualUrl] = useState("");
 
   // Group options
   const groupOptions = [
@@ -30,13 +26,6 @@ const EditNoticeModal = ({ data }) => {
     { value: 2, label: "Administration" },
     { value: 3, label: "Department" },
   ];
-
-  //   const handleManualUrlSubmit = () => {
-  //     if (manualUrl.trim()) {
-  //       handleManualUrlInput(manualUrl.trim());
-  //       setManualUrl("");
-  //     }
-  //   };
 
   return (
     <CustomContainerModal
@@ -68,21 +57,24 @@ const EditNoticeModal = ({ data }) => {
 
         {/* File Upload Field */}
         <div>
-          {/* <label className="block text-sm font-medium text-text-600 mb-2">
-            Notice File *
-          </label> */}
+          <label className="block text-sm font-medium text-text-600 mb-2">
+            Notice File (Optional)
+          </label>
 
           {/* File Upload Area */}
           <div className="flex items-center space-x-4 mb-4">
-            {/* <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+            <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
               {isUploading ? (
                 <div className="text-gray-500 text-sm">Uploading...</div>
-              ) : imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-full h-full object-cover rounded-lg"
-                />
+              ) : (imagePreview || formValues.file) ? (
+                <div className="w-full h-full flex items-center justify-center p-2">
+                  <div className="text-center">
+                    <svg className="w-8 h-8 text-green-500 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="text-xs text-green-600">File Selected</span>
+                  </div>
+                </div>
               ) : (
                 <div className="flex flex-col items-center justify-center p-4">
                   <svg
@@ -95,59 +87,54 @@ const EditNoticeModal = ({ data }) => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
                   <span className="text-sm text-gray-500 text-center">
-                    Upload Image
+                    Upload File
                   </span>
                 </div>
               )}
               <input
                 type="file"
                 className="hidden"
-                accept="image/*"
+                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
                 onChange={handleFileSelect}
                 disabled={isUploading}
               />
-            </label> */}
-            {/* <div className="flex-1">
+            </label>
+            <div className="flex-1">
               <p className="text-sm text-gray-600 mb-2">
-                Upload a notice PDF or Image (JPEG, PNG, JPG, GIF, WEBP - max
-                5MB)
+                Upload a notice file (PDF, DOC, DOCX, TXT, JPG, PNG - max 5MB)
               </p>
-              {formValues.image && (
-                <p className="text-sm text-green-600 truncate mb-1">
-                  Image URL: {formValues.image}
-                </p>
+              {(formValues.file || imagePreview) && (
+                <div className="text-sm text-green-600 mb-1">
+                  <div className="flex items-center justify-between">
+                    <span className="truncate">File: {imagePreview}</span>
+                    {/* {data && data.file_url && !formValues.file && (
+                      <a 
+                        href={data.file_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="ml-2 text-blue-500 hover:text-blue-700 text-xs underline"
+                      >
+                        View
+                      </a>
+                    )} */}
+                  </div>
+                  {data && data.file && !formValues.file && (
+                    <span className="text-xs text-gray-500">
+                      Current file - select a new file to replace
+                    </span>
+                  )}
+                </div>
               )}
               {isUploading && (
                 <p className="text-sm text-blue-600">
-                  Simulating upload... (Demo)
+                  Uploading file...
                 </p>
               )}
-            </div> */}
-          </div>
-
-          {/* Manual URL Input */}
-          <div className="flex space-x-2">
-            {/* <FormInput
-              label="Or enter image URL manually"
-              placeholder="https://example.com/image.jpg"
-              value={manualUrl}
-              onChange={(e) => setManualUrl(e.target.value)}
-              isLoading={isLoading}
-              isCol={false}
-              className="flex-1"
-            /> */}
-            {/* <button
-              type="button"
-              onClick={handleManualUrlSubmit}
-              //   disabled={!manualUrl.trim() || isUploading}
-              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-            >
-              Set URL
-            </button> */}
+            </div>
           </div>
         </div>
 

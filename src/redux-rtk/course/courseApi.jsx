@@ -13,6 +13,8 @@ export const courseApi = apiSlice.injectEndpoints({
           method: "GET"
         };
       },
+      providesTags: ['Courses'],
+      keepUnusedDataFor: 300, // Keep cache for 5 minutes
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
@@ -47,6 +49,7 @@ export const courseApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Courses'],
     }),
 
     // UPDATE A COURSE
@@ -58,6 +61,7 @@ export const courseApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Courses'],
     }),
 
     // DELETE A COURSE
@@ -68,6 +72,7 @@ export const courseApi = apiSlice.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: ['Courses'],
     }),
 
     toggleCourseStatus: builder.mutation({

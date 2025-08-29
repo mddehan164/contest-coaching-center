@@ -1,4 +1,4 @@
-import { MdOutlineMessage, MdOutlineNotificationsActive } from "react-icons/md";
+import { MdOutlineMessage, MdOutlineNotificationsActive, MdOutlineRateReview } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { FaRegUserCircle, FaBook } from "react-icons/fa";
 import logo from "../assets/images/logo.png";
@@ -43,6 +43,7 @@ export const sidebarData = [
       { icon: FaBook, title: "Courses", link: "course" },
       { icon: MdBatchPrediction, title: "Batches", link: "batch" },
       { icon: AiOutlineNotification, title: "Notices", link: "notice" },
+      { icon: MdOutlineRateReview, title: "Reviews", link: "review" },
       { icon: CgWebsite, title: "Customise", link: "customise" },
       { icon: GrSchedules, title: "Schedule", link: "schedule" },
       { icon: RiSecurePaymentFill, title: "Payments", link: "payments" },

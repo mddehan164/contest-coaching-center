@@ -13,6 +13,8 @@ export const batchApi = apiSlice.injectEndpoints({
           method: "GET"
         };
       },
+      providesTags: ['Batches'],
+      keepUnusedDataFor: 300, // Keep cache for 5 minutes
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;
@@ -33,6 +35,7 @@ export const batchApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Batches'],
     }),
 
     // UPDATE A BATCH
@@ -44,6 +47,7 @@ export const batchApi = apiSlice.injectEndpoints({
           body: data
         };
       },
+      invalidatesTags: ['Batches'],
     }),
 
     // DELETE A BATCH
@@ -54,6 +58,7 @@ export const batchApi = apiSlice.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: ['Batches'],
     }),
 
     toggleBatchStatus: builder.mutation({
@@ -64,7 +69,7 @@ export const batchApi = apiSlice.injectEndpoints({
         };
       },
       // Invalidate the cache to refetch the updated data
-      invalidatesTags: ['Batch'],
+      invalidatesTags: ['Batches'],
     }),
 
   }),

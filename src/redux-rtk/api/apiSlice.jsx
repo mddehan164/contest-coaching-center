@@ -37,7 +37,9 @@ const baseQuery = fetchBaseQuery({
     }
     
     headers.set('accept', 'application/json')
-    headers.set('content-type', 'application/json')
+    
+    // Don't set content-type here - let individual endpoints handle it
+    // This allows FormData requests to set their own content-type with boundary
     return headers
   }
 })
