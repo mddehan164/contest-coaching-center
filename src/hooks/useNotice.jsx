@@ -26,6 +26,21 @@ import {
 } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
 
+// Helper function to format date for API (MySQL datetime format)
+const formatDateForAPI = (dateObj) => {
+  if (!dateObj) return null;
+  const date = new Date(dateObj);
+  
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 // ** Notice List **
 export const useNotices = () => {
   const dispatch = useDispatch();
@@ -41,7 +56,13 @@ export const useNotices = () => {
     useDeleteNoticeMutation();
   const { isLoading, isFetching, isError, error } = useGetAllNoticesQuery(
     { page: currentPage, limit: pageSize, search: debouncedSearch },
-    { refetchOnMountOrArgChange: true }
+    { 
+      refetchOnMountOrArgChange: false, // Don't refetch on every mount
+      skip: false,
+      // Cache data for 5 minutes to avoid unnecessary refetches
+      refetchOnFocus: false,
+      refetchOnReconnect: true
+    }
   );
 
   const updatePageMeta = (value) => dispatch(setNoticeMetaData(value));
@@ -118,8 +139,9 @@ export const useAddNotice = () => {
   const { control, handleSubmit, reset, watch, setValue } = useForm({
     defaultValues: {
       title: "",
-      type: null,
-      date: "",
+      type: 1, // Default to first option instead of null
+      date: null,
+      file: null,
     },
   });
 
@@ -140,30 +162,20 @@ export const useAddNotice = () => {
   //       label: branch.name,
   //     })) || [];
 
-  // Dummy image upload handler - simulates upload process
-  const handleImageUpload = async (file) => {
+  // File upload handler - simulates upload process
+  const handleFileUpload = async (file) => {
     if (!file) return;
 
     setIsUploading(true);
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
     try {
-      // Create a dummy URL for the uploaded image
-      const dummyImageUrl = URL.createObjectURL(file);
-
-      // For demo purposes, we'll use a placeholder URL that includes the filename
-      const demoImageUrl = `https://example.com/notices/${file.name
-        .replace(/\s+/g, "-")
-        .toLowerCase()}`;
-
-      setValue("image", demoImageUrl);
-      setImagePreview(dummyImageUrl);
-      successNotify("Image uploaded successfully! (Demo)");
+      // Store the actual file object for FormData submission
+      setValue("file", file);
+      setImagePreview(file.name); // Store filename for display
+      successNotify("File selected successfully!");
     } catch (error) {
-      errorNotify("Failed to process image");
-      console.error("Image processing error:", error);
+      errorNotify("Failed to process file");
+      console.error("File processing error:", error);
     } finally {
       setIsUploading(false);
     }
@@ -175,58 +187,80 @@ export const useAddNotice = () => {
     if (file) {
       // Validate file type and size
       const validTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
         "image/jpeg",
         "image/png",
         "image/jpg",
-        "image/gif",
-        "image/webp",
       ];
       const maxSize = 5 * 1024 * 1024; // 5MB
 
       if (!validTypes.includes(file.type)) {
         errorNotify(
-          "Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)"
+          "Please select a valid file (PDF, DOC, DOCX, TXT, JPG, PNG)"
         );
         return;
       }
 
       if (file.size > maxSize) {
-        errorNotify("Image size should be less than 5MB");
+        errorNotify("File size should be less than 5MB");
         return;
       }
 
-      handleImageUpload(file);
-    }
-  };
-
-  // Manual URL input handler
-  const handleManualUrlInput = (url) => {
-    if (url) {
-      setValue("image", url);
-      setImagePreview(url);
-      successNotify("Image URL set successfully!");
+      handleFileUpload(file);
     }
   };
 
   const handleAddNotice = (data) => {
-    // Convert price and offer_price to numbers
-    const processedData = {
-      ...data,
-      type: Number(data.type) || 1,
-    };
+    // Validate required fields manually
+    if (!data.title?.trim()) {
+      return errorNotify("Notice title is required.");
+    }
+    if (!data.type) {
+      return errorNotify("Notice type is required.");
+    }
+    if (!data.date) {
+      return errorNotify("Notice date is required.");
+    }
 
-    const validatedData = validateZodSchema({
-      schema: CreateNoticeSchema,
-      data: processedData,
-    });
-    if (!validatedData) return;
+    console.log("Form data before submission:", data);
 
-    addNotice({ data: validatedData })
+    // Use FormData for proper file upload that Laravel can parse
+    const formData = new FormData();
+    
+    // Ensure data is properly formatted for Laravel - try different approaches
+    formData.append('title', String(data.title).trim());
+    formData.append('type', parseInt(data.type)); // Send as integer
+    formData.append('date', formatDateForAPI(data.date));
+    
+    // Add file if it exists (actual File object)
+    if (data.file && data.file instanceof File) {
+      formData.append('file', data.file, data.file.name);
+      console.log("Adding file to FormData:", data.file.name, data.file.type, data.file.size);
+    }
+
+    // Debug FormData contents
+    console.log("FormData contents:");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value, typeof value);
+    }
+
+    // Try adding Laravel specific fields
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (csrfToken) {
+      formData.append('_token', csrfToken);
+    }
+
+    console.log("Sending FormData to Laravel...");
+
+    addNotice({ data: formData })
       .unwrap()
       .then((response) => {
         if (response?.success) {
           handleCloseAddNoticeModal();
-          dispatch(addNewNoticeToList(response.data));
+          dispatch(addNewNoticeToList(response.data.notice));
           successNotify(response?.message);
         }
       })
@@ -250,7 +284,6 @@ export const useAddNotice = () => {
     imagePreview,
     isUploading,
     setValue,
-    handleManualUrlInput,
     getStartDateDisabled,
   };
 };
@@ -274,21 +307,43 @@ export const useEditNotice = ({ data }) => {
     defaultValues: {
       title: "",
       type: null,
-      date: "",
+      date: null,
+      file: null,
     },
   });
 
   useEffect(() => {
     if (data) {
       setValue("title", data.title || "");
-      setValue("type", data.type || "");
-      setValue("date", data.date || "");
+      setValue("type", Number(data.type) || null);
+      
+      // Convert ISO date to Date object for the date picker
+      if (data.date) {
+        const dateObj = new Date(data.date);
+        setValue("date", dateObj);
+      }
+      
+      // Handle existing file properly
+      if (data.file) {
+        // Store the file URL for reference but don't set it in the form
+        // The form field should remain null for existing files until a new file is selected
+        setValue("file", null);
+        
+        // Extract filename from URL for preview
+        const filename = data.file.split('/').pop() || data.file;
+        setImagePreview(filename);
+        
+        console.log("Setting existing file preview:", filename);
+      } else {
+        setValue("file", null);
+        setImagePreview("");
+      }
+      
       //   setValue("long_des", data.long_des || "");
       //   setValue("price", data.price?.toString() || "");
       //   setValue("offer_price", data.offer_price?.toString() || "");
       //   setValue("branch_id", data.branch_id || []);
       //   setValue("group", data.group || "");
-      //   setImagePreview(data.image || "");
     }
   }, [data, setValue]);
 
@@ -309,25 +364,20 @@ export const useEditNotice = ({ data }) => {
   //       label: branch.name,
   //     })) || [];
 
-  // Dummy image upload handler
-  const handleImageUpload = async (file) => {
+  // File upload handler for edit modal
+  const handleFileUpload = async (file) => {
     if (!file) return;
 
     setIsUploading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     try {
-      const dummyImageUrl = URL.createObjectURL(file);
-      const demoImageUrl = `https://example.com/notices/${file.name
-        .replace(/\s+/g, "-")
-        .toLowerCase()}`;
-
-      setValue("image", demoImageUrl);
-      setImagePreview(dummyImageUrl);
-      successNotify("Image uploaded successfully! (Demo)");
+      // Store the actual file object for FormData submission
+      setValue("file", file);
+      setImagePreview(file.name); // Store filename for display
+      successNotify("File selected successfully!");
     } catch (error) {
-      errorNotify("Failed to process image");
-      console.error("Image processing error:", error);
+      errorNotify("Failed to process file");
+      console.error("File processing error:", error);
     } finally {
       setIsUploading(false);
     }
@@ -337,63 +387,71 @@ export const useEditNotice = ({ data }) => {
     const file = event.target.files[0];
     if (file) {
       const validTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
         "image/jpeg",
         "image/png",
         "image/jpg",
-        "image/gif",
-        "image/webp",
       ];
       const maxSize = 5 * 1024 * 1024;
 
       if (!validTypes.includes(file.type)) {
         errorNotify(
-          "Please select a valid image file (JPEG, PNG, JPG, GIF, WEBP)"
+          "Please select a valid file (PDF, DOC, DOCX, TXT, JPG, PNG)"
         );
         return;
       }
 
       if (file.size > maxSize) {
-        errorNotify("Image size should be less than 5MB");
+        errorNotify("File size should be less than 5MB");
         return;
       }
 
-      handleImageUpload(file);
-    }
-  };
-
-  // Manual URL input handler for edit
-  const handleManualUrlInput = (url) => {
-    if (url) {
-      setValue("image", url);
-      setImagePreview(url);
-      successNotify("Image URL updated successfully!");
+      handleFileUpload(file);
     }
   };
 
   const handleUpdate = (data) => {
-    if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE)
+    if (selectedData?.actionType !== SelectedSliceTypeEnum.UPDATE)
       return errorNotify("Invalid notice type.");
 
-    // Convert price and offer_price to numbers
-    const processedData = {
-      ...data,
-      type: Number(data.type) || 1,
-    };
+    // Validate required fields manually
+    if (!data.title?.trim()) {
+      return errorNotify("Notice title is required.");
+    }
+    if (!data.type) {
+      return errorNotify("Notice type is required.");
+    }
+    if (!data.date) {
+      return errorNotify("Notice date is required.");
+    }
 
-    console.log(processedData);
+    console.log("Update form data:", data);
 
-    const validatedData = validateZodSchema({
-      schema: EditNoticeSchema,
-      data: processedData,
-    });
-    if (!validatedData) return;
+    // Use FormData for proper file upload that Laravel can parse
+    const formData = new FormData();
+    
+    // Ensure data is properly formatted for Laravel
+    formData.append('title', String(data.title).trim());
+    formData.append('type', String(data.type));
+    formData.append('date', formatDateForAPI(data.date));
+    
+    // Add file if it exists (actual File object)
+    if (data.file && data.file instanceof File) {
+      formData.append('file', data.file, data.file.name);
+      console.log("Adding file to FormData for update:", data.file.name, data.file.type, data.file.size);
+    }
 
-    updateNotice({ data: validatedData, noticeId: selectedData?.encrypted_id })
+    // Add Laravel method spoofing for PUT request if needed
+    formData.append('_method', 'PUT');
+
+    updateNotice({ data: formData, noticeId: selectedData?.encrypted_id })
       .unwrap()
       .then((response) => {
         if (response?.success) {
           handleCloseEditNoticeModal();
-          console.log(response.data);
           dispatch(updateNoticeInList(response?.data.notice));
           successNotify(response?.message);
         }
@@ -416,7 +474,6 @@ export const useEditNotice = ({ data }) => {
     handleFileSelect,
     imagePreview,
     isUploading,
-    handleManualUrlInput,
     isBranchesLoading,
   };
 };

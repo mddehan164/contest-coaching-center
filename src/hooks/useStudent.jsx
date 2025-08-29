@@ -35,7 +35,11 @@ export const useStudents = () => {
     const [deleteStudent, { isLoading: deleteLoading }] = useDeleteStudentMutation();
     const { isLoading, isFetching, isError, error } = useGetAllStudentsQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
-        { refetchOnMountOrArgChange: true }
+        { 
+            refetchOnMountOrArgChange: false, // Don't refetch on every mount
+            refetchOnFocus: false,
+            refetchOnReconnect: true
+        }
     );
 
     const updatePageMeta = (value) => dispatch(setStudentMetaData(value));

@@ -69,7 +69,7 @@ const Batch = () => {
                 >
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
-                            <td className="table_td">{index + 1}</td>
+                            <td className="table_td">{(meta?.current_page - 1) * meta?.per_page + index + 1}</td>
                             <td className="table_td">{item?.name}</td>
                             <td className="table_td">{item?.course?.title}</td>
                             <td className="table_td">{new Date(item?.start_date).toLocaleDateString()}</td>

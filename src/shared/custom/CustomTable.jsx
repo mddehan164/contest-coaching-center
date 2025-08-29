@@ -132,7 +132,7 @@ const CustomPaginate = ({
           />
         }
       />
-      <div className="hidden md:block">
+      {/* <div className="hidden md:block">
         <select
           className="w-[73px] px-2 h-8 border border-gray-300 text-gray-900 bg-white rounded-[8px] text-sm outline-none"
           value={rowsPerPage}
@@ -144,7 +144,7 @@ const CustomPaginate = ({
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
     </div>
   );
 };

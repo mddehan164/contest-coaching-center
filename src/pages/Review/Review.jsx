@@ -1,15 +1,15 @@
 import FormInput from '../../shared/forms/FormInput';
 import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
-import AddCourseModal from './AddCourseModal';
-import EditCourseModal from './EditCourseModal';
+import AddReviewModal from './AddReviewModal';
+import EditReviewModal from './EditReviewModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
-import { useCourses } from '../../hooks/useCourse';
+import { useReviews } from '../../hooks/useReview';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
-import { CourseStatusToggleSelect } from '../../components/statusToggleSelect';
+import { ReviewStatusToggleSelect } from '../../components/statusToggleSelect';
 
-const Course = () => {
+const Review = () => {
     const {
         isLoading,
         isError,
@@ -20,28 +20,26 @@ const Course = () => {
         searchKeyword,
         deleteLoading,
         setSearchKeyword,
-        handleSetSelectedCourse,
+        handleSetSelectedReview,
         updatePageMeta,
         handleDelete,
-        handleOpenEditCourseModal,
-        handleOpenAddCourseModal,
+        handleOpenEditReviewModal,
+        handleOpenAddReviewModal,
         isConfirmModalOpen,
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
-    } = useCourses();
-
-
+    } = useReviews();
 
     return (
         <div>
             <div className="card-cmn space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 className="title-cmn">Course List</h2>
+                    <h2 className="title-cmn">Review List</h2>
 
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="w-full md:w-[269px] relative">
                             <FormInput
-                                placeholder="Search Course"
+                                placeholder="Search Review"
                                 inputCss="pr-12 !py-2.5 !rounded-lg !bg-white"
                                 value={searchKeyword}
                                 onChange={(e) => setSearchKeyword(e.target.value)}
@@ -50,10 +48,10 @@ const Course = () => {
                         </div>
 
                         <SecondaryButton
-                            text="Add New Course"
+                            text="Add New Review"
                             width="w-full md:w-[167px]"
                             startIcon={<AddSvg />}
-                            onClick={() => handleOpenAddCourseModal()}
+                            onClick={() => handleOpenAddReviewModal()}
                         />
                     </div>
                 </div>
@@ -62,23 +60,22 @@ const Course = () => {
                     isLoading={isLoading}
                     isError={isError}
                     status={status}
-                    currentPage={meta?.currentPage || 1}
-                    pageSize={meta?.pageSize || 10}
-                    totalPages={meta?.totalPages || 1}
+                    currentPage={meta?.current_page || 1}
+                    pageSize={meta?.per_page || 10}
+                    totalPages={meta?.last_page || 1}
                     updatePageMeta={updatePageMeta}
-                    columns={["SL", "Course Name", "Course Description", "Price", "Offer Price", "Status", "Action"]}
+                    columns={["SL", "Name", "Year", "Rank", "Status", "Action"]}
                     dataLength={dataList?.length || 0}
                 >
                     {dataList?.map((item, index) => (
                         <tr className="table_row" key={index}>
                             <td className="table_td">{(meta?.current_page - 1) * meta?.per_page + index + 1}</td>
-                            <td className="table_td">{item?.title}</td>
-                            <td className="table_td truncate">{item?.short_des}</td>
-                            <td className="table_td">{item?.price}</td>
-                            <td className="table_td">{item?.offer_price}</td>
+                            <td className="table_td">{item?.name}</td>
+                            <td className="table_td">{item?.year}</td>
+                            <td className="table_td">{item?.rank}</td>
                             <td className="table_td">
-                                <CourseStatusToggleSelect
-                                    courseId={item.encrypted_id}
+                                <ReviewStatusToggleSelect
+                                    reviewId={item.encrypted_id}
                                     currentStatus={item.status}
                                     onStatusChange={(newStatus) => {
                                         const updatedItem = { ...item, status: newStatus };
@@ -89,15 +86,15 @@ const Course = () => {
                                 <div className="flex items-center gap-x-3">
                                     <button
                                         onClick={() => {
-                                            handleSetSelectedCourse({ ...item, type: SelectedSliceTypeEnum.UPDATE });
-                                            handleOpenEditCourseModal();
+                                            handleSetSelectedReview({ ...item, type: SelectedSliceTypeEnum.UPDATE });
+                                            handleOpenEditReviewModal();
                                         }}
                                     >
                                         <EditSvg />
                                     </button>
                                     {/* <button
                                         onClick={() => {
-                                            handleSetSelectedCourse({ ...item, type: SelectedSliceTypeEnum.DELETE });
+                                            handleSetSelectedReview({ ...item, type: SelectedSliceTypeEnum.DELETE });
                                             handleOpenConfirmationModal();
                                         }}
                                     >
@@ -110,11 +107,11 @@ const Course = () => {
                 </CustomTable>
             </div>
 
-            {/* add course modal */}
-            <AddCourseModal />
+            {/* add review modal */}
+            <AddReviewModal />
 
-            {/* edit course modal */}
-            <EditCourseModal data={selectedData} />
+            {/* edit review modal */}
+            <EditReviewModal data={selectedData} />
 
             {/* delete modal */}
             <CustomConfirmationModal
@@ -125,14 +122,14 @@ const Course = () => {
                 }
                 description={
                     selectedData?.type === SelectedSliceTypeEnum.DELETE
-                        ? 'You want to remove this course?'
+                        ? 'You want to remove this review?'
                         : selectedData?.type === SelectedSliceTypeEnum.UPDATE
                             ? 'Updated successfully.'
                             : 'Action completed.'
                 }
                 handler={() => {
                     if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
-                        handleDelete({ courseId: selectedData.id }); // ✅ courseId instead of adminId
+                        handleDelete({ reviewId: selectedData.encrypted_id });
                     else handleCloseConfirmationModal();
                 }}
                 deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
@@ -143,4 +140,4 @@ const Course = () => {
     );
 };
 
-export default Course;
+export default Review;

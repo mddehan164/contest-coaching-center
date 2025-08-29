@@ -37,6 +37,7 @@ import {
 import Batch from "../pages/Batch/Batch";
 import { Course } from "../pages/Course";
 import { Notice } from "../pages/Notice";
+import Review from "../pages/Review/Review";
 import Student from "../pages/Student/Student";
 import { Teacher } from "../pages/Teacher";
 // import { Student } from "../pages/Student";
@@ -64,6 +65,7 @@ export let dashboardPageRoutes = [
   { element: <Course />, path: "course" },
   { element: <DSlider />, path: "slider" },
   { element: <Notice />, path: "notice" },
+  { element: <Review />, path: "review" },
   { element: <DCourse />, path: "course-editor" },
   { element: <SuccessEditor />, path: "success-editor" },
   { element: <StatsEditor />, path: "stats-editor" },

@@ -77,17 +77,17 @@ const Notice = () => {
         >
           {dataList?.map((item, index) => (
             <tr className="table_row" key={index}>
-              <td className="table_td">{index + 1}</td>
-              <td className="table_td">{item?.title}</td>
-              <td className="table_td truncate">{item?.type_name}</td>
-              <td className="table_td">{item?.created_at.split("T")[0]}</td>
+              <td className="table_td">{(meta?.current_page - 1) * meta?.per_page + index + 1}</td>
+              <td className="table_td">{item?.title || "N/A"}</td>
+              <td className="table_td truncate">{item?.type_name || "N/A"}</td>
+              <td className="table_td">{item?.created_at?.split("T")[0] || "N/A"}</td>
               <td className="table_td">
-                {item?.branch.name},{item?.branch.location}
+                {item?.branch?.name || "N/A"},{item?.branch?.location || "N/A"}
               </td>
               <td className="table_td">
                 <NoticeStatusToggleSelect
-                  noticeId={item.encrypted_id}
-                  currentStatus={item.status}
+                  noticeId={item?.encrypted_id}
+                  currentStatus={item?.status}
                   onStatusChange={(newStatus) => {
                     const updatedItem = { ...item, status: newStatus };
                   }}
@@ -99,7 +99,7 @@ const Notice = () => {
                     onClick={() => {
                       handleSetSelectedNotice({
                         ...item,
-                        type: SelectedSliceTypeEnum.UPDATE,
+                        actionType: SelectedSliceTypeEnum.UPDATE,
                       });
                       handleOpenEditNoticeModal();
                     }}
@@ -132,24 +132,24 @@ const Notice = () => {
         isOpen={isConfirmModalOpen}
         onClose={handleCloseConfirmationModal}
         title={
-          selectedData?.type === SelectedSliceTypeEnum.DELETE && "Are you sure?"
+          selectedData?.actionType === SelectedSliceTypeEnum.DELETE && "Are you sure?"
         }
         description={
-          selectedData?.type === SelectedSliceTypeEnum.DELETE
+          selectedData?.actionType === SelectedSliceTypeEnum.DELETE
             ? "You want to remove this notice?"
-            : selectedData?.type === SelectedSliceTypeEnum.UPDATE
+            : selectedData?.actionType === SelectedSliceTypeEnum.UPDATE
             ? "Updated successfully."
             : "Action completed."
         }
         handler={() => {
-          if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
+          if (selectedData?.actionType === SelectedSliceTypeEnum.DELETE)
             handleDelete({
               noticeId: selectedData.id,
             });
           // ✅ noticeId instead of adminId
           else handleCloseConfirmationModal();
         }}
-        deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
+        deleteModal={selectedData?.actionType === SelectedSliceTypeEnum.DELETE}
         isLoading={deleteLoading}
       />
       <NotifyContainer />

@@ -35,7 +35,7 @@ export const useBatchs = () => {
     const [deleteBatch, { isLoading: deleteLoading }] = useDeleteBatchMutation();
     const { isLoading, isFetching, isError, error } = useGetAllBatchsQuery(
         { page: currentPage, limit: pageSize, search: debouncedSearch },
-        { refetchOnMountOrArgChange: true }
+        { refetchOnMountOrArgChange: false }
     );
 
     const updatePageMeta = (value) => dispatch(setBatchMetaData(value));

@@ -80,12 +80,14 @@ const noticeSlice = createSlice({
       state.dataList = updateDataInDataList({
         dataList: state.dataList,
         updatedItem: action.payload,
+        matchKey: "encrypted_id",
       });
 
       state.data = updateDataInPaginatedPages({
         data: state.data,
         meta: state.meta,
         updatedItem: action.payload,
+        matchKey: "encrypted_id",
       });
     },
 
