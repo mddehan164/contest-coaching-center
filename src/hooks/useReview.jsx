@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
     addNewReviewToList,
-    removeReviewFromList,
+    viewReviewFromList,
     setAddReviewModal,
     setEditReviewModal,
     setSelectedReviewData,
@@ -56,7 +56,7 @@ export const useReviews = () => {
             .then((response) => {
                 if (response?.success) {
                     handleCloseConfirmationModal();
-                    dispatch(removeReviewFromList({ id: reviewId }));
+                    dispatch(viewReviewFromList({ id: reviewId }));
                     successNotify(response?.message);
                 }
             })
@@ -185,7 +185,7 @@ export const useAddReview = () => {
             .then((response) => {
                 if (response?.success) {
                     handleCloseAddReviewModal();
-                    // Manual Redux update since we removed cache invalidation
+                    // Manual Redux update since we viewd cache invalidation
                     dispatch(addNewReviewToList(response));
                     successNotify(response?.message);
                 }
@@ -331,7 +331,7 @@ export const useEditReview = () => {
             .then((response) => {
                 if (response?.success) {
                     handleCloseEditReviewModal();
-                    // Manual Redux update since we removed cache invalidation
+                    // Manual Redux update since we viewd cache invalidation
                     dispatch(updateReviewInList(response));
                     successNotify(response?.message);
                 }

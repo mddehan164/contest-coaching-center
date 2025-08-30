@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
-  removeDataFromPaginatedList,
+  viewDataFromPaginatedList,
   setPaginatedDataFromApi,
   updateDataInDataList,
   updateDataInPaginatedPages,
@@ -89,12 +89,12 @@ const batchSlice = createSlice({
       });
     },
 
-    removeBatchFromList: (state, action) => {
-      const result = removeDataFromPaginatedList({
+    viewBatchFromList: (state, action) => {
+      const result = viewDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
-        idToRemove: action.payload.id,
+        idToView: action.payload.id,
       });
 
       state.meta = result.meta;
@@ -106,8 +106,7 @@ const batchSlice = createSlice({
       state.meta = { ...state.meta, ...action.payload };
       const updateKey = Object.keys(action.payload)[0];
       if (updateKey === "currentPage") {
-        state.dataList =
-          state.data[`page${action.payload.currentPage}`] || [];
+        state.dataList = state.data[`page${action.payload.currentPage}`] || [];
       }
 
       if (updateKey === "pageSize") {
@@ -138,7 +137,7 @@ export const {
   setBatchData,
   addNewBatchToList,
   updateBatchInList,
-  removeBatchFromList,
+  viewBatchFromList,
   setBatchMetaData,
   setSelectedBatchData,
   setBatchConfirmationModal,

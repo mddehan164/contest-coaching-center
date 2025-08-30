@@ -51,7 +51,7 @@ const reviewSlice = createSlice({
         state.dataList[index] = updatedReview;
       }
     },
-    removeReviewFromList: (state, action) => {
+    viewReviewFromList: (state, action) => {
       state.dataList = state.dataList.filter(
         (item) => item.encrypted_id !== action.payload.id
       );
@@ -68,7 +68,7 @@ export const {
   setReviewConfirmationModal,
   addNewReviewToList,
   updateReviewInList,
-  removeReviewFromList,
+  viewReviewFromList,
 } = reviewSlice.actions;
 
 export default reviewSlice.reducer;

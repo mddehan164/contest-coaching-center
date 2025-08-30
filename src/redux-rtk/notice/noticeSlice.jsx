@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
-  removeDataFromPaginatedList,
+  viewDataFromPaginatedList,
   setPaginatedDataFromApi,
   updateDataInDataList,
   updateDataInPaginatedPages,
@@ -91,12 +91,12 @@ const noticeSlice = createSlice({
       });
     },
 
-    removeNoticeFromList: (state, action) => {
-      const result = removeDataFromPaginatedList({
+    viewNoticeFromList: (state, action) => {
+      const result = viewDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
-        idToRemove: action.payload.id, // your API uses "id" not "_id"
+        idToView: action.payload.id, // your API uses "id" not "_id"
       });
 
       state.meta = result.meta;
@@ -154,7 +154,7 @@ export const {
   setNoticeData,
   addNewNoticeToList,
   updateNoticeInList,
-  removeNoticeFromList,
+  viewNoticeFromList,
   setNoticeMetaData,
   setSelectedNoticeData,
   setNoticeConfirmationModal,

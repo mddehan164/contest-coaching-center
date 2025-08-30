@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
-  removeDataFromPaginatedList,
+  viewDataFromPaginatedList,
   setPaginatedDataFromApi,
   updateDataInDataList,
   updateDataInPaginatedPages,
@@ -89,8 +89,8 @@ const teacherSlice = createSlice({
       });
     },
 
-    removeTeacherFromList: (state, action) => {
-      const result = removeDataFromPaginatedList({
+    viewTeacherFromList: (state, action) => {
+      const result = viewDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
@@ -106,8 +106,7 @@ const teacherSlice = createSlice({
       state.meta = { ...state.meta, ...action.payload };
       const updateKey = Object.keys(action.payload)[0];
       if (updateKey === "currentPage") {
-        state.dataList =
-          state.data[`page${action.payload.currentPage}`] || [];
+        state.dataList = state.data[`page${action.payload.currentPage}`] || [];
       }
 
       if (updateKey === "pageSize") {
@@ -138,7 +137,7 @@ export const {
   setTeacherData,
   addNewTeacherToList,
   updateTeacherInList,
-  removeTeacherFromList,
+  viewTeacherFromList,
   setTeacherMetaData,
   setSelectedTeacherData,
   setTeacherConfirmationModal,

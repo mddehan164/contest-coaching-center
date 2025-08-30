@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
-  removeDataFromPaginatedList,
+  viewDataFromPaginatedList,
   setPaginatedDataFromApi,
   updateDataInDataList,
   updateDataInPaginatedPages,
@@ -89,12 +89,12 @@ const courseSlice = createSlice({
       });
     },
 
-    removeCourseFromList: (state, action) => {
-      const result = removeDataFromPaginatedList({
+    viewCourseFromList: (state, action) => {
+      const result = viewDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
-        idToRemove: action.payload.id, // your API uses "id" not "_id"
+        idToView: action.payload.id, // your API uses "id" not "_id"
       });
 
       state.meta = result.meta;
@@ -106,8 +106,7 @@ const courseSlice = createSlice({
       state.meta = { ...state.meta, ...action.payload };
       const updateKey = Object.keys(action.payload)[0];
       if (updateKey === "currentPage") {
-        state.dataList =
-          state.data[`page${action.payload.currentPage}`] || [];
+        state.dataList = state.data[`page${action.payload.currentPage}`] || [];
       }
 
       if (updateKey === "pageSize") {
@@ -134,13 +133,13 @@ const courseSlice = createSlice({
       const { courseId, status } = action.payload;
 
       // Update in dataList
-      state.dataList = state.dataList.map(item =>
+      state.dataList = state.dataList.map((item) =>
         item.encrypted_id === courseId ? { ...item, status } : item
       );
 
       // Update in paginated data
-      Object.keys(state.data).forEach(pageKey => {
-        state.data[pageKey] = state.data[pageKey].map(item =>
+      Object.keys(state.data).forEach((pageKey) => {
+        state.data[pageKey] = state.data[pageKey].map((item) =>
           item.encrypted_id === courseId ? { ...item, status } : item
         );
       });
@@ -153,13 +152,13 @@ export const {
   setCourseData,
   addNewCourseToList,
   updateCourseInList,
-  removeCourseFromList,
+  viewCourseFromList,
   setCourseMetaData,
   setSelectedCourseData,
   setCourseConfirmationModal,
   setAddCourseModal,
   setEditCourseModal,
-  updateCourseStatus
+  updateCourseStatus,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

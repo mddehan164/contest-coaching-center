@@ -8,6 +8,7 @@ import { useBatchs } from "../../hooks/useBatch";
 import { SelectedSliceTypeEnum } from "../../utils/enums";
 import NotifyContainer from "../../utils/notify";
 import { BatchStatusToggleSelect } from "../../components/statusToggleSelect";
+import ViewModal from "../../components/ViewModal";
 
 const Batch = () => {
   const {
@@ -22,7 +23,8 @@ const Batch = () => {
     setSearchKeyword,
     handleSetSelectedBatch,
     updatePageMeta,
-    handleDelete,
+    viewLoading,
+    handleView,
     handleOpenEditBatchModal,
     handleOpenAddBatchModal,
     isConfirmModalOpen,
@@ -116,7 +118,7 @@ const Batch = () => {
                         ...item,
                         type: SelectedSliceTypeEnum.VIEW,
                       });
-                      handleOpenConfirmationModal();
+                      handleView();
                     }}
                   >
                     <EyeSvg />
@@ -133,31 +135,29 @@ const Batch = () => {
 
       {/* edit batch modal */}
       <EditBatchModal data={selectedData} />
+      <ViewModal title={"Batch Data"} data={selectedData} />
 
-      {/* delete modal */}
+      {/* view modal */}
       <CustomConfirmationModal
         isOpen={isConfirmModalOpen}
         onClose={handleCloseConfirmationModal}
         title={
-          selectedData?.type === SelectedSliceTypeEnum.DELETE && "Are you sure?"
+          selectedData?.type === SelectedSliceTypeEnum.VIEW && "Are you sure?"
         }
         description={
-          selectedData?.type === SelectedSliceTypeEnum.DELETE
-            ? "You want to remove this batch?"
-            : selectedData?.type === SelectedSliceTypeEnum.UPDATE
+          selectedData?.type === SelectedSliceTypeEnum.UPDATE
             ? "Updated successfully."
             : "Action completed."
         }
         handler={() => {
-          if (selectedData?.type === SelectedSliceTypeEnum.DELETE)
-            handleDelete({
+          if (selectedData?.type === SelectedSliceTypeEnum.VIEW)
+            handleView({
               batchId: selectedData.id,
             });
           // ✅ batchId instead of adminId
           else handleCloseConfirmationModal();
         }}
-        deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
-        isLoading={deleteLoading}
+        isLoading={viewLoading}
       />
       <NotifyContainer />
     </div>

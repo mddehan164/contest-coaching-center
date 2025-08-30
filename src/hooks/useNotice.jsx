@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
   addNewNoticeToList,
-  removeNoticeFromList,
+  viewNoticeFromList,
   setAddNoticeModal,
   setEditNoticeModal,
   setSelectedNoticeData,
@@ -87,7 +87,7 @@ export const useNotices = () => {
       .then((response) => {
         if (response?.success) {
           handleCloseConfirmationModal();
-          dispatch(removeNoticeFromList({ id: noticeId }));
+          dispatch(viewNoticeFromList({ id: noticeId }));
           successNotify(response?.message);
         }
       })

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
     addNewStudentToList,
-    removeStudentFromList,
+    viewStudentFromList,
     setAddStudentModal,
     setEditStudentModal,
     setSelectedStudentData,
@@ -62,7 +62,7 @@ export const useStudents = () => {
             .then((response) => {
                 if (response?.success) {
                     handleCloseConfirmationModal();
-                    dispatch(removeStudentFromList({ id: studentId }));
+                    dispatch(viewStudentFromList({ id: studentId }));
                     successNotify(response?.message);
                 }
             })

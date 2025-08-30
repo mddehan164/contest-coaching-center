@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
-  removeDataFromPaginatedList,
+  viewDataFromPaginatedList,
   setPaginatedDataFromApi,
   updateDataInDataList,
   updateDataInPaginatedPages,
@@ -89,8 +89,8 @@ const studentSlice = createSlice({
       });
     },
 
-    removeStudentFromList: (state, action) => {
-      const result = removeDataFromPaginatedList({
+    viewStudentFromList: (state, action) => {
+      const result = viewDataFromPaginatedList({
         meta: state.meta,
         data: state.data,
         dataList: state.dataList,
@@ -137,7 +137,7 @@ export const {
   setStudentData,
   addNewStudentToList,
   updateStudentInList,
-  removeStudentFromList,
+  viewStudentFromList,
   setStudentMetaData,
   setSelectedStudentData,
   setStudentConfirmationModal,
