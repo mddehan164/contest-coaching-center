@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { services } from '../data/data'; // Assuming you have a services data file
-import { FaBookOpen, FaHeadphones, FaUsers, FaFileAlt, FaQuestion, FaSms, FaChartBar } from 'react-icons/fa';
-import { MdOutlineVideoLibrary } from 'react-icons/md';
-import { GiTeacher } from 'react-icons/gi';
+import React, { useState } from "react";
+import { services } from "../data/data"; // Assuming you have a services data file
+import {
+  FaBookOpen,
+  FaHeadphones,
+  FaUsers,
+  FaFileAlt,
+  FaQuestion,
+  FaSms,
+  FaChartBar,
+} from "react-icons/fa";
+import { MdOutlineVideoLibrary } from "react-icons/md";
+import { GiTeacher } from "react-icons/gi";
 
 const iconMap = {
   library: FaBookOpen,
@@ -16,23 +24,23 @@ const iconMap = {
 };
 
 const iconOptions = [
-  {  value: "library", icon: FaBookOpen },
-  {  value: "teacher", icon: GiTeacher },
-  {  value: "audio", icon: FaHeadphones },
-  {  value: "video", icon: MdOutlineVideoLibrary },
-  {  value: "system", icon: FaFileAlt },
-  {  value: "qa", icon: FaQuestion },
+  { value: "library", icon: FaBookOpen },
+  { value: "teacher", icon: GiTeacher },
+  { value: "audio", icon: FaHeadphones },
+  { value: "video", icon: MdOutlineVideoLibrary },
+  { value: "system", icon: FaFileAlt },
+  { value: "qa", icon: FaQuestion },
   { value: "sms", icon: FaSms },
   { value: "report", icon: FaChartBar },
 ];
 
 const ServiceEditor = () => {
   const [newService, setNewService] = useState({
-    title: '',
+    title: "",
     selectedIcon: iconOptions[0], // Default to first icon option
   });
 
-  const [servicesData, setServicesData] = useState(services.data); // Initial services data
+  const [servicesData, setServicesData] = useState(services); // Initial services data
 
   // Handle input changes in the form
   const handleInputChange = (e) => {
@@ -50,7 +58,7 @@ const ServiceEditor = () => {
     const { title, selectedIcon } = newService;
 
     if (!title.trim()) {
-      alert('Please provide a title');
+      alert("Please provide a title");
       return;
     }
 
@@ -64,7 +72,7 @@ const ServiceEditor = () => {
 
     // Reset form after adding
     setNewService({
-      title: '',
+      title: "",
       selectedIcon: iconOptions[0], // Reset to default icon
     });
   };
@@ -74,13 +82,15 @@ const ServiceEditor = () => {
     const service = servicesData[index];
     setNewService({
       title: service.title,
-      selectedIcon: iconOptions.find((icon) => icon.icon === service.icon) || iconOptions[0],
+      selectedIcon:
+        iconOptions.find((icon) => icon.icon === service.icon) ||
+        iconOptions[0],
     });
   };
 
   // Delete a service
   const handleDeleteService = (index) => {
-    if (window.confirm('Are you sure you want to delete this service?')) {
+    if (window.confirm("Are you sure you want to delete this service?")) {
       const updatedServices = [...servicesData];
       updatedServices.splice(index, 1);
       setServicesData(updatedServices);
@@ -109,7 +119,9 @@ const ServiceEditor = () => {
               key={option.value}
               onClick={() => handleIconChange(option)}
               className={`p-4 border rounded-full cursor-pointer ${
-                newService.selectedIcon.value === option.value ? 'bg-blue-200' : ''
+                newService.selectedIcon.value === option.value
+                  ? "bg-blue-200"
+                  : ""
               }`}
             >
               <option.icon className="text-3xl text-center" />
@@ -128,21 +140,17 @@ const ServiceEditor = () => {
       {/* Preview Service */}
       <div className="text-center mb-6">
         <h3 className="text-xl font-bold">Preview</h3>
-        <div
-          className="rounded-full w-28 h-28 flex items-center justify-center mx-auto text-headerColorHover bg-headerColor mb-4"
-        >
+        <div className="rounded-full w-28 h-28 flex items-center justify-center mx-auto text-headerColorHover bg-headerColor mb-4">
           <newService.selectedIcon.icon className="text-3xl" />
         </div>
-        <p className="font-semibold">{newService.title || 'No Title'}</p>
+        <p className="font-semibold">{newService.title || "No Title"}</p>
       </div>
 
       {/* Displaying Services */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {servicesData.map((service, index) => (
           <div key={index} className="p-4 border rounded shadow-lg">
-            <div
-              className="rounded-full w-28 h-28 flex items-center justify-center text-headerColorHover bg-headerColor mx-auto"
-            >
+            <div className="rounded-full w-28 h-28 flex items-center justify-center text-headerColorHover bg-headerColor mx-auto">
               <service.icon className="text-3xl" />
             </div>
             <p className="text-center mt-4 font-semibold">{service.title}</p>
@@ -163,9 +171,14 @@ const ServiceEditor = () => {
           </div>
         ))}
       </div>
-      <button className='bg-black text-white hover:bg-zinc-900 w-1/2 my-10 px-1 py-3 rounded-md' onClick={()=>{
-        alert("Wanna Sure Save Changes")
-      }}>Save Changes</button>
+      <button
+        className="bg-black text-white hover:bg-zinc-900 w-1/2 my-10 px-1 py-3 rounded-md"
+        onClick={() => {
+          alert("Wanna Sure Save Changes");
+        }}
+      >
+        Save Changes
+      </button>
     </div>
   );
 };
