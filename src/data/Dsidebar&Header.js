@@ -1,4 +1,4 @@
-import { MdOutlineMessage, MdOutlineNotificationsActive, MdOutlineRateReview } from "react-icons/md";
+import { MdOutlineMessage, MdOutlineNotificationsActive } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { FaRegUserCircle, FaBook } from "react-icons/fa";
 import logo from "../assets/images/logo.png";
@@ -27,7 +27,6 @@ import { MdOutlineLiveHelp } from "react-icons/md";
 import { GrLogout } from "react-icons/gr";
 import { CgWebsite } from "react-icons/cg";
 import { MdBatchPrediction } from "react-icons/md";
-import { AiOutlineNotification } from "react-icons/ai";
 
 export const sidebarData = [
   {
@@ -42,8 +41,7 @@ export const sidebarData = [
       { icon: GiTeacher, title: "Teacher", link: "teacher" },
       { icon: FaBook, title: "Courses", link: "course" },
       { icon: MdBatchPrediction, title: "Batches", link: "batch" },
-      { icon: AiOutlineNotification, title: "Notices", link: "notice" },
-      { icon: MdOutlineRateReview, title: "Reviews", link: "review" },
+
       { icon: CgWebsite, title: "Customise", link: "customise" },
       { icon: GrSchedules, title: "Schedule", link: "schedule" },
       { icon: RiSecurePaymentFill, title: "Payments", link: "payments" },

@@ -1,17 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-
-const CustomCard = ({data}) => {
-    const {icon: Icon, name, link} = data
+const CustomCard = ({ data }) => {
+  const { icon: Icon, name, link } = data;
   return (
-    <div className=''>
-        <Link to={`/dashboard/${link}`} className='border flex items-center gap-2 max-w-[280px] px-2 py-2 text-headerColorHover rounded-md hover:shadow-md hover:scale-105 transition-all duration-75'>
-            <Icon/>
-            <h5 className='hover:text-contestRed hover:underline'>{name}</h5>
-        </Link>
-    </div>
-  )
-}
+    <>
+      <Link
+        to={`/dashboard/${link}`}
+        className="border hover:border-0 flex flex-col items-center justify-around max-w-[280px] h-40 px-2 py-2 text-headerColorHover rounded-md hover:shadow-md hover:scale-105 transition-all duration-75"
+      >
+        <Icon className="text-3xl lg:text-5xl xl:text-7xl" />
+        <h5 className="hover:text-contestRed hover:underline">{name}</h5>
+      </Link>
+    </>
+  );
+};
 
-export default CustomCard
+export default CustomCard;
