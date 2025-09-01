@@ -1,5 +1,5 @@
 import FormInput from '../../shared/forms/FormInput';
-import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
+import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
 import AddStudentModal from './AddStudentModal';
 import EditStudentModal from './EditStudentModal';
@@ -7,6 +7,8 @@ import { CustomConfirmationModal, CustomTable } from '@shared/custom';
 import { useStudents } from '../../hooks/useStudent';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
+import ViewDetails from '../../shared/ViewDetails';
+import { useState } from 'react';
 
 const Student = () => {
     const {
@@ -28,6 +30,8 @@ const Student = () => {
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
     } = useStudents();
+
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div>
@@ -78,7 +82,16 @@ const Student = () => {
                             </td>
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">
+                                
                                     <button
+                                        onClick={() => {
+                                            handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.UPDATE });
+                                            setIsOpen(true);
+                                        }}
+                                    >
+                                        <EyeOpenSvg />
+                                        </button>
+                                        <button
                                         onClick={() => {
                                             handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.UPDATE });
                                             handleOpenEditStudentModal();
@@ -86,6 +99,7 @@ const Student = () => {
                                     >
                                         <EditSvg />
                                     </button>
+                                    
                                     {/* <button
                                         onClick={() => {
                                             handleSetSelectedStudent({ ...item, type: SelectedSliceTypeEnum.DELETE });
@@ -100,6 +114,12 @@ const Student = () => {
                     ))}
                 </CustomTable>
             </div>
+
+            <ViewDetails 
+  data={selectedData} 
+  isOpen={isOpen} 
+  onClose={() => setIsOpen(false)} 
+/>
 
             {/* add student modal */}
             <AddStudentModal />
