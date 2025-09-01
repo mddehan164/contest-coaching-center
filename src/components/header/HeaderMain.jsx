@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import HeaderDetails from './HeaderDetails.jsx';
-import HeaderIcons from './HeaderIcons.jsx';
+import React, { useEffect, useRef } from "react";
+import HeaderDetails from "./HeaderDetails.jsx";
+import HeaderIcons from "./HeaderIcons.jsx";
 import { motion, useAnimation } from "framer-motion";
-import { NavbarMain } from '../index.jsx';
+import { NavbarMain } from "../index.jsx";
 
 const containerVariants = {
   hidden: { opacity: 0, y: -100 },
@@ -18,8 +18,14 @@ const containerVariants = {
   },
 };
 
-const leftChildVariants = { hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } };
-const rightChildVariants = { hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } };
+const leftChildVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0 },
+};
+const rightChildVariants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0 },
+};
 
 const Header = () => {
   const controls = useAnimation();
@@ -31,28 +37,28 @@ const Header = () => {
     const timer = setTimeout(() => {
       isMountedRef.current = true;
     }, 100);
-    
+
     const handleScroll = () => {
       // Only proceed if component is mounted and controls are available
       if (!isMountedRef.current || !controls) return;
-      
+
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollYRef.current && currentScrollY > 50) {
-        controls.start({ y: '-100%', transition: { duration: 0.4 } });
+        controls.start({ y: "-100%", transition: { duration: 0.4 } });
       } else {
-        controls.start({ y: '0%', transition: { duration: 0.4 } });
+        controls.start({ y: "0%", transition: { duration: 0.4 } });
       }
       lastScrollYRef.current = currentScrollY;
     };
-    
+
     // Add scroll listener
-    window.addEventListener('scroll', handleScroll);
-    
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
       // Cleanup
       clearTimeout(timer);
       isMountedRef.current = false;
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [controls]); // Remove lastScrollY from dependencies
 

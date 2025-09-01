@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sidebarData } from "../../data/Dsidebar&Header";
 import { NavLink } from "react-router-dom"; // ✅ use react-router-dom

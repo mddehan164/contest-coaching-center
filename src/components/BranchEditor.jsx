@@ -1,37 +1,37 @@
 // File: BranchEditor.jsx
-import React, { useState, useRef, useEffect } from 'react';
-import { branchHeroData, branchData } from '../data/branchData';
+import React, { useState, useRef, useEffect } from "react";
+import { branchHeroData, branchData } from "../data/branchData";
 
 const BranchEditor = () => {
-  const [hero, setHero] = useState(branchHeroData);
+  // const [hero, setHero] = useState(branchHeroData);
   const [branches, setBranches] = useState(branchData);
   const [showHeroModal, setShowHeroModal] = useState(false);
   const [editBranch, setEditBranch] = useState(null);
   const [showBranchModal, setShowBranchModal] = useState(false);
   const [formBranch, setFormBranch] = useState({
-    district: '',
-    address: '',
-    description: '',
-    images: []
+    district: "",
+    address: "",
+    description: "",
+    images: [],
   });
   const [formHero, setFormHero] = useState({
-    title: '',
-    des: '',
-    image: null
+    title: "",
+    des: "",
+    image: null,
   });
   const [confirmAction, setConfirmAction] = useState(null);
 
   const branchImageInputRef = useRef(null);
 
-  useEffect(() => {
-    if (showHeroModal) {
-      setFormHero({
-        title: hero.data.title,
-        des: hero.data.des,
-        image: hero.img
-      });
-    }
-  }, [showHeroModal]);
+  // useEffect(() => {
+  //   if (showHeroModal) {
+  //     setFormHero({
+  //       title: hero.data.title,
+  //       des: hero.data.des,
+  //       image: hero.img
+  //     });
+  //   }
+  // }, [showHeroModal]);
 
   useEffect(() => {
     if (showBranchModal && editBranch) {
@@ -39,34 +39,42 @@ const BranchEditor = () => {
         district: editBranch.district,
         address: editBranch.address,
         description: editBranch.description,
-        images: [...editBranch.images]
+        images: [...editBranch.images],
       });
     } else if (showBranchModal) {
       setFormBranch({
-        district: '',
-        address: '',
-        description: '',
-        images: []
+        district: "",
+        address: "",
+        description: "",
+        images: [],
       });
     }
   }, [showBranchModal, editBranch]);
 
-  const handleHeroSave = () => {
-    setHero({
-      img: formHero.image,
-      data: {
-        title: formHero.title,
-        des: formHero.des,
-        btn: false
-      }
-    });
-    setShowHeroModal(false);
-  };
+  // const handleHeroSave = () => {
+  //   setHero({
+  //     img: formHero.image,
+  //     data: {
+  //       title: formHero.title,
+  //       des: formHero.des,
+  //       btn: false
+  //     }
+  //   });
+  //   setShowHeroModal(false);
+  // };
 
   const handleBranchSave = () => {
-    if (!formBranch.district || !formBranch.address || !formBranch.description || formBranch.images.length === 0) return;
+    if (
+      !formBranch.district ||
+      !formBranch.address ||
+      !formBranch.description ||
+      formBranch.images.length === 0
+    )
+      return;
     if (editBranch) {
-      const updated = branches.map(b => b.id === editBranch.id ? { ...formBranch, id: editBranch.id } : b);
+      const updated = branches.map((b) =>
+        b.id === editBranch.id ? { ...formBranch, id: editBranch.id } : b
+      );
       setBranches(updated);
     } else {
       setBranches([...branches, { ...formBranch, id: Date.now() }]);
@@ -82,7 +90,10 @@ const BranchEditor = () => {
       setFormHero({ ...formHero, image: imageUrl });
     } else {
       if (formBranch.images.length >= 8) return;
-      setFormBranch({ ...formBranch, images: [...formBranch.images, imageUrl] });
+      setFormBranch({
+        ...formBranch,
+        images: [...formBranch.images, imageUrl],
+      });
     }
   };
 
@@ -103,7 +114,7 @@ const BranchEditor = () => {
   return (
     <div className="p-4 space-y-10 xl:px-40">
       {/* Hero Section */}
-      <section className="bg-white rounded-lg shadow-md p-4">
+      {/* <section className="bg-white rounded-lg shadow-md p-4">
         <h2 className="text-3xl font-bold mb-4 text-headerColorHover">Current Hero</h2>
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1 space-y-2">
@@ -118,10 +129,10 @@ const BranchEditor = () => {
         >
           Edit
         </button>
-      </section>
+      </section> */}
 
       {/* Hero Edit Modal */}
-      {showHeroModal && (
+      {/* {showHeroModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full space-y-4">
             <h3 className="text-xl font-bold">Edit Hero Section</h3>
@@ -154,23 +165,33 @@ const BranchEditor = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Branch List */}
       <section className="bg-white rounded-lg shadow-md p-4">
-        <h2 className="text-3xl font-bold mb-4 text-headerColorHover">Current Branches</h2>
+        <h2 className="text-3xl font-bold mb-4 text-headerColorHover">
+          Current Branches
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-          {branches.map(branch => (
+          {branches.map((branch) => (
             <div
               key={branch.id}
               className="relative border rounded-lg overflow-hidden group bg-gray-50"
             >
               <div className="flex">
-                <img src={branch.images[0]} alt="Branch" className="w-1/2 h-32 object-cover" />
+                <img
+                  src={branch.images[0]}
+                  alt="Branch"
+                  className="w-1/2 h-32 object-cover"
+                />
                 <div className="flex-1 p-2">
-                  <h3 className="text-lg font-bold text-blue-700">{branch.district}</h3>
+                  <h3 className="text-lg font-bold text-blue-700">
+                    {branch.district}
+                  </h3>
                   <p className="text-sm text-gray-500">{branch.address}</p>
-                  <p className="text-xs text-gray-400 mt-1">{branch.description}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {branch.description}
+                  </p>
                 </div>
               </div>
               <div className="absolute bottom-2 right-2 space-x-2 opacity-0 group-hover:opacity-100 transition">
@@ -180,11 +201,21 @@ const BranchEditor = () => {
                     setEditBranch(branch);
                     setShowBranchModal(true);
                   }}
-                >Edit</button>
+                >
+                  Edit
+                </button>
                 <button
                   className="bg-contestRed hover:bg-red-800 text-white px-3 py-1 rounded"
-                  onClick={() => confirmAndExecute('Are you sure you want to delete this branch?', () => setBranches(branches.filter(b => b.id !== branch.id)))}
-                >Delete</button>
+                  onClick={() =>
+                    confirmAndExecute(
+                      "Are you sure you want to delete this branch?",
+                      () =>
+                        setBranches(branches.filter((b) => b.id !== branch.id))
+                    )
+                  }
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
@@ -204,24 +235,36 @@ const BranchEditor = () => {
       {showBranchModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full space-y-4">
-            <h3 className="text-xl font-bold">{editBranch ? 'Edit Branch' : 'Add Branch'}</h3>
+            <h3 className="text-xl font-bold">
+              {editBranch ? "Edit Branch" : "Add Branch"}
+            </h3>
             <div className="space-y-2">
-              <p className="font-medium">Images ({formBranch.images.length}/8):</p>
+              <p className="font-medium">
+                Images ({formBranch.images.length}/8):
+              </p>
               <div className="flex flex-wrap gap-2">
                 {formBranch.images.map((img, idx) => (
                   <div key={idx} className="relative w-16 h-16">
-                    <img src={img} alt="Preview" className="w-full h-full object-cover rounded" />
+                    <img
+                      src={img}
+                      alt="Preview"
+                      className="w-full h-full object-cover rounded"
+                    />
                     <button
                       className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
                       onClick={() => handleRemoveImage(idx)}
-                    >×</button>
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
                 {formBranch.images.length < 8 && (
                   <button
                     className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xl"
                     onClick={() => branchImageInputRef.current.click()}
-                  >+</button>
+                  >
+                    +
+                  </button>
                 )}
               </div>
               <input
@@ -234,28 +277,53 @@ const BranchEditor = () => {
             <input
               className="w-full border px-3 py-2 rounded"
               value={formBranch.district}
-              onChange={(e) => setFormBranch({ ...formBranch, district: e.target.value })}
+              onChange={(e) =>
+                setFormBranch({ ...formBranch, district: e.target.value })
+              }
               placeholder="District"
             />
             <input
               className="w-full border px-3 py-2 rounded"
               value={formBranch.address}
-              onChange={(e) => setFormBranch({ ...formBranch, address: e.target.value })}
+              onChange={(e) =>
+                setFormBranch({ ...formBranch, address: e.target.value })
+              }
               placeholder="Address"
             />
             <textarea
               className="w-full border px-3 py-2 rounded"
               value={formBranch.description}
-              onChange={(e) => setFormBranch({ ...formBranch, description: e.target.value })}
+              onChange={(e) =>
+                setFormBranch({ ...formBranch, description: e.target.value })
+              }
               placeholder="Description"
             />
             <div className="flex justify-between">
-              <button onClick={() => setShowBranchModal(false)} className="px-4 py-2 border rounded">Cancel</button>
+              <button
+                onClick={() => setShowBranchModal(false)}
+                className="px-4 py-2 border rounded"
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleBranchSave}
-                className={`px-4 py-2 rounded text-white ${formBranch.district && formBranch.address && formBranch.description && formBranch.images.length > 0 ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'}`}
-                disabled={!formBranch.district || !formBranch.address || !formBranch.description || formBranch.images.length === 0}
-              >Save</button>
+                className={`px-4 py-2 rounded text-white ${
+                  formBranch.district &&
+                  formBranch.address &&
+                  formBranch.description &&
+                  formBranch.images.length > 0
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-gray-300 cursor-not-allowed"
+                }`}
+                disabled={
+                  !formBranch.district ||
+                  !formBranch.address ||
+                  !formBranch.description ||
+                  formBranch.images.length === 0
+                }
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
@@ -265,7 +333,12 @@ const BranchEditor = () => {
       <div className="text-center">
         <button
           className="px-8 py-2 bg-headerColorHover text-white rounded hover:bg-headerColor"
-          onClick={() => confirmAndExecute('Are you sure you want to save all changes?', () => {})}
+          onClick={() =>
+            confirmAndExecute(
+              "Are you sure you want to save all changes?",
+              () => {}
+            )
+          }
         >
           Save All Changes
         </button>
@@ -280,11 +353,15 @@ const BranchEditor = () => {
               <button
                 className="px-4 py-2 border rounded"
                 onClick={() => setConfirmAction(null)}
-              >Cancel</button>
+              >
+                Cancel
+              </button>
               <button
                 className="px-4 py-2 bg-contestRed text-white rounded hover:bg-red-700"
                 onClick={handleConfirm}
-              >Confirm</button>
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </div>
