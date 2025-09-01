@@ -1,13 +1,25 @@
 import img from "../assets/images/gallery/photo(1).jpg";
 
-const PaymentCard = ({ status = 1, type = "student", data }) => {
+const PaymentCard = ({
+  status = 1,
+  type = "student",
+  data,
+  payments,
+  onShowDetails,
+}) => {
+  const handleDetails = () => {
+    // filter kore oi student er details ber korbo
+    const details = payments.filter((p) => p.id === data.id);
+    onShowDetails(details); // parent ke details pathai dibo
+  };
+  // console.log(paymentDetails(payments));
   return (
     <div className="border flex justify-between gap-2 px-2 py-2 rounded-md hover:shadow-md hover:scale-105 transition-all duration-100 max-w-72 aspect-video text-[0.85rem]">
       <div className="w-[40%] h-full overflow-hidden rounded-sm">
         <img
           className="w-full h-full object-cover object-center"
           src={img}
-          alt="img"
+          alt={data?.name || "image"}
         />
       </div>
       <div className="w-[58%] p-2 flex flex-col justify-center ">
@@ -31,7 +43,10 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
           >
             {status === 1 ? "Active" : "Inactive"}
           </p>
-          <button className="px-2 py-1 bg-headerColor hover:bg-headerColorHover text-white rounded-md">
+          <button
+            className="px-2 py-1 bg-headerColor hover:bg-headerColorHover text-white rounded-md"
+            onClick={handleDetails}
+          >
             Details
           </button>
         </div>
