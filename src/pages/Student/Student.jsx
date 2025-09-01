@@ -116,10 +116,23 @@ const Student = () => {
             </div>
 
             <ViewDetails 
-  data={selectedData} 
-  isOpen={isOpen} 
-  onClose={() => setIsOpen(false)} 
-/>
+                data={selectedData} 
+                isOpen={isOpen} 
+                onClose={() => setIsOpen(false)}
+                title="Student Details"
+                fieldsToShow={[
+                    'name',
+                    'email', 
+                    'phone',
+                    'father_name',
+                    'mother_name',
+                    'address',
+                    'branch',
+                    'batch.name',
+                    'image',
+                    'status'
+                ]}
+            />
 
             {/* add student modal */}
             <AddStudentModal />

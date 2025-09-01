@@ -13,11 +13,19 @@ export default function ViewDetails({ data, isOpen, onClose, title = "View Detai
     return null;
   }
 
+  // Function to get nested value from object using dot notation
+  const getNestedValue = (obj, path) => {
+    return path.split('.').reduce((current, key) => {
+      return current && current[key] !== undefined ? current[key] : undefined;
+    }, obj);
+  };
+
   // Function to format field names
   const formatFieldName = (key) => {
     return key
       .replace(/_/g, ' ')
       .replace(/([A-Z])/g, ' $1')
+      .replace(/\./g, ' ')
       .replace(/^./, str => str.toUpperCase())
       .trim();
   };
@@ -226,8 +234,19 @@ export default function ViewDetails({ data, isOpen, onClose, title = "View Detai
   // Filter data based on fieldsToShow prop - only show specified fields
   let dataEntries = [];
   if (fieldsToShow && Array.isArray(fieldsToShow) && fieldsToShow.length > 0) {
-    // Show only specified fields
-    dataEntries = Object.entries(data).filter(([key]) => fieldsToShow.includes(key));
+    // Process both regular fields and nested fields
+    dataEntries = fieldsToShow
+      .map(fieldPath => {
+        if (fieldPath.includes('.')) {
+          // Handle nested fields like 'batch.id'
+          const value = getNestedValue(data, fieldPath);
+          return value !== undefined ? [fieldPath, value] : null;
+        } else {
+          // Handle regular fields
+          return data[fieldPath] !== undefined ? [fieldPath, data[fieldPath]] : null;
+        }
+      })
+      .filter(entry => entry !== null); // Remove null entries for undefined fields
   }
   // If no fieldsToShow provided or empty array, show nothing
 
