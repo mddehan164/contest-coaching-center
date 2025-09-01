@@ -1,9 +1,11 @@
+import React, { useState } from 'react';
 import FormInput from '../../shared/forms/FormInput';
-import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
+import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
 import AddReviewModal from './AddReviewModal';
 import EditReviewModal from './EditReviewModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
+import ViewDetails from '../../shared/ViewDetails';
 import { useReviews } from '../../hooks/useReview';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
@@ -29,6 +31,14 @@ const Review = () => {
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
     } = useReviews();
+
+    // ViewDetails state
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleViewDetails = (review) => {
+        handleSetSelectedReview({ ...review, type: SelectedSliceTypeEnum.VIEW });
+        setIsOpen(true);
+    };
 
     return (
         <div>
@@ -85,6 +95,11 @@ const Review = () => {
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">
                                     <button
+                                        onClick={() => handleViewDetails(item)}
+                                    >
+                                        <EyeOpenSvg />
+                                    </button>
+                                    <button
                                         onClick={() => {
                                             handleSetSelectedReview({ ...item, type: SelectedSliceTypeEnum.UPDATE });
                                             handleOpenEditReviewModal();
@@ -106,6 +121,24 @@ const Review = () => {
                     ))}
                 </CustomTable>
             </div>
+
+            {/* ViewDetails Modal */}
+            <ViewDetails
+                data={selectedData}
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="Review Details"
+                fieldsToShow={[
+                    'name',
+                    'year',
+                    'rank',
+                    'description',
+                    'img_url',
+                    'status',
+                    'created_at',
+                    'creator.name'
+                ]}
+            />
 
             {/* add review modal */}
             <AddReviewModal />
@@ -135,6 +168,7 @@ const Review = () => {
                 deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
                 isLoading={deleteLoading}
             />
+            
             <NotifyContainer />
         </div>
     );

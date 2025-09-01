@@ -4,6 +4,8 @@ import { errorNotify, successNotify } from '../utils/notify';
 import { useToggleBatchStatusMutation } from '../redux-rtk/batch';
 import { useToggleNoticeStatusMutation } from '../redux-rtk/notice';
 import { useToggleReviewStatusMutation } from '../redux-rtk/review';
+import { useToggleBranchStatusMutation } from '../redux-rtk/branch/branchApi';
+import { toast } from 'react-toastify';
 
 const CourseStatusToggleSelect = ({ courseId, currentStatus, onStatusChange }) => {
   const [toggleStatus, { isLoading }] = useToggleCourseStatusMutation();
@@ -209,4 +211,42 @@ const ReviewStatusToggleSelect = ({ reviewId, currentStatus, onStatusChange }) =
   );
 };
 
-export { CourseStatusToggleSelect, BatchStatusToggleSelect, NoticeStatusToggleSelect, ReviewStatusToggleSelect };
+const BranchStatusToggleSelect = ({ branchData, onUpdate }) => {
+  const [status, setStatus] = useState(branchData?.status || 'active');
+  const [toggleBranchStatus] = useToggleBranchStatusMutation();
+
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setStatus(newStatus);
+
+    try {
+      await toggleBranchStatus({
+        branchId: branchData.encrypted_id,
+        status: newStatus,
+      }).unwrap();
+      toast.success(`Branch status updated to ${newStatus}!`);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      toast.error('Failed to update branch status');
+      console.error('Error updating branch status:', error);
+      setStatus(branchData?.status || 'active');
+    }
+  };
+
+  return (
+    <select
+      value={status}
+      onChange={handleStatusChange}
+      className={`px-2 py-1 rounded text-xs font-medium ${
+        status === 'active'
+          ? 'bg-green-100 text-green-800'
+          : 'bg-red-100 text-red-800'
+      }`}
+    >
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+  );
+};
+
+export { CourseStatusToggleSelect, BatchStatusToggleSelect, NoticeStatusToggleSelect, ReviewStatusToggleSelect, BranchStatusToggleSelect };

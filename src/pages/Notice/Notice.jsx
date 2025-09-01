@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import FormInput from "../../shared/forms/FormInput";
-import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from "../../utils/svgs";
+import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";
 import AddNoticeModal from "./AddNoticeModal";
 import EditNoticeModal from "./EditNoticeModal";
 import { CustomConfirmationModal, CustomTable } from "@shared/custom";
+import ViewDetails from "../../shared/ViewDetails";
 import { useNotices } from "../../hooks/useNotice";
 import { SelectedSliceTypeEnum } from "../../utils/enums";
 import NotifyContainer from "../../utils/notify";
@@ -29,6 +31,14 @@ const Notice = () => {
     handleOpenConfirmationModal,
     handleCloseConfirmationModal,
   } = useNotices();
+
+  // ViewDetails state
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleViewDetails = (notice) => {
+    handleSetSelectedNotice({ ...notice, actionType: SelectedSliceTypeEnum.VIEW });
+    setIsOpen(true);
+  };
 
   return (
     <div>
@@ -96,6 +106,11 @@ const Notice = () => {
               <td className="table_td flex justify-center">
                 <div className="flex items-center gap-x-3">
                   <button
+                    onClick={() => handleViewDetails(item)}
+                  >
+                    <EyeOpenSvg />
+                  </button>
+                  <button
                     onClick={() => {
                       handleSetSelectedNotice({
                         ...item,
@@ -120,6 +135,24 @@ const Notice = () => {
           ))}
         </CustomTable>
       </div>
+
+      {/* ViewDetails Modal */}
+      <ViewDetails
+        data={selectedData}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Notice Details"
+        fieldsToShow={[
+          'title',
+          'type_name',
+          'date',
+          'branch.name',
+          'file_url',
+          'status',
+          'created_at',
+          'creator.name'
+        ]}
+      />
 
       {/* add notice modal */}
       <AddNoticeModal />

@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { useAddNotice } from "@hooks/useNotice";
 import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
+import ImageUpload from "../../shared/forms/ImageUpload";
 import NotifyContainer from "../../utils/notify";
 import CustomDatePicker from "@shared/custom/CustomDatePicker";
 

@@ -48,7 +48,7 @@ export const customiseData = [
   {
     icon: GiTreeBranch,
     name: "Add/Edit Branch data",
-    link: "branch-editor",
+    link: "branch",
   },
   {
     icon: GrGallery,

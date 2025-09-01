@@ -1,9 +1,11 @@
+import React, { useState } from 'react';
 import FormInput from '../../shared/forms/FormInput';
-import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
+import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
 import AddTeacherModal from './AddTeacherModal';
 import EditTeacherModal from './EditTeacherModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
+import ViewDetails from '../../shared/ViewDetails';
 import { useTeachers } from '../../hooks/useTeacher';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
@@ -28,6 +30,14 @@ const Teacher = () => {
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
     } = useTeachers();
+
+    // ViewDetails state
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleViewDetails = (teacher) => {
+        handleSetSelectedTeacher({ ...teacher, type: SelectedSliceTypeEnum.VIEW });
+        setIsOpen(true);
+    };
 
     return (
         <div>
@@ -79,6 +89,11 @@ const Teacher = () => {
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">
                                     <button
+                                        onClick={() => handleViewDetails(item)}
+                                    >
+                                        <EyeOpenSvg />
+                                    </button>
+                                    <button
                                         onClick={() => {
                                             handleSetSelectedTeacher({ ...item, type: SelectedSliceTypeEnum.UPDATE });
                                             handleOpenEditTeacherModal();
@@ -100,6 +115,27 @@ const Teacher = () => {
                     ))}
                 </CustomTable>
             </div>
+
+            {/* ViewDetails Modal */}
+            <ViewDetails
+                data={selectedData}
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="Teacher Details"
+                fieldsToShow={[
+                    'name',
+                    'subject',
+                    'gender',
+                    'mobile',
+                    'address',
+                    'course.title',
+                    'branch.name',
+                    'batch.name',
+                    'status',
+                    'created_at',
+                    'creator.name'
+                ]}
+            />
 
             {/* add teacher modal */}
             <AddTeacherModal />

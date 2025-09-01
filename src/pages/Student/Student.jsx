@@ -122,15 +122,20 @@ const Student = () => {
                 title="Student Details"
                 fieldsToShow={[
                     'name',
-                    'email', 
-                    'phone',
+                    'mobile',
+                    'gender',
+                    'course.title',
+                    'branch.name',
+                    'batch.name',
                     'father_name',
                     'mother_name',
                     'address',
-                    'branch',
-                    'batch.name',
-                    'image',
-                    'status'
+                    'ssc_result',
+                    'hsc_result',
+                    'total_amount',
+                    'status',
+                    'created_at',
+                    'creator.name'
                 ]}
             />
 

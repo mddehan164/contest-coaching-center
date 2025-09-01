@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import FormInput from "../../shared/forms/FormInput";
-import { AddSvg, EditSvg, EyeSvg, SearchSvg } from "../../utils/svgs";
+import { AddSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";
 import AddBatchModal from "./AddBatchModal";
 import EditBatchModal from "./EditBatchModal";
 import { CustomConfirmationModal, CustomTable } from "@shared/custom";
+import ViewDetails from "../../shared/ViewDetails";
 import { useBatchs } from "../../hooks/useBatch";
 import { SelectedSliceTypeEnum } from "../../utils/enums";
 import NotifyContainer from "../../utils/notify";
@@ -29,6 +31,14 @@ const Batch = () => {
     handleOpenConfirmationModal,
     handleCloseConfirmationModal,
   } = useBatchs();
+
+  // ViewDetails state
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleViewDetails = (batch) => {
+    handleSetSelectedBatch({ ...batch, type: SelectedSliceTypeEnum.VIEW });
+    setIsOpen(true);
+  };
 
   return (
     <div>
@@ -100,6 +110,11 @@ const Batch = () => {
               <td className="table_td flex justify-center">
                 <div className="flex items-center gap-x-3">
                   <button
+                    onClick={() => handleViewDetails(item)}
+                  >
+                    <EyeOpenSvg />
+                  </button>
+                  <button
                     onClick={() => {
                       handleSetSelectedBatch({
                         ...item,
@@ -110,17 +125,7 @@ const Batch = () => {
                   >
                     <EditSvg />
                   </button>
-                  <button
-                    onClick={() => {
-                      handleSetSelectedBatch({
-                        ...item,
-                        type: SelectedSliceTypeEnum.VIEW,
-                      });
-                      handleOpenConfirmationModal();
-                    }}
-                  >
-                    <EyeSvg />
-                  </button>
+                  
                 </div>
               </td>
             </tr>
@@ -159,6 +164,25 @@ const Batch = () => {
         deleteModal={selectedData?.type === SelectedSliceTypeEnum.DELETE}
         isLoading={deleteLoading}
       />
+      
+      {/* ViewDetails Modal */}
+      <ViewDetails
+        data={selectedData}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Batch Details"
+        fieldsToShow={[
+          'name',
+          'course.title',
+          'start_date',
+          'end_date',
+          'status',
+          'created_at',
+          'creator.name',
+          'updater.name'
+        ]}
+      />
+      
       <NotifyContainer />
     </div>
   );
