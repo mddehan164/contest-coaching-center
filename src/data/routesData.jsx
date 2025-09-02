@@ -65,7 +65,7 @@ export let dashboardPageRoutes = [
   { element: <Batch />, path: "batch" },
   { element: <Teacher />, path: "teacher" },
   { element: <Course />, path: "course" },
-  { element: <DSlider />, path: "slider" },
+  // { element: <DSlider />, path: "slider" },
   { element: <Notice />, path: "notice" },
   { element: <Review />, path: "review" },
   { element: <DCourse />, path: "course-editor" },

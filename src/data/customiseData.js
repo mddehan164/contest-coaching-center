@@ -1,4 +1,4 @@
-import { TfiLayoutSliderAlt } from "react-icons/tfi";
+// import { TfiLayoutSliderAlt } from "react-icons/tfi";
 import { AiOutlineNotification } from "react-icons/ai";
 // import { FaGraduationCap } from "react-icons/fa";
 import { FaAward } from "react-icons/fa";
@@ -9,7 +9,7 @@ import { GiTreeBranch } from "react-icons/gi";
 import { GrGallery } from "react-icons/gr";
 import { MdOutlineRateReview } from "react-icons/md";
 export const customiseData = [
-  { icon: TfiLayoutSliderAlt, name: "Add/Edit Sliders", link: "slider" },
+  // { icon: TfiLayoutSliderAlt, name: "Add/Edit Sliders", link: "slider" },
   // {
   //   icon: AiOutlineNotification,
   //   name: "",
