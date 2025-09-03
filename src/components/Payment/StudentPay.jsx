@@ -1,58 +1,45 @@
 import PaymentCard from "../PaymentCard";
 import { listDetails } from "../../data/studentData";
 import { studentPaymentsData } from "../../data/payments";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaymentDetails from "../PaymentDetails";
 import PaymentAdd from "../PaymentAdd";
-
+import FilterPerson from "../FilterPerson";
+import { IoSearch } from "react-icons/io5";
 const StudentPay = () => {
-  const [selectedPayments, setSelectedPayments] = useState(null);
-  const [payments, setPayments] = useState(studentPaymentsData);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [query, setQuery] = useState(""); // search text
+  const [data] = useState([...listDetails]); // student list
+  const [searchTerm, setSearchTerm] = useState(""); // delayed value
 
-  const handleShowDetails = (details) => {
-    setSelectedPayments(details);
-  };
+  // debounce logic
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      setSearchTerm(query);
+    }, 800); // 1.5s delay
 
-  const handleAddPayment = (newPayment) => {
-    setPayments((prev) => [...prev, newPayment]);
-    setShowAddModal(false); // modal close
-  };
+    return () => clearTimeout(delayDebounce);
+  }, [query]);
 
+  const filteredData = data.filter((item) =>
+    Object.entries(item).some(
+      ([key, value]) =>
+        key !== "id" &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
   return (
-    <div
-      className={`flex flex-wrap gap-3  ${
-        listDetails.length >= 5 ? "md:justify-around" : "justify-center"
-      }`}
-    >
-      {listDetails.map((list, idx) => (
-        <PaymentCard
-          data={list}
-          key={idx}
-          type="student"
-          payments={payments} // studentPaymentsData নয়, local payments state
-          onShowDetails={handleShowDetails}
+    <div className={`flex flex-wrap gap-3 justify-center relative pt-20`}>
+      <div className="px-2 border lg:w-[20%] w-20 flex items-center gap-2 absolute top-3 right-3">
+        <IoSearch className="text-lg font-semibold" />
+        <input
+          type="text"
+          placeholder="Quick Search..."
+          className="px-1 py-3 w-full focus:outline-none"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
-      ))}
-
-      {/* details component */}
-      {selectedPayments && (
-        <PaymentDetails
-          details={selectedPayments}
-          onClose={() => setSelectedPayments(null)}
-          onOpenAdd={() => setShowAddModal(true)} // add button click
-        />
-      )}
-
-      {/* Add Payment modal */}
-      {showAddModal && (
-        <PaymentAdd
-          payments={payments}
-          handleAddPayment={handleAddPayment}
-          onClose={() => setShowAddModal(false)}
-          student={listDetails}
-        />
-      )}
+      </div>
+      <FilterPerson dataList={filteredData} person="student" />
     </div>
   );
 };
