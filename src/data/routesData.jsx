@@ -35,6 +35,7 @@ import {
   Verify,
 } from "../pages";
 import Batch from "../pages/Batch/Batch";
+import Branch from "../pages/Branch/Branch";
 import { Course } from "../pages/Course";
 import { Notice } from "../pages/Notice";
 import Review from "../pages/Review/Review";
@@ -59,11 +60,12 @@ export let mainPageRoutes = [
 
 export let dashboardPageRoutes = [
   { element: <Schedule />, path: "schedule" },
+  { element: <Branch />, path: "branch" },
   { element: <Student />, path: "student" },
   { element: <Batch />, path: "batch" },
   { element: <Teacher />, path: "teacher" },
   { element: <Course />, path: "course" },
-  { element: <DSlider />, path: "slider" },
+  // { element: <DSlider />, path: "slider" },
   { element: <Notice />, path: "notice" },
   { element: <Review />, path: "review" },
   { element: <DCourse />, path: "course-editor" },

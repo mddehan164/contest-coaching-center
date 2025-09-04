@@ -1,9 +1,11 @@
+import React, { useState } from 'react';
 import FormInput from '../../shared/forms/FormInput';
-import { AddSvg, DeleteSvg, EditSvg, SearchSvg } from '../../utils/svgs';
+import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from '../../utils/svgs';
 import { SecondaryButton } from '../../shared/buttons';
 import AddCourseModal from './AddCourseModal';
 import EditCourseModal from './EditCourseModal';
 import { CustomConfirmationModal, CustomTable } from '@shared/custom';
+import ViewDetails from '../../shared/ViewDetails';
 import { useCourses } from '../../hooks/useCourse';
 import { SelectedSliceTypeEnum } from '../../utils/enums';
 import NotifyContainer from '../../utils/notify';
@@ -29,6 +31,14 @@ const Course = () => {
         handleOpenConfirmationModal,
         handleCloseConfirmationModal,
     } = useCourses();
+
+    // ViewDetails state
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleViewDetails = (course) => {
+        handleSetSelectedCourse({ ...course, type: SelectedSliceTypeEnum.VIEW });
+        setIsOpen(true);
+    };
 
 
 
@@ -88,6 +98,11 @@ const Course = () => {
                             <td className="table_td flex justify-center">
                                 <div className="flex items-center gap-x-3">
                                     <button
+                                        onClick={() => handleViewDetails(item)}
+                                    >
+                                        <EyeOpenSvg />
+                                    </button>
+                                    <button
                                         onClick={() => {
                                             handleSetSelectedCourse({ ...item, type: SelectedSliceTypeEnum.UPDATE });
                                             handleOpenEditCourseModal();
@@ -109,6 +124,26 @@ const Course = () => {
                     ))}
                 </CustomTable>
             </div>
+
+            {/* ViewDetails Modal */}
+            <ViewDetails
+                data={selectedData}
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="Course Details"
+                fieldsToShow={[
+                    'title',
+                    'short_des',
+                    'long_des',
+                    'price',
+                    'offer_price',
+                    'group',
+                    'status',
+                    'created_at',
+                    'creator.name',
+                    'updater.name'
+                ]}
+            />
 
             {/* add course modal */}
             <AddCourseModal />

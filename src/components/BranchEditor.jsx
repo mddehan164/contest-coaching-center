@@ -1,6 +1,7 @@
 // File: BranchEditor.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { branchHeroData, branchData } from "../data/branchData";
+import ViewDetails from "../shared/ViewDetails";
 
 const BranchEditor = () => {
   // const [hero, setHero] = useState(branchHeroData);
