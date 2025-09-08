@@ -25,6 +25,15 @@ export const batchApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // get batch by courseId
+    getAllBatchByCourse: builder.query({
+      query: ({ batchId }) => {
+        return {
+          url: `admin/batches/${batchId}`,
+          method: "GET",
+        };
+      },
+    }),
     // ADD A NEW BATCH
     addBatch: builder.mutation({
       query: ({ data }) => {
@@ -90,4 +99,5 @@ export const {
   useGetBatchByIdQuery,
   useUpdateBatchMutation,
   useToggleBatchStatusMutation,
+  useGetAllBatchByCourseQuery,
 } = batchApi;

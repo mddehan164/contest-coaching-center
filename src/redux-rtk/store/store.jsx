@@ -9,6 +9,7 @@ import teacherReducer from "../teacher/teacherSlice";
 import noticeReducer from "../notice/noticeSlice";
 import reviewReducer from "../review/reviewSlice";
 import branchReducer from "../branch/branchSlice";
+import paymentReducer from "../payment/paymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     notice: noticeReducer,
     review: reviewReducer,
     branch: branchReducer,
+    payment: paymentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

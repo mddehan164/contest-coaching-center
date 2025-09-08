@@ -12,7 +12,7 @@ const PaymentCard = ({
     const details = payments.filter((p) => p.id === data.id);
     onShowDetails(details); // parent ke details pathai dibo
   };
-  // console.log(paymentDetails(payments));
+  // console.log(typeof data);
   return (
     <div className="border flex justify-between gap-2 px-2 py-2 rounded-md hover:shadow-md hover:scale-105 transition-all duration-100 max-w-72 aspect-video text-[0.85rem]">
       <div className="w-[40%] h-full overflow-hidden rounded-sm">
@@ -27,7 +27,7 @@ const PaymentCard = ({
           {data?.name || "Name Here"}
         </h1>
         <p>{data?.mobile || "mobile"}</p>
-        <p>{data?.batch || "Batch"}</p>
+        <p>{data?.batch?.name || "Batch"}</p>
         {type === "student" ? (
           <p>{data?.roll || "roll"}</p>
         ) : (

@@ -2,7 +2,7 @@ import { IoSearch } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 
 const FilterBox = ({
-  courseBatchData,
+  courseBatchData = [],
   selectedCourse,
   setSelectedCourse,
   selectedBatch,
@@ -39,7 +39,6 @@ const FilterBox = ({
           onChange={(e) => {
             const val = e.target.value === "" ? null : Number(e.target.value);
             setSelectedCourse(val);
-            setSelectedBatch(null);
           }}
         >
           <option value="">-- Select Course --</option>
@@ -65,8 +64,8 @@ const FilterBox = ({
             courseBatchData
               .find((c) => c.id === selectedCourse)
               ?.batches.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.title}
+                <option key={b.value} value={b.value}>
+                  {b.label}
                 </option>
               ))}
         </select>
