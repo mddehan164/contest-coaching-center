@@ -5,7 +5,7 @@ export const listDetails = [
   {
     id: 1,
     course_id: 1,
-    batch_id: 1,
+    batch_id: 3,
     name: "Hasan",
     image: card,
     mobile: "01711111111",
@@ -39,8 +39,8 @@ export const listDetails = [
   },
   {
     id: 2,
-    course_id: 1,
-    batch_id: 1,
+    course_id: 3,
+    batch_id: 2,
     name: "Sumi",
     mobile: "01711111112",
     batch: 2025,
@@ -74,7 +74,7 @@ export const listDetails = [
   },
   {
     id: 3,
-    course_id: 1,
+    course_id: 2,
     batch_id: 1,
     name: "Rafi",
     mobile: "01711111113",
@@ -109,8 +109,8 @@ export const listDetails = [
   },
   {
     id: 4,
-    course_id: 1,
-    batch_id: 1,
+    course_id: 3,
+    batch_id: 6,
     name: "Naznin",
     mobile: "01711111114",
     batch: 2025,
@@ -144,8 +144,8 @@ export const listDetails = [
   },
   {
     id: 5,
-    course_id: 1,
-    batch_id: 1,
+    course_id: 2,
+    batch_id: 2,
     name: "Hriday",
     mobile: "01711111115",
     batch: 2025,

@@ -1,4 +1,3 @@
-import PaymentCard from "../PaymentCard";
 import { listDetails } from "../../data/teacherData";
 import { teacherPaymentsData } from "../../data/payments";
 import { useEffect, useState } from "react";
@@ -13,7 +12,7 @@ const TeacherPay = () => {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       setSearchTerm(query);
-    }, 800); // 1.5s delay
+    }, 800);
 
     return () => clearTimeout(delayDebounce);
   }, [query]);
