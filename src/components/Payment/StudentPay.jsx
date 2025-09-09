@@ -4,6 +4,9 @@ import FilterPerson from "../FilterPerson";
 import FilterBox from "../FilterBox";
 import { usePayment } from "../../hooks/usePayment";
 import { useDispatch } from "react-redux";
+import { studentPaymentsData } from "../../data/payments";
+import CustomSpinner from "../../shared/custom/CustomSpinner";
+
 import {
   setShowPopup,
   setShowStickyBtn,
@@ -91,7 +94,7 @@ const StudentPay = () => {
   if (studentsLoading) {
     return (
       <div className="relative pt-20 flex justify-center items-center h-64">
-        <div className="text-lg">Loading students...</div>
+        <CustomSpinner />
       </div>
     );
   }
@@ -215,7 +218,11 @@ const StudentPay = () => {
 
         {/* Case 3: Student আছে */}
         {studentList.length > 0 && (
-          <FilterPerson dataList={studentList} person="student" />
+          <FilterPerson
+            dataList={studentList}
+            person="student"
+            paymentData={studentPaymentsData}
+          />
         )}
       </div>
     </div>

@@ -2,7 +2,6 @@ import { X } from "lucide-react";
 import { useState } from "react";
 
 const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
-  console.log(details);
   const initialFormData =
     type === "student"
       ? {
