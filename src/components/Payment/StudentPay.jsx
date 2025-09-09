@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import FilterPerson from "../FilterPerson";
 import FilterBox from "../FilterBox";
 import { usePayment } from "../../hooks/usePayment";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setShowPopup,
   setShowStickyBtn,
@@ -12,7 +12,6 @@ import {
   setDraftQuery,
   resetFilters,
 } from "../../redux-rtk/payment/paymentSlice";
-import { useGetAllBatchByCourseQuery } from "../../redux-rtk/batch/batchApi";
 
 const StudentPay = () => {
   const dispatch = useDispatch();
@@ -40,8 +39,26 @@ const StudentPay = () => {
   } = usePayment();
 
   // Get students from Redux store as fallback
-  const studentsFromStore = useSelector((state) => state.student);
-  const studentList = students.length > 0 ? students : studentsFromStore;
+  // শুধু filter select করলে students আসবে, না হলে empty array
+  const studentList =
+    draftCourse || draftBatch || draftQuery
+      ? students.filter((s) => {
+          // course filter
+          const byCourse = draftCourse
+            ? s.course_id === Number(draftCourse)
+            : true;
+
+          // batch filter
+          const byBatch = draftBatch ? s.batch_id === Number(draftBatch) : true;
+
+          // optional search filter
+          const bySearch = draftQuery
+            ? JSON.stringify(s).toLowerCase().includes(draftQuery.toLowerCase())
+            : true;
+
+          return byCourse && byBatch && bySearch;
+        })
+      : [];
 
   // Prepare courseBatchData for FilterBox
   const courseBatchData = useMemo(() => {
@@ -49,22 +66,25 @@ const StudentPay = () => {
       id: course.value,
       title: course.label,
       encrypted_id: course.encrypted_id,
-      batches: batchesOptions,
+      batches:
+        course.encrypted_id === selectedCourseEncryptedId ? batchesOptions : [], // শুধু select করা course-এর batch দেখাবে
     }));
-  }, [courseOptions, batchesOptions]);
+  }, [courseOptions, batchesOptions, selectedCourseEncryptedId]);
 
   // Handle course selection change in popup
   const handleDraftCourseChange = (courseId) => {
     dispatch(setDraftCourse(courseId));
-    // Find the selected course to get its encrypted_id
+
+    // Find the selected course
     const selectedCourse = courseOptions.find(
       (course) => course.value === courseId
     );
+    if (selectedCourse) {
+      // Set the encrypted_id so batches load for this course
+      updateSelectedCourseEncryptedId(selectedCourse.encrypted_id);
+    }
 
-    useGetAllBatchByCourseQuery(selectedCourse.encrypted_id);
-    console.log("|hello");
-
-    // Reset batch when course changes
+    // Reset batch
     dispatch(setDraftBatch(null));
   };
 
@@ -128,6 +148,9 @@ const StudentPay = () => {
             dispatch(setShowStickyBtn(true));
           }}
           onClose={() => {
+            // যদি কোনো student না থাকে তাহলে cross কাজ করবে না
+            if (studentList.length === 0) return;
+
             // Close → RESET draft to current filters
             dispatch(setDraftCourse(courseId));
             dispatch(setDraftBatch(batchId));
@@ -168,23 +191,31 @@ const StudentPay = () => {
         </div>
       )}
 
-      {/* Student List */}
+      {/* Student Section */}
       <div className="px-4 mb-4">
-        <h2 className="text-xl font-bold">Students ({studentList.length})</h2>
+        <h2 className="text-xl font-bold">Students</h2>
       </div>
 
-      {/* Filtered Student List */}
       <div className="flex flex-wrap gap-3 justify-center">
-        {studentList.length > 0 ? (
-          <FilterPerson dataList={studentList} person="student" />
-        ) : (
+        {/* Case 1: কিছুই select করা হয়নি */}
+        {!courseId && !batchId && !search && (
           <div className="text-center py-10 w-full">
-            <p className="text-gray-500">
-              {courseId || batchId || search
-                ? "No students match your filters"
-                : "No students found"}
+            <p className="text-gray-600 font-medium text-lg xl:text-3xl">
+              Please select a course & batch to see students
             </p>
           </div>
+        )}
+
+        {/* Case 2: Filter select করা আছে, কিন্তু কোনো student নেই */}
+        {(courseId || batchId || search) && studentList.length === 0 && (
+          <div className="text-center py-10 w-full">
+            <p className="text-gray-500">No students match your filters</p>
+          </div>
+        )}
+
+        {/* Case 3: Student আছে */}
+        {studentList.length > 0 && (
+          <FilterPerson dataList={studentList} person="student" />
         )}
       </div>
     </div>

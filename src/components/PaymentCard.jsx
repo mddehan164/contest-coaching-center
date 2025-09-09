@@ -28,11 +28,7 @@ const PaymentCard = ({
         </h1>
         <p>{data?.mobile || "mobile"}</p>
         <p>{data?.batch?.name || "Batch"}</p>
-        {type === "student" ? (
-          <p>{data?.roll || "roll"}</p>
-        ) : (
-          <p>{data?.subject || "subject"}</p>
-        )}
+        {type === "student" ? <></> : <p>{data?.subject || "subject"}</p>}
         <div className="flex justify-between items-center mt-1">
           <p
             className={`${
