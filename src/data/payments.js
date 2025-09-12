@@ -18,7 +18,7 @@ export let studentPaymentsData = [
     status: 1,
   },
   {
-    id: 2,
+    id: 4,
     name: "Sumi",
     course_fee: 200,
     payable_amount: 180,

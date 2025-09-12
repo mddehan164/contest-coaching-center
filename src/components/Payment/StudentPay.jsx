@@ -13,7 +13,6 @@ import {
   setDraftCourse,
   setDraftBatch,
   setDraftQuery,
-  resetFilters,
 } from "../../redux-rtk/payment/paymentSlice";
 
 const StudentPay = () => {
@@ -33,35 +32,13 @@ const StudentPay = () => {
     // Data
     courseOptions,
     batchesOptions,
-    students,
-    studentsLoading,
 
     // Actions
     updateSelectedCourseEncryptedId,
-    applyPaymentFilters,
+    selectPayment,
+    addPaymentDetail,
+    toggleDetailStatus,
   } = usePayment();
-
-  // Get students from Redux store as fallback
-  // শুধু filter select করলে students আসবে, না হলে empty array
-  const studentList =
-    draftCourse || draftBatch || draftQuery
-      ? students.filter((s) => {
-          // course filter
-          const byCourse = draftCourse
-            ? s.course_id === Number(draftCourse)
-            : true;
-
-          // batch filter
-          const byBatch = draftBatch ? s.batch_id === Number(draftBatch) : true;
-
-          // optional search filter
-          const bySearch = draftQuery
-            ? JSON.stringify(s).toLowerCase().includes(draftQuery.toLowerCase())
-            : true;
-
-          return byCourse && byBatch && bySearch;
-        })
-      : [];
 
   // Prepare courseBatchData for FilterBox
   const courseBatchData = useMemo(() => {
@@ -91,13 +68,13 @@ const StudentPay = () => {
     dispatch(setDraftBatch(null));
   };
 
-  if (studentsLoading) {
-    return (
-      <div className="relative pt-20 flex justify-center items-center h-64">
-        <CustomSpinner />
-      </div>
-    );
-  }
+  // if (studentsLoading) {
+  //   return (
+  //     <div className="relative pt-20 flex justify-center items-center h-64">
+  //       <CustomSpinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="relative pt-20">
@@ -217,13 +194,13 @@ const StudentPay = () => {
         )}
 
         {/* Case 3: Student আছে */}
-        {studentList.length > 0 && (
+        {/* {studentList.length > 0 && (
           <FilterPerson
             dataList={studentList}
             person="student"
             paymentData={studentPaymentsData}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

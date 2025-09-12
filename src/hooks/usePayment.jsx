@@ -5,14 +5,57 @@ import {
   useGetAllCoursesQuery,
   useGetCourseBatchesQuery,
 } from "../redux-rtk/course";
-import { useGetAllStudentsQuery } from "../redux-rtk/student/studentApi";
 import {
   setSelectedCourseEncryptedId,
-  applyFilters,
+  setSelectedStudentPayment,
 } from "../redux-rtk/payment/paymentSlice";
+import {
+  useGetAllStudentsPaymentQuery,
+  useAddPaymentDetailMutation,
+  useEditPaymentDetailMutation,
+  useTogglePaymentDetailStatusMutation,
+  useGetPaymentByStudentQuery,
+} from "../redux-rtk/payment/paymentApi";
 
 export const usePayment = () => {
   const dispatch = useDispatch();
+
+  const { studentPayments, selectedStudentPayment } = useSelector(
+    (state) => state.payment
+  );
+
+  const { data: singlePayment, isLoading: loadingSingle } =
+    useGetPaymentByStudentQuery(
+      { encrypted_student_id: selectedStudentPayment?.id },
+      { skip: !selectedStudentPayment?.id }
+    );
+
+  const [addDetail, { isLoading: adding }] = useAddPaymentDetailMutation();
+  const [toggleStatus, { isLoading: toggling }] =
+    useTogglePaymentDetailStatusMutation();
+
+  const selectPayment = (payment) => {
+    dispatch(setSelectedStudentPayment(payment));
+  };
+
+  const addPaymentDetail = async (paymentId, detailData) => {
+    try {
+      await addDetail({ encrypted_payment_id: paymentId, detailData }).unwrap();
+      // optional: success message
+    } catch (err) {
+      // error handle
+    }
+  };
+
+  const toggleDetailStatus = async (detailId) => {
+    try {
+      await toggleStatus({ encrypted_payment_detail_id: detailId }).unwrap();
+    } catch (err) {
+      // error handle
+    }
+  };
+
+  // inside component or custom hook
 
   // Get all payment states from Redux
   const paymentState = useSelector((state) => state.payment);
@@ -22,16 +65,30 @@ export const usePayment = () => {
     page: 1,
     limit: 100,
   });
+  const handleAddDetail = async (paymentId, detailData) => {
+    try {
+      const result = await addPaymentDetail({
+        encrypted_payment_id: paymentId,
+        detailData,
+      }).unwrap();
+      // result e tumi response pabe, jodi backend response thik thake
+      console.log("Added payment detail:", result);
+    } catch (err) {
+      console.error("Error adding payment detail:", err);
+    }
+  };
 
-  // Fetch students with filters from payment state
-  const { data: studentsData, isLoading: studentsLoading } =
-    useGetAllStudentsQuery({
-      page: 1,
-      limit: 100,
-      courseId: paymentState.courseId,
-      batchId: paymentState.batchId,
-      search: paymentState.search,
-    });
+  // function to toggle status
+  const handleToggleStatus = async (detailId) => {
+    try {
+      const result = await toggleDetailStatus({
+        encrypted_payment_detail_id: detailId,
+      }).unwrap();
+      console.log("Toggled status:", result);
+    } catch (err) {
+      console.error("Error toggling status:", err);
+    }
+  };
 
   // Use the RTK Query hook for batches
   const { data: batchesData } = useGetCourseBatchesQuery(
@@ -80,11 +137,16 @@ export const usePayment = () => {
     // Data
     courseOptions,
     batchesOptions,
-    students: studentsData?.data?.students || [],
-    studentsLoading,
 
     // Actions
     updateSelectedCourseEncryptedId,
-    applyPaymentFilters,
+
+    singlePayment,
+    loadingSingle,
+    adding,
+    toggling,
+    selectPayment,
+    addPaymentDetail,
+    toggleDetailStatus,
   };
 };

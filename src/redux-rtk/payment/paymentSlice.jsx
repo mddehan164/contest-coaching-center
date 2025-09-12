@@ -2,6 +2,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  studentPayments: null, // সব student payment data
+  selectedStudentPayment: null, // একজন student-এর payment data
+
   // UI control states
   showPopup: true,
   showStickyBtn: false,
@@ -24,6 +27,12 @@ const paymentSlice = createSlice({
   name: "payment",
   initialState,
   reducers: {
+    setStudentPaymentData(state, action) {
+      state.studentPayments = action.payload;
+    },
+    setSelectedStudentPayment(state, action) {
+      state.selectedStudentPayment = action.payload;
+    },
     setShowPopup: (state, action) => {
       state.showPopup = action.payload;
     },
@@ -51,23 +60,6 @@ const paymentSlice = createSlice({
     setSelectedCourseEncryptedId: (state, action) => {
       state.selectedCourseEncryptedId = action.payload;
     },
-    // Combined action to apply filters
-    applyFilters: (state, action) => {
-      const { courseId, batchId, search } = action.payload;
-      state.courseId = courseId;
-      state.batchId = batchId;
-      state.search = search;
-    },
-    // Reset all filters
-    resetFilters: (state) => {
-      state.courseId = null;
-      state.batchId = null;
-      state.search = "";
-      state.draftCourse = null;
-      state.draftBatch = null;
-      state.draftQuery = "";
-      state.selectedCourseEncryptedId = null;
-    },
   },
 });
 
@@ -81,8 +73,9 @@ export const {
   setDraftBatch,
   setDraftQuery,
   setSelectedCourseEncryptedId,
-  applyFilters,
-  resetFilters,
+  setStudentPaymentData,
+  setStudentPaymentDataList,
+  setSelectedStudentPayment,
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;
