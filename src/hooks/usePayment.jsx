@@ -1,5 +1,5 @@
 // hooks/usePayment.js
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetAllCoursesQuery,
@@ -7,10 +7,12 @@ import {
 } from "../redux-rtk/course";
 import {
   setSelectedCourseEncryptedId,
-  setSelectedStudentPayment,
+  setSelectedStudent,
+  setLoading,
 } from "../redux-rtk/payment/paymentSlice";
 import {
-  useGetAllStudentsPaymentQuery,
+  // useGetAllStudentsPaymentQuery,
+  useGetStudentPaymentsByCourseBatchQuery,
   useAddPaymentDetailMutation,
   useEditPaymentDetailMutation,
   useTogglePaymentDetailStatusMutation,
@@ -20,133 +22,220 @@ import {
 export const usePayment = () => {
   const dispatch = useDispatch();
 
-  const { studentPayments, selectedStudentPayment } = useSelector(
-    (state) => state.payment
-  );
+  // Redux state
+  const {
+    studentPayments,
+    selectedStudent, // selected student state
+    filters,
+    selectedCourseEncryptedId,
+    loading,
+  } = useSelector((state) => state.payment);
 
-  const { data: singlePayment, isLoading: loadingSingle } =
-    useGetPaymentByStudentQuery(
-      { encrypted_student_id: selectedStudentPayment?.id },
-      { skip: !selectedStudentPayment?.id }
-    );
+  // 🔹 Query: All courses
+  const {
+    data: coursesData,
+    isLoading: loadingCourses,
+    error: errorCourses,
+  } = useGetAllCoursesQuery();
 
-  const [addDetail, { isLoading: adding }] = useAddPaymentDetailMutation();
-  const [toggleStatus, { isLoading: toggling }] =
-    useTogglePaymentDetailStatusMutation();
-
-  const selectPayment = (payment) => {
-    dispatch(setSelectedStudentPayment(payment));
-  };
-
-  const addPaymentDetail = async (paymentId, detailData) => {
-    try {
-      await addDetail({ encrypted_payment_id: paymentId, detailData }).unwrap();
-      // optional: success message
-    } catch (err) {
-      // error handle
-    }
-  };
-
-  const toggleDetailStatus = async (detailId) => {
-    try {
-      await toggleStatus({ encrypted_payment_detail_id: detailId }).unwrap();
-    } catch (err) {
-      // error handle
-    }
-  };
-
-  // inside component or custom hook
-
-  // Get all payment states from Redux
-  const paymentState = useSelector((state) => state.payment);
-
-  // Fetch courses
-  const { data: coursesData } = useGetAllCoursesQuery({
-    page: 1,
-    limit: 100,
+  // 🔹 Query: Batches for selected course
+  const {
+    data: batchesData,
+    isLoading: loadingBatches,
+    error: errorBatches,
+  } = useGetCourseBatchesQuery(selectedCourseEncryptedId, {
+    skip: !selectedCourseEncryptedId,
+    refetchOnMountOrArgChange: true,
   });
-  const handleAddDetail = async (paymentId, detailData) => {
-    try {
-      const result = await addPaymentDetail({
-        encrypted_payment_id: paymentId,
-        detailData,
-      }).unwrap();
-      // result e tumi response pabe, jodi backend response thik thake
-      console.log("Added payment detail:", result);
-    } catch (err) {
-      console.error("Error adding payment detail:", err);
-    }
-  };
 
-  // function to toggle status
-  const handleToggleStatus = async (detailId) => {
-    try {
-      const result = await toggleDetailStatus({
-        encrypted_payment_detail_id: detailId,
-      }).unwrap();
-      console.log("Toggled status:", result);
-    } catch (err) {
-      console.error("Error toggling status:", err);
-    }
-  };
+  // 🔹 Query: All students payment (with search filter)
+  // const {
+  //   data: allPayments,
+  //   isLoading: loadingAll,
+  //   error: errorAll,
+  // } = useGetAllStudentsPaymentQuery(
+  //   { search: filters.search || "" },
+  //   {
+  //     skip: !!(filters.course || filters.batch),
+  //     refetchOnMountOrArgChange: true,
+  //   }
+  // );
 
-  // Use the RTK Query hook for batches
-  const { data: batchesData } = useGetCourseBatchesQuery(
-    paymentState.selectedCourseEncryptedId,
+  // 🔹 Query: Filtered by course & batch
+  const {
+    data: filteredPayments,
+    isLoading: loadingFiltered,
+    error: errorFiltered,
+  } = useGetStudentPaymentsByCourseBatchQuery(
     {
-      skip: !paymentState.selectedCourseEncryptedId,
+      encrypted_course_id: filters.course || "",
+      encrypted_batch_id: filters.batch || "",
+    },
+    {
+      skip: !filters.course || !filters.batch,
       refetchOnMountOrArgChange: true,
     }
   );
 
-  // Memoize course options
+  // 🔹 Query: Single student payment details - selected student এর জন্য
+  const {
+    data: singlePayment,
+    isLoading: loadingSingle,
+    error: errorSingle,
+    refetch: refetchStudentPayment,
+  } = useGetPaymentByStudentQuery(
+    { encrypted_student_id: selectedStudent?.encrypted_id || "" },
+    {
+      skip: !selectedStudent?.encrypted_id,
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  // 🔹 Mutations
+  const [addDetail, { isLoading: adding }] = useAddPaymentDetailMutation();
+  const [editDetail, { isLoading: editing }] = useEditPaymentDetailMutation();
+  const [toggleStatus, { isLoading: toggling }] =
+    useTogglePaymentDetailStatusMutation();
+
+  // 🔹 Select student - এই function টি student select করবে
+  const selectStudent = (student) => {
+    dispatch(setSelectedStudent(student));
+  };
+
+  // 🔹 Clear selected student
+  const clearSelectedStudent = () => {
+    dispatch(setSelectedStudent(null));
+  };
+
+  // 🔹 Add payment detail
+  const addPaymentDetail = async (paymentId, detailData) => {
+    try {
+      const result = await addDetail({
+        encrypted_payment_id: paymentId,
+        detailData,
+      }).unwrap();
+
+      // Payment add করার পরে selected student এর data refresh করুন
+      if (selectedStudent) {
+        refetchStudentPayment();
+      }
+
+      return result;
+    } catch (err) {
+      console.error("Error adding payment detail:", err);
+      throw err;
+    }
+  };
+
+  // 🔹 Edit payment detail
+  const editPaymentDetail = async (paymentId, detailData) => {
+    try {
+      const result = await editDetail({
+        encrypted_payment_id: paymentId,
+        detailData,
+      }).unwrap();
+
+      // Payment edit করার পরে selected student এর data refresh করুন
+      if (selectedStudent) {
+        refetchStudentPayment();
+      }
+
+      return result;
+    } catch (err) {
+      console.error("Error editing payment detail:", err);
+      throw err;
+    }
+  };
+
+  // 🔹 Toggle detail status
+  const toggleDetailStatus = async (detailId) => {
+    try {
+      const result = await toggleStatus({
+        encrypted_payment_detail_id: detailId,
+      }).unwrap();
+
+      // Status toggle করার পরে selected student এর data refresh করুন
+      if (selectedStudent) {
+        refetchStudentPayment();
+      }
+
+      return result;
+    } catch (err) {
+      console.error("Error toggling status:", err);
+      throw err;
+    }
+  };
+
+  // 🔹 Course options
   const courseOptions = useMemo(() => {
     return (
       coursesData?.data?.courses?.map((course) => ({
-        value: course.id,
+        value: course.encrypted_id,
         label: course.title,
         encrypted_id: course.encrypted_id,
       })) || []
     );
-  }, [coursesData?.data?.courses]);
+  }, [coursesData]);
 
-  // Process batches data to match the expected format
+  // 🔹 Batch options
   const batchesOptions = useMemo(() => {
     if (!batchesData?.success || !batchesData?.data?.batches) return [];
-
     return batchesData.data.batches.map((batch) => ({
-      value: batch.id,
-      label: batch.title || batch.name || `Batch ${batch.id}`,
+      value: batch.encrypted_id,
+      label: batch.name || `Batch ${batch.id}`,
     }));
   }, [batchesData]);
 
-  // Update selected course encrypted ID
+  // 🔹 Update selected course encrypted ID
   const updateSelectedCourseEncryptedId = (encryptedId) => {
     dispatch(setSelectedCourseEncryptedId(encryptedId));
   };
 
-  // Apply filters
-  const applyPaymentFilters = (filters) => {
-    dispatch(applyFilters(filters));
-  };
+  // 🔹 Loading states management
+  useEffect(() => {
+    dispatch(
+      setLoading({
+        courses: loadingCourses,
+        batches: loadingBatches,
+      })
+    );
+  }, [loadingCourses, loadingBatches, dispatch]);
 
   return {
-    // Payment state
-    ...paymentState,
+    // Redux state
+    studentPayments,
+    selectedStudent, // selected student return করুন
+    filters,
+    selectedCourseEncryptedId,
+    loading,
 
-    // Data
+    // API Data
+    // allPayments,
+    // loadingAll,
+    // errorAll,
+    filteredPayments,
+    loadingFiltered,
+    errorFiltered,
+    singlePayment, // selected student এর payment data
+    loadingSingle,
+    errorSingle,
+
+    // Course & Batch options
     courseOptions,
     batchesOptions,
 
-    // Actions
-    updateSelectedCourseEncryptedId,
-
-    singlePayment,
-    loadingSingle,
+    // Mutations
     adding,
+    editing,
     toggling,
-    selectPayment,
     addPaymentDetail,
+    editPaymentDetail,
     toggleDetailStatus,
+
+    // Actions
+    selectStudent,
+    clearSelectedStudent, // নতুন function
+    updateSelectedCourseEncryptedId,
+    refetchStudentPayment, // refetch function
   };
 };

@@ -65,7 +65,7 @@ const Card = ({ data, btn, encryptedId }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xs max-sm:mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xs max-sm:mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6 relative pb-12">
       {/* Title Header */}
       {data.noticeBtn && (
         <div className="bg-headerColor text-white font-bold text-center py-2 xl:text-xl">
@@ -116,7 +116,7 @@ const Card = ({ data, btn, encryptedId }) => {
 
       {/* Action Buttons */}
       {btn?.btnStyle?.btnStatus && btn.btnName && (
-        <div className="p-4 w-full flex justify-between items-center">
+        <div className="p-4 w-full flex justify-between items-center absolute bottom-0">
           {btn.btnName.map((name, idx) => (
             <MainBtn
               key={idx}

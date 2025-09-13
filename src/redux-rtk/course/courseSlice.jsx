@@ -183,15 +183,14 @@ const courseSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // ✅ আগের fetchCoursesPage cases
       .addCase(fetchCoursesPage.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchCoursesPage.fulfilled, (state, action) => {
         const { page, courses, pagination } = action.payload;
-        // সেই page-এর courses state.pages[page] এ রাখবে
         state.pages[page] = courses;
-        // meta update
         state.meta = {
           totalItems: pagination.total,
           totalPages: pagination.last_page,
@@ -203,6 +202,26 @@ const courseSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchCoursesPage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // ✅ নতুন fetchCourseByIdThunk cases
+      .addCase(fetchCourseByIdThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.course = null; // নতুন load এর আগে reset
+      })
+      .addCase(fetchCourseByIdThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        // এখানে API response কেমন তার উপর নির্ভর করছে
+        // 👉 যদি response এর মধ্যে "data" থাকে:
+        state.course = action.payload.data;
+
+        // 👉 আর যদি সরাসরি course object ফেরত দেয়, তাহলে এইটা use করবে:
+        // state.course = action.payload;
+      })
+      .addCase(fetchCourseByIdThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

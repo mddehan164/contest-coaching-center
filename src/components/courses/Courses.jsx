@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
 import {
   fetchCoursesPage,
-  setEncryptedId,
+  // setEncryptedId,
 } from "../../redux-rtk/course/courseSlice";
-import { fetchEncryptId } from "../../services/course";
 import { useEffect } from "react";
 
 const CourseMain = () => {
@@ -21,24 +20,16 @@ const CourseMain = () => {
 
   // যখন currentCourses change হবে
   useEffect(() => {
-    const loadCoursesWithEncryptedIds = async () => {
+    const loadCourses = async () => {
       // যদি সেই page already loaded না হয়
       if (!pages[currentPage]) {
         await dispatch(
           fetchCoursesPage({ page: currentPage, pageSize })
         ).unwrap();
       }
-
-      const coursesToEncrypt = pages[currentPage] || [];
-      const ids = {};
-      for (const course of coursesToEncrypt) {
-        const encryptedId = await fetchEncryptId(course.id);
-        ids[course.id] = encryptedId || null;
-      }
-      dispatch(setEncryptedId(ids));
     };
 
-    loadCoursesWithEncryptedIds();
+    loadCourses();
   }, [currentPage, pageSize, dispatch, pages]);
 
   const someCourse = currentCourses.slice(0, 4);

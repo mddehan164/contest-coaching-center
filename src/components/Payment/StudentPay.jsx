@@ -1,80 +1,107 @@
 // components/StudentPay.jsx
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import FilterPerson from "../FilterPerson";
 import FilterBox from "../FilterBox";
 import { usePayment } from "../../hooks/usePayment";
-import { useDispatch } from "react-redux";
-import { studentPaymentsData } from "../../data/payments";
+import { useDispatch, useSelector } from "react-redux";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
+// import StudentPaymentDetails from "./StudentPaymentDetails"; //假设您有这个组件
 
 import {
   setShowPopup,
   setShowStickyBtn,
-  setDraftCourse,
-  setDraftBatch,
-  setDraftQuery,
+  setFilters,
+  clearFilters,
 } from "../../redux-rtk/payment/paymentSlice";
+import {
+  // useGetAllStudentsPaymentQuery,
+  useGetStudentPaymentsByCourseBatchQuery,
+} from "../../redux-rtk/payment/paymentApi";
 
 const StudentPay = () => {
   const dispatch = useDispatch();
   const {
-    // State from Redux
-    showPopup,
-    showStickyBtn,
-    courseId,
-    batchId,
-    search,
-    draftCourse,
-    draftBatch,
-    draftQuery,
+    filters,
     selectedCourseEncryptedId,
-
-    // Data
     courseOptions,
     batchesOptions,
-
-    // Actions
     updateSelectedCourseEncryptedId,
-    selectPayment,
-    addPaymentDetail,
-    toggleDetailStatus,
+    selectStudent,
+    selectedStudent, // selected student পাবেন এখানে
+    clearSelectedStudent, // selected student clear করার function
   } = usePayment();
 
-  // Prepare courseBatchData for FilterBox
+  const { showPopup, showStickyBtn } = useSelector((state) => state.payment);
+
+  useEffect(() => {
+    dispatch(setShowPopup(true));
+    dispatch(setShowStickyBtn(false));
+  }, [dispatch]);
+
+  // ✅ API call students (filter অনুযায়ী)
+  const { data: filteredStudents, isLoading: loadingFilteredStudents } =
+    useGetStudentPaymentsByCourseBatchQuery(
+      {
+        encrypted_course_id: filters.course || "",
+        encrypted_batch_id: filters.batch || "",
+      },
+      { skip: !filters.course || !filters.batch }
+    );
+
+  // const { data: allStudents, isLoading: loadingAllStudents } =
+  //   useGetAllStudentsPaymentQuery(
+  //     { search: filters.search || "" },
+  //     { skip: (filters.course || filters.batch) && !filters.search }
+  //   );
+
+  // student list নির্ধারণ
+  const studentList = useMemo(() => {
+    if (filters.course && filters.batch) {
+      return filteredStudents?.data?.students || [];
+    }
+    return [];
+  }, [filters, filteredStudents]);
+
+  // courseBatchData prepare
   const courseBatchData = useMemo(() => {
-    return courseOptions.map((course) => ({
-      id: course.value,
-      title: course.label,
-      encrypted_id: course.encrypted_id,
-      batches:
-        course.encrypted_id === selectedCourseEncryptedId ? batchesOptions : [], // শুধু select করা course-এর batch দেখাবে
+    return (courseOptions || []).map((course) => ({
+      id: course.value || "",
+      title: course.label || "",
+      encrypted_id: course.encrypted_id || "",
+      batches: (course.value === filters.course ? batchesOptions : []) || [],
     }));
-  }, [courseOptions, batchesOptions, selectedCourseEncryptedId]);
+  }, [courseOptions, batchesOptions, filters.course]);
 
-  // Handle course selection change in popup
-  const handleDraftCourseChange = (courseId) => {
-    dispatch(setDraftCourse(courseId));
-
-    // Find the selected course
-    const selectedCourse = courseOptions.find(
-      (course) => course.value === courseId
+  // popup এ course change
+  const handleCourseChange = (courseId) => {
+    const selectedCourse = (courseOptions || []).find(
+      (c) => c.value === courseId
     );
     if (selectedCourse) {
-      // Set the encrypted_id so batches load for this course
-      updateSelectedCourseEncryptedId(selectedCourse.encrypted_id);
+      updateSelectedCourseEncryptedId(selectedCourse.encrypted_id || "");
     }
-
-    // Reset batch
-    dispatch(setDraftBatch(null));
+    dispatch(setFilters({ course: courseId || null, batch: null }));
   };
 
-  // if (studentsLoading) {
-  //   return (
-  //     <div className="relative pt-20 flex justify-center items-center h-64">
-  //       <CustomSpinner />
-  //     </div>
-  //   );
-  // }
+  // Student select করলে
+  const handleSelectStudent = (student) => {
+    selectStudent(student);
+  };
+
+  // Student details close করলে
+  const handleCloseDetails = () => {
+    clearSelectedStudent();
+  };
+
+  const isLoading = loadingFilteredStudents;
+
+  if (isLoading) {
+    return (
+      <div className="relative pt-20 flex justify-center items-center h-64">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="relative pt-20">
@@ -82,21 +109,6 @@ const StudentPay = () => {
       {showStickyBtn && (
         <button
           onClick={() => {
-            // Prefill drafts from current filters
-            dispatch(setDraftCourse(courseId));
-
-            // Find encrypted_id for the selected course
-            if (courseId) {
-              const selectedCourse = courseOptions.find(
-                (course) => course.value === courseId
-              );
-              if (selectedCourse) {
-                updateSelectedCourseEncryptedId(selectedCourse.encrypted_id);
-              }
-            }
-
-            dispatch(setDraftBatch(batchId));
-            dispatch(setDraftQuery(search));
             dispatch(setShowPopup(true));
             dispatch(setShowStickyBtn(false));
           }}
@@ -110,59 +122,59 @@ const StudentPay = () => {
       {showPopup && (
         <FilterBox
           courseBatchData={courseBatchData}
-          selectedCourse={draftCourse}
-          setSelectedCourse={handleDraftCourseChange}
-          selectedBatch={draftBatch}
-          setSelectedBatch={(batchId) => dispatch(setDraftBatch(batchId))}
-          query={draftQuery}
-          setQuery={(query) => dispatch(setDraftQuery(query))}
+          selectedCourse={filters.course || ""}
+          setSelectedCourse={handleCourseChange}
+          selectedBatch={filters.batch || ""}
+          setSelectedBatch={(batchId) =>
+            dispatch(setFilters({ batch: batchId || null }))
+          }
+          query={filters.search || ""}
+          setQuery={(query) => dispatch(setFilters({ search: query || "" }))}
           onApply={() => {
-            // Apply filters to Redux store
-            applyPaymentFilters({
-              courseId: draftCourse,
-              batchId: draftBatch,
-              search: draftQuery,
-            });
-
             dispatch(setShowPopup(false));
             dispatch(setShowStickyBtn(true));
           }}
           onClose={() => {
-            // যদি কোনো student না থাকে তাহলে cross কাজ করবে না
-            if (studentList.length === 0) return;
-
-            // Close → RESET draft to current filters
-            dispatch(setDraftCourse(courseId));
-            dispatch(setDraftBatch(batchId));
-            dispatch(setDraftQuery(search));
             dispatch(setShowPopup(false));
             dispatch(setShowStickyBtn(true));
           }}
         />
       )}
 
+      {/* Selected Student Details Display */}
+      {/* {selectedStudent && (
+        <StudentPaymentDetails
+          student={selectedStudent}
+          onClose={handleCloseDetails}
+        />
+      )} */}
+
       {/* Display filter info */}
-      {(courseId || batchId || search) && (
+      {(filters.course || filters.batch || filters.search) && (
         <div className="bg-gray-100 p-3 mb-4 rounded-md mx-4">
           <h3 className="font-semibold">Active Filters:</h3>
           <div className="flex flex-wrap gap-2 mt-2">
-            {courseId && (
+            {filters.course && (
               <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                Course: {courseOptions.find((c) => c.value === courseId)?.label}
+                Course:{" "}
+                {(courseOptions || []).find((c) => c.value === filters.course)
+                  ?.label || "Unknown"}
               </span>
             )}
-            {batchId && (
+            {filters.batch && (
               <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
-                Batch: {batchesOptions.find((b) => b.value === batchId)?.label}
+                Batch:{" "}
+                {(batchesOptions || []).find((b) => b.value === filters.batch)
+                  ?.label || "Unknown"}
               </span>
             )}
-            {search && (
+            {filters.search && (
               <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">
-                Search: "{search}"
+                Search: "{filters.search}"
               </span>
             )}
             <button
-              onClick={() => dispatch(resetFilters())}
+              onClick={() => dispatch(clearFilters())}
               className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm hover:bg-red-200"
             >
               Clear All
@@ -174,33 +186,37 @@ const StudentPay = () => {
       {/* Student Section */}
       <div className="px-4 mb-4">
         <h2 className="text-xl font-bold">Students</h2>
+        <p className="text-sm text-gray-600">
+          {studentList.length} students found
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-3 justify-center">
-        {/* Case 1: কিছুই select করা হয়নি */}
-        {!courseId && !batchId && !search && (
+        {/* Case 1: কোনো filter select হয়নি */}
+        {!filters.course && !filters.batch && !filters.search && (
           <div className="text-center py-10 w-full">
             <p className="text-gray-600 font-medium text-lg xl:text-3xl">
-              Please select a course & batch to see students
+              Please select a course & batch or search to see students
             </p>
           </div>
         )}
 
-        {/* Case 2: Filter select করা আছে, কিন্তু কোনো student নেই */}
-        {(courseId || batchId || search) && studentList.length === 0 && (
-          <div className="text-center py-10 w-full">
-            <p className="text-gray-500">No students match your filters</p>
-          </div>
-        )}
+        {/* Case 2: filter select আছে, কিন্তু কোনো student নেই */}
+        {(filters.course || filters.batch || filters.search) &&
+          studentList.length === 0 && (
+            <div className="text-center py-10 w-full">
+              <p className="text-gray-500">No students match your filters</p>
+            </div>
+          )}
 
-        {/* Case 3: Student আছে */}
-        {/* {studentList.length > 0 && (
+        {/* Case 3: student list আছে */}
+        {studentList.length > 0 && (
           <FilterPerson
             dataList={studentList}
             person="student"
-            paymentData={studentPaymentsData}
+            onSelectStudent={handleSelectStudent}
           />
-        )} */}
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,8 @@
 import { useParams } from "react-router-dom";
-import { courseData } from "../../data/courseData";
-import MainBtn from "../MainBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchCourseByIdThunk } from "../../redux-rtk/course/courseSlice";
-import { fetchEncryptId } from "../../services/course";
+import CustomSpinner from "../../shared/custom/CustomSpinner";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -12,21 +10,19 @@ const CourseDetails = () => {
   const dispatch = useDispatch();
   const { course, loading, error } = useSelector((state) => state.course);
 
-  // const getEncryptId = async (id) => {
-  //   try {
-  //     const encryptedId = await fetchEncryptId(id);
-  //     return encryptedId;
-  //   } catch (error) {
-  //     console.error("Error in fetchCourseWithEncryptedId:", error);
-  //     throw error;
-  //   }
-  // };
   console.log(id);
   useEffect(() => {
-    dispatch(fetchCourseByIdThunk(id));
+    if (id) dispatch(fetchCourseByIdThunk(id));
   }, [dispatch, id]);
+  console.log(course);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        {" "}
+        <CustomSpinner />{" "}
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   if (!course)
@@ -52,20 +48,18 @@ const CourseDetails = () => {
         <div className="md:col-span-2">
           <img
             src={course.image}
-            alt={course.unit}
+            alt={course.title}
             className="w-full h-auto object-cover rounded-lg shadow-md"
           />
         </div>
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-headerColorHover md:text-3xl">
-            {course.unit}
+            {course.title}
           </h2>
           <ul
-            className={`${
-              bulletStyles[course.bulletType || "circle"]
-            } list-inside text-sm text-gray-700 space-y-1 md:text-lg`}
+            className={`list-disc list-inside text-sm text-gray-700 space-y-1 md:text-lg`}
           >
-            <li>{course}</li>
+            <li>{course.short_des}</li>
           </ul>
         </div>
       </div>
@@ -73,20 +67,20 @@ const CourseDetails = () => {
       {/* Long Description */}
       <div>
         <p className="leading-relaxed text-sm md:text-lg text-gray-500 ">
-          {course.des}
+          {course.long_des}
         </p>
       </div>
 
       {/* Pricing Section */}
       <div className="flex justify-between items-center flex-wrap gap-4 border-t pt-4">
         <div>
-          {course.offer ? (
+          {course.offer_price ? (
             <p className="text-sm sm:text-lg">
               <span className="line-through text-red-500 mr-2">
                 ৳{course.price}
               </span>
               <span className="text-green-600 font-bold">
-                Offer: ৳{course.offerPrice}
+                Offer: ৳{course.offer_price}
               </span>
             </p>
           ) : (
@@ -94,13 +88,6 @@ const CourseDetails = () => {
               ৳{course.price}
             </p>
           )}
-        </div>
-
-        <div className="flex gap-4">
-          <MainBtn
-            data={course.btnData.btnName[0]}
-            btnStyle={course.btnData.btnStyle}
-          />
         </div>
       </div>
     </div>

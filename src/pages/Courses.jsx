@@ -10,9 +10,7 @@ import { setCurrentPage } from "../redux-rtk/course/courseSlice";
 const Courses = () => {
   const dispatch = useDispatch();
 
-  const { pages, meta, loading, error, encryptedId } = useSelector(
-    (state) => state.course
-  );
+  const { pages, meta, loading, error } = useSelector((state) => state.course);
 
   const { currentPage, totalPages, hasNextPage, hasPreviousPage } = meta;
 
@@ -97,7 +95,7 @@ const Courses = () => {
                 <Card
                   key={course.id || idx}
                   data={course}
-                  encryptedId={encryptedId[course.id] || null}
+                  encryptedId={course.encrypted_id || null}
                   btn={{
                     btnName: ["Enroll Now", "Details"],
                     btnStyle: {
