@@ -8,5 +8,5 @@ export { default as Notice } from "./Notice";
 export { default as Settings } from "./Settings";
 export { default as Help } from "./Help";
 export { default as Logout } from "./Logout";
-export { default as DCourse } from "./DCourse";
+// export { default as DCourse } from "./DCourse";
 export { default as Payments } from "./Payments";

@@ -14,7 +14,7 @@ import {
   TeacherPay,
 } from "../components";
 import {
-  DCourse,
+  // DCourse,
   DSlider,
   Help,
   Logout,
@@ -68,7 +68,7 @@ export let dashboardPageRoutes = [
   // { element: <DSlider />, path: "slider" },
   { element: <Notice />, path: "notice" },
   { element: <Review />, path: "review" },
-  { element: <DCourse />, path: "course-editor" },
+  // { element: <DCourse />, path: "course-editor" },
   { element: <SuccessEditor />, path: "success-editor" },
   { element: <StatsEditor />, path: "stats-editor" },
   { element: <ServiceEditor />, path: "service-editor" },

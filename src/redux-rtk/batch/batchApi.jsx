@@ -58,17 +58,6 @@ export const batchApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Batches"],
     }),
 
-    // DELETE A BATCH
-    deleteBatch: builder.mutation({
-      query: ({ batchId }) => {
-        return {
-          url: `admin/batches/${batchId}`,
-          method: "DELETE",
-        };
-      },
-      invalidatesTags: ["Batches"],
-    }),
-
     // View by id
     getBatchById: builder.query({
       query: (batchId) => ({

@@ -8,7 +8,7 @@ import MainBtn from "./MainBtn";
  * @param {Object} props.btn - Button configuration
  * @returns {JSX.Element} Rendered card component
  */
-const Card = ({ data, btn }) => {
+const Card = ({ data, btn, encryptedId }) => {
   const navigate = useNavigate();
 
   /**
@@ -17,7 +17,7 @@ const Card = ({ data, btn }) => {
    */
   const handleButtonClick = (buttonName) => {
     if (buttonName === "Details") {
-      navigate(`/courses/${data.id}`);
+      navigate(`/courses/${encryptedId}`);
     }
   };
 
@@ -37,16 +37,20 @@ const Card = ({ data, btn }) => {
    * @returns {JSX.Element|string} Formatted price display
    */
   const renderPrice = () => {
-    if (data.offer) {
+    if (data?.offer_price) {
       return (
         <p className="text-xs mt-4">
-          <span className="line-through text-red-600 mr-1 sm:text-lg">
-            {data.price && "৳"}
-            {data.price}
+          <span
+            className={`line-through text-red-600 mr-1 sm:text-lg ${
+              data.offer_price === "0.00" ? "hidden" : ""
+            }`}
+          >
+            {data.offer_price && "৳"}
+            {data.offer_price}
           </span>
           <span className="text-headerColorHover font-semibold sm:text-lg">
-            {data.offerPrice && "৳"}
-            {data.offerPrice}
+            {data.price && "৳"}
+            {data.price}
           </span>
         </p>
       );
@@ -93,7 +97,7 @@ const Card = ({ data, btn }) => {
             bulletStyles[data.bulletType || "circle"]
           } list-inside text-sm text-gray-700 space-y-1`}
         >
-          {(data.short_des || []).map((item, index) => (
+          {/* {(data.short_des || []).map((item, index) => (
             <li
               key={index}
               className={
@@ -102,7 +106,8 @@ const Card = ({ data, btn }) => {
             >
               {item}
             </li>
-          ))}
+          ))} */}
+          <li>{data.short_des}</li>
         </ul>
 
         {/* Price Section */}

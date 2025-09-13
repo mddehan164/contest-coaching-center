@@ -29,50 +29,53 @@ const fetchCourses = async () => {
   }
 };
 
+const fetchEncryptId = async (id) => {
+  try {
+    const payload = { id, value: id }; // বা backend কে যা দরকার
+    const response = await api.post("/utils/encrypt-id", payload);
+    // check response status
+    if (response.status === 200 && response.data.encrypted_id) {
+      return response.data.encrypted_id;
+    } else {
+      return null;
+      // throw new Error("Failed to encrypt ID");
+    }
+  } catch (error) {
+    console.error("Error in fetchEncryptId:", error);
+    // যদি want, একটা user-readable message দিতে পারো
+    throw error;
+  }
+};
 // কোর্স ডিটেইলস
 const fetchCourseById = async (id) => {
   try {
     const response = await api.get(`/courses/${id}`);
-    return response.data;
+    console.log(response);
+    if (response.status === 200 && response.data.encrypted_id) {
+      return response.data;
+    } else {
+      throw new Error("Failed to Fetch Course");
+    }
   } catch (error) {
     console.error("Error fetching course by ID:", error);
     throw error;
   }
 };
 
-// নতুন কোর্স অ্যাড
-const addCourse = async (course) => {
-  try {
-    const response = await api.post("/courses", course);
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    console.error("Error adding course:", error);
-    throw error;
-  }
-};
-
-// কোর্স আপডেট
-const updateCourse = async (id, course) => {
-  try {
-    const response = await api.put(`/courses/${id}`, course);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating course:", error);
-    throw error;
-  }
-};
-
-// কোর্স ডিলিট
-const deleteCourse = async (id) => {
-  try {
-    const response = await api.delete(`/courses/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting course:", error);
-    throw error;
-  }
-};
+// const fetchCourseWithEncryptedId = async (id) => {
+//   try {
+//     const encryptResp = await fetchEncryptId(id);
+//     const encryptedId = encryptResp.data.encrypted_id; // পরিবর্তন হলে field name মিলিয়ে বদলে দিবে
+//     const courseResp = await fetchCourseById(encryptedId);
+//     return {
+//       encrypt: encryptResp,
+//       course: courseResp,
+//     };
+//   } catch (error) {
+//     console.error("Error in fetchCourseWithEncryptedId:", error);
+//     throw error;
+//   }
+// };
 
 // Export all functions
-export { fetchCourses, fetchCourseById, addCourse, updateCourse, deleteCourse };
+export { fetchCourses, fetchEncryptId, fetchCourseById };

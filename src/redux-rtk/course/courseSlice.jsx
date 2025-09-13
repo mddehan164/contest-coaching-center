@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   appendNewDataToPaginatedList,
   viewDataFromPaginatedList,
@@ -6,15 +6,44 @@ import {
   updateDataInDataList,
   updateDataInPaginatedPages,
 } from "../utils/reduxHelper";
+import {
+  fetchCourses as fetchCoursesApi,
+  fetchCourseById,
+} from "../../services/course";
+
+// Async thunk: fetch one page
+export const fetchCoursesPage = createAsyncThunk(
+  "courses/fetchCoursesPage",
+  async ({ page = 1, pageSize = 10 }) => {
+    const res = await fetchCoursesApi(page, pageSize);
+    // ধরে নিচ্ছি API returns response.data.courses এবং pagination
+    return {
+      courses: res.data.courses,
+      pagination: res.data.pagination,
+      page,
+    };
+  }
+);
+export const fetchCourseByIdThunk = createAsyncThunk(
+  "course/fetchCourseById",
+  async (id) => {
+    const response = await fetchCourseById(id);
+    return response;
+  }
+);
 
 const initialState = {
   dataList: [],
   data: {},
   selectedData: null,
-
+  allCoursesLoaded: false,
+  course: null,
+  loading: false,
+  error: null,
   isAddModalOpen: false,
   isEditModalOpen: false,
   isConfirmModalOpen: false,
+  pages: {}, // page number গুলো key, value হবে array of course objects
 
   meta: {
     totalItems: 0,
@@ -33,6 +62,9 @@ const courseSlice = createSlice({
     setCourseDataList: (state, action) => {
       // directly assign plain list
       state.dataList = action.payload.data;
+    },
+    setCurrentPage: (state, action) => {
+      state.meta.currentPage = action.payload;
     },
 
     setCourseData: (state, action) => {
@@ -145,6 +177,32 @@ const courseSlice = createSlice({
       });
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCoursesPage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCoursesPage.fulfilled, (state, action) => {
+        const { page, courses, pagination } = action.payload;
+        // সেই page-এর courses state.pages[page] এ রাখবে
+        state.pages[page] = courses;
+        // meta update
+        state.meta = {
+          totalItems: pagination.total,
+          totalPages: pagination.last_page,
+          currentPage: pagination.current_page,
+          pageSize: pagination.per_page,
+          hasNextPage: pagination.current_page < pagination.last_page,
+          hasPreviousPage: pagination.current_page > 1,
+        };
+        state.loading = false;
+      })
+      .addCase(fetchCoursesPage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
 });
 
 export const {
@@ -159,6 +217,7 @@ export const {
   setAddCourseModal,
   setEditCourseModal,
   updateCourseStatus,
+  setCurrentPage,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
