@@ -36,6 +36,7 @@ const initialState = {
   dataList: [],
   data: {},
   selectedData: null,
+  encryptedId: {},
   allCoursesLoaded: false,
   course: null,
   loading: false,
@@ -65,6 +66,9 @@ const courseSlice = createSlice({
     },
     setCurrentPage: (state, action) => {
       state.meta.currentPage = action.payload;
+    },
+    setEncryptedId: (state, action) => {
+      state.encryptedId = action.payload;
     },
 
     setCourseData: (state, action) => {
@@ -218,6 +222,7 @@ export const {
   setEditCourseModal,
   updateCourseStatus,
   setCurrentPage,
+  setEncryptedId,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

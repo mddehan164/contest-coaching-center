@@ -1,26 +1,59 @@
 import Card from "../Card";
 import MainBtn from "../MainBtn";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
+import {
+  fetchCoursesPage,
+  setEncryptedId,
+} from "../../redux-rtk/course/courseSlice";
+import { fetchEncryptId } from "../../services/course";
+import { useEffect } from "react";
 
 const CourseMain = () => {
+  const dispatch = useDispatch();
+
   const { pages, meta, loading, error } = useSelector((state) => state.course);
 
-  const { currentPage } = meta;
+  const { currentPage, pageSize } = meta;
 
   const currentCourses = pages[currentPage] || [];
+
+  // যখন currentCourses change হবে
+  useEffect(() => {
+    const loadCoursesWithEncryptedIds = async () => {
+      // যদি সেই page already loaded না হয়
+      if (!pages[currentPage]) {
+        await dispatch(
+          fetchCoursesPage({ page: currentPage, pageSize })
+        ).unwrap();
+      }
+
+      const coursesToEncrypt = pages[currentPage] || [];
+      const ids = {};
+      for (const course of coursesToEncrypt) {
+        const encryptedId = await fetchEncryptId(course.id);
+        ids[course.id] = encryptedId || null;
+      }
+      dispatch(setEncryptedId(ids));
+    };
+
+    loadCoursesWithEncryptedIds();
+  }, [currentPage, pageSize, dispatch, pages]);
+
   const someCourse = currentCourses.slice(0, 4);
+
   return (
     <div className="w-full max-sm:p-3 sm:pt-10 relative min-h-[400px]">
       <h1 className="text-center max-sm:text-lg font-semibold text-headerColorHover sm:py-8 sm:text-2xl xl:text-3xl">
         আমাদের চলমান কোর্সসমূহ
       </h1>
-      {loading && (
-        <div className="flex justify-center items-center py-10">
-          <CustomSpinner />
-        </div>
-      )}
+      {!someCourse ||
+        (loading && (
+          <div className="flex justify-center items-center py-10">
+            <CustomSpinner />
+          </div>
+        ))}
       {error && (
         <div className="flex justify-center items-center py-10">
           <CustomSpinner />
