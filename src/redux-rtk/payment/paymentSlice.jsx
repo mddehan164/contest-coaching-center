@@ -4,6 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   studentPayments: [],
   selectedStudent: null,
+  selectedStudentData: {},
+  showDetailsModal: false,
   filters: {
     course: null,
     batch: null,
@@ -49,6 +51,12 @@ const paymentSlice = createSlice({
         state.filters.search = action.payload.search;
       }
     },
+    setSelectedStudentData: (state, action) => {
+      state.selectedStudentData = action.payload;
+    },
+    setShowDetailsModal: (state, action) => {
+      state.showDetailsModal = action.payload;
+    },
     clearFilters: (state) => {
       state.filters = { course: null, batch: null, search: "" };
       state.selectedCourseEncryptedId = null;
@@ -79,6 +87,8 @@ export const {
   clearFilters,
   setSelectedCourseEncryptedId,
   setLoading,
+  setSelectedStudentData,
+  setShowDetailsModal,
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

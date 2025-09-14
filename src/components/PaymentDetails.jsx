@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const PaymentDetails = ({ details, onClose, onOpenAdd, newData, type }) => {
-  if (!details || details.length === 0) return null;
-  const [paymentDetails, setPaymentDetails] = useState(details || []);
+const PaymentDetails = ({ student, onClose, onOpenAdd, newData, type }) => {
+  if (!student) return null;
+  const [paymentDetails, setPaymentDetails] = useState(student || {});
 
   useEffect(() => {
     if (newData) {
@@ -11,7 +11,7 @@ const PaymentDetails = ({ details, onClose, onOpenAdd, newData, type }) => {
     }
   }, [newData]);
 
-  if (!paymentDetails || paymentDetails.length === 0) return null;
+  if (!paymentDetails) return null;
   return (
     // Backdrop (fade bg)
     <div
@@ -24,7 +24,7 @@ const PaymentDetails = ({ details, onClose, onOpenAdd, newData, type }) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between students-center mb-4">
           <h2 className="text-xl md:text-2xl font-bold text-headerColorHover">
             Payment Details
           </h2>
@@ -48,47 +48,46 @@ const PaymentDetails = ({ details, onClose, onOpenAdd, newData, type }) => {
                   {type === "student" ? "Course Fee" : "Subject"}
                 </th>
                 <th className="px-4 py-2 border">
-                  {type === "student" ? "Payable Amount" : "Class Fee"}
+                  {type === "student" ? "Paid" : "Class Fee"}
                 </th>
-                <th className="px-4 py-2 border">Payment Date</th>
+                <th className="px-4 py-2 border">Due</th>
                 <th className="px-4 py-2 border">Status</th>
               </tr>
             </thead>
             <tbody>
-              {paymentDetails.map((item, idx) => (
-                <tr key={idx} className="hover:bg-contestLight text-center">
-                  <td className="px-4 py-2 border">
-                    {item?.name || "Not Found"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {item?.course_title || "Not Found"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {item?.batch_title || "Not Found"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {type === "student"
-                      ? "৳ " + item?.course_fee
-                      : item?.subject || "Not Found"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {" "}
-                    {type === "student"
-                      ? "৳ " + item?.payable_amount
-                      : item?.class_fee || "Not Found"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {item.payment_date || "N/A"}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {item.status === 1 ? (
-                      <span className="text-green-600 font-medium">Paid</span>
-                    ) : (
-                      <span className="text-red-600 font-medium">Due</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              <tr className="hover:bg-contestLight text-center">
+                <td className="px-4 py-2 border">
+                  {student?.name || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {student?.course_info.name || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {student?.batch_info.name || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {type === "student"
+                    ? "৳ " + student?.payment_summary.total_amount
+                    : student?.subject || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {type === "student"
+                    ? "৳ " + student?.payment_summary.total_paid
+                    : student?.class_fee || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {type === "student"
+                    ? "৳ " + student?.payment_summary.due_amount
+                    : student?.class_fee || "Not Found"}
+                </td>
+                <td className="px-4 py-2 border">
+                  {student.status === 1 ? (
+                    <span className="text-green-600 font-medium">Paid</span>
+                  ) : (
+                    <span className="text-red-600 font-medium">Unpaid</span>
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
 

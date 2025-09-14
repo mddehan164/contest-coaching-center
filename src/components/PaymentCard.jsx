@@ -1,16 +1,21 @@
+import { useDispatch } from "react-redux";
 import img from "../assets/images/gallery/photo(1).jpg";
+import {
+  setSelectedStudentData,
+  setShowDetailsModal,
+} from "../redux-rtk/payment/paymentSlice";
 
 const PaymentCard = ({
   status = 1,
   type = "student",
   data,
-  payments,
-  onShowDetails,
+  onStudentClick,
 }) => {
+  const dispatch = useDispatch();
   const handleDetails = () => {
-    // filter kore oi student er details ber korbo
-    const details = payments.filter((p) => p.id === data.id);
-    onShowDetails(details); // parent ke details pathai dibo
+    dispatch(setSelectedStudentData(data));
+    dispatch(setShowDetailsModal(true));
+    onStudentClick(data); // parent ke details pathai dibo
   };
   // console.log(typeof data);
   return (

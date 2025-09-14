@@ -9,6 +9,7 @@ import {
   setSelectedCourseEncryptedId,
   setSelectedStudent,
   setLoading,
+  setShowDetailsModal,
 } from "../redux-rtk/payment/paymentSlice";
 import {
   useGetStudentPaymentsByCourseBatchQuery,
@@ -91,6 +92,10 @@ export const usePayment = () => {
   // 🔹 Clear selected student
   const clearSelectedStudent = () => {
     dispatch(setSelectedStudent(null));
+  };
+
+  const closeDetailsModal = () => {
+    dispatch(setShowDetailsModal(false));
   };
 
   // 🔹 Add payment detail
@@ -184,16 +189,6 @@ export const usePayment = () => {
     );
   }, [loadingCourses, loadingBatches, dispatch]);
 
-  // 🔹 Debug logs
-  // useEffect(() => {
-  //   console.log(
-  //     "🔍 Debug - selectedCourseEncryptedId:",
-  //     selectedCourseEncryptedId
-  //   );
-  //   console.log("🔍 Debug - filters:", filters);
-  //   console.log("🔍 Debug - batchesData:", batchesData);
-  // }, [selectedCourseEncryptedId, filters, batchesData]);
-
   return {
     // Redux state
     studentPayments,
@@ -227,5 +222,6 @@ export const usePayment = () => {
     clearSelectedStudent,
     updateSelectedCourseEncryptedId,
     refetchStudentPayment,
+    closeDetailsModal,
   };
 };

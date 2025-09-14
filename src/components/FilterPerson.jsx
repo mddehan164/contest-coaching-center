@@ -3,10 +3,15 @@ import PaymentDetails from "./PaymentDetails";
 import PaymentAdd from "./PaymentAdd";
 import { ErrorUi } from "../shared/ui";
 import { usePayment } from "../hooks/usePayment";
+import { useState } from "react";
+// import { selectedStudentData } from "../redux-rtk/payment/paymentSlice";
+import { useSelector } from "react-redux";
 
-const FilterPerson = ({ dataList = [], person }) => {
+const FilterPerson = ({ dataList = [], person = "Student" }) => {
+  const { selectedStudentData, showDetailsModal } = useSelector(
+    (state) => state.payment
+  );
   const {
-    showDetailsModal,
     showAddModal,
     selectedStudent,
     singlePayment,
@@ -81,8 +86,9 @@ const FilterPerson = ({ dataList = [], person }) => {
   };
 
   // Debug console - শুধু click এর সময় console হবে
-  const handleStudentClick = (student) => {
-    console.log("🔍 FilterPerson - Student clicked:", student);
+  const handleStudentSelect = (student) => {
+    console.log("from redux", selectedStudentData);
+    console.log(showDetailsModal);
   };
 
   return (
@@ -93,7 +99,7 @@ const FilterPerson = ({ dataList = [], person }) => {
             key={data.encrypted_id || data.id || idx}
             data={data}
             type={person}
-            onStudentClick={handleStudentClick} // Console এর জন্য callback pass করুন
+            onStudentClick={handleStudentSelect} // Console এর জন্য callback pass করুন
           />
         ))
       ) : (
@@ -101,9 +107,9 @@ const FilterPerson = ({ dataList = [], person }) => {
       )}
 
       {/* Payment Details Modal - এই condition টা ঠিক করেছি */}
-      {showDetailsModal && selectedStudent && (
+      {showDetailsModal && (
         <PaymentDetails
-          student={selectedStudent}
+          student={selectedStudentData}
           paymentData={singlePayment?.data}
           loading={loadingSingle}
           type={person}
@@ -122,25 +128,6 @@ const FilterPerson = ({ dataList = [], person }) => {
           onClose={handleCloseAdd}
           onAddPayment={handleAddPayment}
         />
-      )}
-
-      {/* Debug Info - Development এ দেখার জন্য */}
-      {process.env.NODE_ENV === "development" && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 10,
-            right: 10,
-            background: "rgba(0,0,0,0.7)",
-            color: "white",
-            padding: "10px",
-            fontSize: "12px",
-          }}
-        >
-          <div>showDetailsModal: {showDetailsModal ? "true" : "false"}</div>
-          <div>selectedStudent: {selectedStudent?.name || "null"}</div>
-          <div>singlePayment: {singlePayment ? "loaded" : "null"}</div>
-        </div>
       )}
     </div>
   );
