@@ -6,6 +6,7 @@ const initialState = {
   selectedStudent: null,
   selectedStudentData: {},
   showDetailsModal: false,
+  isOpenAddModal: false,
   filters: {
     course: null,
     batch: null,
@@ -57,6 +58,9 @@ const paymentSlice = createSlice({
     setShowDetailsModal: (state, action) => {
       state.showDetailsModal = action.payload;
     },
+    setIsOpenAddModal: (state, action) => {
+      state.isOpenAddModal = action.payload;
+    },
     clearFilters: (state) => {
       state.filters = { course: null, batch: null, search: "" };
       state.selectedCourseEncryptedId = null;
@@ -89,6 +93,7 @@ export const {
   setLoading,
   setSelectedStudentData,
   setShowDetailsModal,
+  setIsOpenAddModal,
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

@@ -8,17 +8,15 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const FilterPerson = ({ dataList = [], person = "Student" }) => {
-  const { selectedStudentData, showDetailsModal } = useSelector(
+  const { selectedStudentData, showDetailsModal, isOpenAddModal } = useSelector(
     (state) => state.payment
   );
   const {
-    showAddModal,
     selectedStudent,
     singlePayment,
     loadingSingle,
     clearSelectedStudent,
     closeDetailsModal,
-    openAddModal,
     closeAddModal,
     addPaymentDetail,
     editPaymentDetail,
@@ -26,13 +24,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
   } = usePayment();
 
   const handleCloseDetails = () => {
-    console.log("🔍 FilterPerson - Closing details modal");
     closeDetailsModal();
-  };
-
-  const handleOpenAdd = () => {
-    console.log("🔍 FilterPerson - Opening add modal");
-    openAddModal();
   };
 
   const handleCloseAdd = () => {
@@ -85,12 +77,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     }
   };
 
-  // Debug console - শুধু click এর সময় console হবে
-  const handleStudentSelect = (student) => {
-    console.log("from redux", selectedStudentData);
-    console.log(showDetailsModal);
-  };
-
   return (
     <div className="flex flex-wrap gap-5">
       {dataList.length > 0 ? (
@@ -98,8 +84,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
           <PaymentCard
             key={data.encrypted_id || data.id || idx}
             data={data}
-            type={person}
-            onStudentClick={handleStudentSelect} // Console এর জন্য callback pass করুন
+            type={person} // Console এর জন্য callback pass করুন
           />
         ))
       ) : (
@@ -107,23 +92,22 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       )}
 
       {/* Payment Details Modal - এই condition টা ঠিক করেছি */}
-      {showDetailsModal && (
+      {showDetailsModal && selectedStudentData && (
         <PaymentDetails
           student={selectedStudentData}
           paymentData={singlePayment?.data}
           loading={loadingSingle}
           type={person}
           onClose={handleCloseDetails}
-          onOpenAdd={handleOpenAdd}
           onEditPayment={handleEditPayment}
           onToggleStatus={handleToggleStatus}
         />
       )}
 
       {/* Add Payment Modal */}
-      {showAddModal && selectedStudent && (
+      {isOpenAddModal && (
         <PaymentAdd
-          student={selectedStudent}
+          details={selectedStudentData.payment_summary}
           type={person}
           onClose={handleCloseAdd}
           onAddPayment={handleAddPayment}

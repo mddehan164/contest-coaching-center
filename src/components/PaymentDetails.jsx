@@ -1,9 +1,17 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setIsOpenAddModal } from "../redux-rtk/payment/paymentSlice";
 
-const PaymentDetails = ({ student, onClose, onOpenAdd, newData, type }) => {
+const PaymentDetails = ({ student, onClose, newData, type }) => {
   if (!student) return null;
   const [paymentDetails, setPaymentDetails] = useState(student || {});
+
+  const dispatch = useDispatch();
+
+  const handleOpenAddModal = () => {
+    dispatch(setIsOpenAddModal(true));
+  };
 
   useEffect(() => {
     if (newData) {
@@ -95,7 +103,7 @@ const PaymentDetails = ({ student, onClose, onOpenAdd, newData, type }) => {
           <div className="flex justify-end">
             <button
               className="bg-headerColorHover px-3 py-2 text-white rounded-md mt-4 hover:bg-headerColor"
-              onClick={onOpenAdd}
+              onClick={handleOpenAddModal}
             >
               Add Payments
             </button>

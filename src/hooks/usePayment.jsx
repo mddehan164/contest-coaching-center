@@ -10,6 +10,7 @@ import {
   setSelectedStudent,
   setLoading,
   setShowDetailsModal,
+  setIsOpenAddModal,
 } from "../redux-rtk/payment/paymentSlice";
 import {
   useGetStudentPaymentsByCourseBatchQuery,
@@ -94,8 +95,14 @@ export const usePayment = () => {
     dispatch(setSelectedStudent(null));
   };
 
+  // close details modal
   const closeDetailsModal = () => {
     dispatch(setShowDetailsModal(false));
+  };
+
+  // close add modal
+  const closeAddModal = () => {
+    dispatch(setIsOpenAddModal(false));
   };
 
   // 🔹 Add payment detail
@@ -223,5 +230,6 @@ export const usePayment = () => {
     updateSelectedCourseEncryptedId,
     refetchStudentPayment,
     closeDetailsModal,
+    closeAddModal,
   };
 };

@@ -1,14 +1,19 @@
-import { X } from "lucide-react";
-import { useState } from "react";
+import { X, CheckCircle, XCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
+  const max = Number(details.total_amount);
+  // initial form data
   const initialFormData =
     type === "student"
       ? {
-          course_fee: "",
           payable_amount: "",
           status: 0,
           payment_date: "",
+          payment_description: "",
+          payment_method: "",
         }
       : {
           class_fee: "",
@@ -16,8 +21,48 @@ const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
           payment_date: "",
         };
 
-  const [selectedPerson, setSelectedPerson] = useState(details);
   const [formData, setFormData] = useState(initialFormData);
+  const [statusPaid, setStatusPaid] = useState(false);
+
+  // live check: when user types the amount, check if it's equal to total
+  useEffect(() => {
+    if (type === "student") {
+      const amt = Number(formData.payable_amount);
+      const total = Number(details.total_amount);
+
+      // jodi total defined na thake, ail out
+      if (isNaN(amt) || isNaN(total)) {
+        setStatusPaid(false);
+        setFormData((prev) => ({ ...prev, status: 0 }));
+        return;
+      }
+
+      // jodi besi amount try kore
+      if (amt > total) {
+        toast.error(`Amount cannot exceed total: ${details.total_amount}`, {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        // ekhane formData.payable_amount ke reset korle valo hobe ba previous value e rekhe dibe
+        setFormData((prev) => ({
+          ...prev,
+          payable_amount: prev.payable_amount,
+        }));
+        setStatusPaid(false);
+        setFormData((prev) => ({ ...prev, status: 0 }));
+        return;
+      }
+
+      // jodi exact match hoi
+      if (amt === total) {
+        setStatusPaid(true);
+        setFormData((prev) => ({ ...prev, status: 1 }));
+      } else {
+        setStatusPaid(false);
+        setFormData((prev) => ({ ...prev, status: 0 }));
+      }
+    }
+  }, [formData.payable_amount, details.total_amount, type]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,127 +71,180 @@ const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
       [name]: value,
     }));
   };
-  // setSelectedPerson(details[0]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedPerson) {
-      alert("Please select a person.");
+
+    // You may want to validate
+    if (
+      type === "student" &&
+      (!formData.payable_amount || formData.payable_amount === "")
+    ) {
+      alert("Please enter payable amount");
       return;
     }
-
-    if (!selectedPerson) {
-      alert("Invalid person selected.");
+    if (
+      type !== "student" &&
+      (!formData.class_fee || formData.class_fee === "")
+    ) {
+      alert("Please enter class fee");
       return;
     }
 
     const newPayment = {
-      id: selectedPerson.id,
-      name: selectedPerson.name,
-      course_title: selectedPerson.course_title,
-      batch_title: selectedPerson.batch_title,
+      id: details.id,
+      // assuming details has id etc.
+      name: details.name,
+      course_title: details.course_title,
+      batch_title: details.batch_title,
       ...(type === "student"
         ? {
-            course_fee: Number(formData.course_fee),
             payable_amount: Number(formData.payable_amount),
           }
         : {
             class_fee: Number(formData.class_fee),
-            subject: selectedPerson.subject,
+            subject: details.subject,
           }),
-      status: Number(formData.status),
+      status: statusPaid ? 1 : 0,
       payment_date: formData.payment_date || null,
     };
+
     handleAddData(newPayment);
 
-    // reset form
-    setSelectedPerson("");
+    // reset
     setFormData(initialFormData);
+    setStatusPaid(false);
     onClose();
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      onClick={onClose}
-    >
-      {/* Payment Form */}
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white w-[90%] md:w-[80%] lg:w-[70%] max-h-[80%] overflow-auto rounded-lg shadow-lg relative p-6"
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        onClick={onClose}
       >
-        <h2 className="text-lg font-semibold mb-4 text-center">
-          ➕ Add Payment
-        </h2>
-
-        <button
-          className="text-gray-500 hover:text-red-500 text-center absolute right-5 top-5"
-          onClick={onClose}
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white w-[90%] md:w-[50%] max-h-[80%] overflow-auto rounded-lg shadow-lg relative p-6"
         >
-          <X size={24} />
-        </button>
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
-          {type === "student" ? (
-            <>
-              <input
-                type="number"
-                name="course_fee"
-                placeholder="Course Fee"
-                value={formData.course_fee}
-                onChange={handleChange}
-                className="border p-2 rounded-md"
-                required
-              />
-              <input
-                type="number"
-                name="payable_amount"
-                placeholder="Payable Amount"
-                value={formData.payable_amount}
-                onChange={handleChange}
-                className="border p-2 rounded-md"
-                required
-              />
-            </>
-          ) : (
-            <input
-              type="number"
-              name="class_fee"
-              placeholder="Class Fee"
-              value={formData.class_fee}
-              onChange={handleChange}
-              className="border p-2 rounded-md"
-              required
-            />
-          )}
-          <input
-            type="date"
-            name="payment_date"
-            value={formData.payment_date}
-            onChange={handleChange}
-            className="border p-2 rounded-md"
-          />
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="border p-2 rounded-md"
-          >
-            <option value={1}>Paid</option>
-            <option value={0}>Due</option>
-          </select>
-
-          <button
-            type="submit"
-            className="col-span-1 md:col-span-2 bg-headerColor hover:bg-headerColorHover text-white py-2 px-4 rounded-md"
+          <h1
+            className={`text-lg font-semibold mb-4 text-center lg:text-2xl text-headerColorHover
+            `}
           >
             Add Payment
+          </h1>
+
+          <button
+            className="text-gray-500 hover:text-red-500 absolute right-5 top-5"
+            onClick={onClose}
+          >
+            <X size={24} />
           </button>
-        </form>
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
+            {type === "student" ? (
+              <>
+                {/* Display total course fee */}
+                <div className="col-span-1 md:col-span-2">
+                  <span
+                    className={`text-lg font-semibold mb-4 text-center ${
+                      statusPaid ? "text-headerColor" : "text-red-500"
+                    }`}
+                  >
+                    Total Course Fee : {details.total_amount}
+                  </span>
+                </div>
+                <div className="col-span-1">
+                  <input
+                    type="number"
+                    name="payable_amount"
+                    placeholder="Payable Amount"
+                    value={formData.payable_amount}
+                    onChange={handleChange}
+                    className="border p-2 rounded-md w-full"
+                    required
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="col-span-1">
+                <input
+                  type="number"
+                  name="class_fee"
+                  placeholder="Class Fee"
+                  value={formData.class_fee}
+                  onChange={handleChange}
+                  className="border p-2 rounded-md w-full"
+                  required
+                />
+              </div>
+            )}
+            <div>
+              <input
+                type="date"
+                name="payment_date"
+                value={formData.payment_date}
+                onChange={handleChange}
+                className="border p-2 rounded-md w-full"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="payment_description"
+                placeholder="Payment Description"
+                value={formData.payment_description}
+                onChange={handleChange}
+                className="border p-2 rounded-md w-full"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="payment_method"
+                value={formData.payment_method}
+                placeholder="Payment Method"
+                onChange={handleChange}
+                className="border p-2 rounded-md w-full"
+              />
+            </div>
+            <div className="col-span-1 md:col-span-2 flex items-center space-x-2">
+              {statusPaid ? (
+                <>
+                  <CheckCircle className="text-green-500" size={20} />
+                  <span className="text-green-500 font-medium">Paid</span>
+                </>
+              ) : (
+                <>
+                  <XCircle className="text-red-500" size={20} />
+                  <span className="text-red-500 font-medium">Unpaid</span>
+                </>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="col-span-1 md:col-span-2 bg-headerColor hover:bg-headerColorHover text-white py-2 px-4 rounded-md"
+            >
+              Add Payment
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
