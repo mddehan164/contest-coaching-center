@@ -1,56 +1,146 @@
-import { useState } from "react";
 import PaymentCard from "./PaymentCard";
 import PaymentDetails from "./PaymentDetails";
 import PaymentAdd from "./PaymentAdd";
 import { ErrorUi } from "../shared/ui";
+import { usePayment } from "../hooks/usePayment";
 
-const FilterPerson = ({ dataList = [], person, paymentData }) => {
-  const [selectedPayments, setSelectedPayments] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [getData, setGetData] = useState({});
+const FilterPerson = ({ dataList = [], person }) => {
+  const {
+    showDetailsModal,
+    showAddModal,
+    selectedStudent,
+    singlePayment,
+    loadingSingle,
+    clearSelectedStudent,
+    closeDetailsModal,
+    openAddModal,
+    closeAddModal,
+    addPaymentDetail,
+    editPaymentDetail,
+    toggleDetailStatus,
+  } = usePayment();
 
-  const handleShowDetails = (details) => {
-    setSelectedPayments(details);
+  const handleCloseDetails = () => {
+    console.log("🔍 FilterPerson - Closing details modal");
+    closeDetailsModal();
   };
 
-  const handleAddDetails = (info) => {
-    setGetData(info);
+  const handleOpenAdd = () => {
+    console.log("🔍 FilterPerson - Opening add modal");
+    openAddModal();
   };
+
+  const handleCloseAdd = () => {
+    console.log("🔍 FilterPerson - Closing add modal");
+    closeAddModal();
+  };
+
+  const handleAddPayment = async (paymentData) => {
+    try {
+      if (selectedStudent && singlePayment?.data?.payment?.encrypted_id) {
+        console.log(
+          "🔍 FilterPerson - Adding payment for:",
+          selectedStudent.name,
+          paymentData
+        );
+        await addPaymentDetail(
+          singlePayment.data.payment.encrypted_id,
+          paymentData
+        );
+        closeAddModal();
+      } else {
+        console.error("Missing required data for adding payment");
+        alert("Missing required data. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding payment:", error);
+      alert("Failed to add payment. Please try again.");
+    }
+  };
+
+  const handleEditPayment = async (detailId, paymentData) => {
+    try {
+      console.log(
+        "🔍 FilterPerson - Editing payment for:",
+        selectedStudent?.name
+      );
+      await editPaymentDetail(detailId, paymentData);
+    } catch (error) {
+      console.error("Error editing payment:", error);
+      alert("Failed to edit payment. Please try again.");
+    }
+  };
+
+  const handleToggleStatus = async (detailId) => {
+    try {
+      await toggleDetailStatus(detailId);
+    } catch (error) {
+      console.error("Error toggling status:", error);
+      alert("Failed to toggle status. Please try again.");
+    }
+  };
+
+  // Debug console - শুধু click এর সময় console হবে
+  const handleStudentClick = (student) => {
+    console.log("🔍 FilterPerson - Student clicked:", student);
+  };
+
   return (
-    <div className={`flex flex-wrap gap-5`}>
+    <div className="flex flex-wrap gap-5">
       {dataList.length > 0 ? (
         dataList.map((data, idx) => (
           <PaymentCard
-            key={idx}
+            key={data.encrypted_id || data.id || idx}
             data={data}
             type={person}
-            payments={paymentData} // studentPaymentsData নয়, local payments state
-            onShowDetails={handleShowDetails}
+            onStudentClick={handleStudentClick} // Console এর জন্য callback pass করুন
           />
         ))
       ) : (
         <ErrorUi title={`No ${person} found`} />
       )}
 
-      {/* details component */}
-      {selectedPayments && (
+      {/* Payment Details Modal - এই condition টা ঠিক করেছি */}
+      {showDetailsModal && selectedStudent && (
         <PaymentDetails
-          details={selectedPayments}
-          newData={getData}
+          student={selectedStudent}
+          paymentData={singlePayment?.data}
+          loading={loadingSingle}
           type={person}
-          onClose={() => setSelectedPayments(null)}
-          onOpenAdd={() => setShowAddModal(true)}
+          onClose={handleCloseDetails}
+          onOpenAdd={handleOpenAdd}
+          onEditPayment={handleEditPayment}
+          onToggleStatus={handleToggleStatus}
         />
       )}
 
-      {/* Add Payment modal */}
-      {showAddModal && (
+      {/* Add Payment Modal */}
+      {showAddModal && selectedStudent && (
         <PaymentAdd
-          details={selectedPayments[0]}
+          student={selectedStudent}
           type={person}
-          onClose={() => setShowAddModal(false)}
-          handleAddData={handleAddDetails}
+          onClose={handleCloseAdd}
+          onAddPayment={handleAddPayment}
         />
+      )}
+
+      {/* Debug Info - Development এ দেখার জন্য */}
+      {process.env.NODE_ENV === "development" && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 10,
+            right: 10,
+            background: "rgba(0,0,0,0.7)",
+            color: "white",
+            padding: "10px",
+            fontSize: "12px",
+          }}
+        >
+          <div>showDetailsModal: {showDetailsModal ? "true" : "false"}</div>
+          <div>selectedStudent: {selectedStudent?.name || "null"}</div>
+          <div>singlePayment: {singlePayment ? "loaded" : "null"}</div>
+        </div>
       )}
     </div>
   );

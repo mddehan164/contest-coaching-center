@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   studentPayments: [],
-  selectedStudent: null, // এই state টি selected student store করবে
+  selectedStudent: null,
   filters: {
     course: null,
     batch: null,
@@ -30,16 +30,29 @@ const paymentSlice = createSlice({
       state.studentPayments = action.payload || [];
     },
     setSelectedStudent: (state, action) => {
-      state.selectedStudent = action.payload; // Student object টি store হবে
+      state.selectedStudent = action.payload;
     },
     clearSelectedStudent: (state) => {
-      state.selectedStudent = null; // Selected student clear করার option
+      state.selectedStudent = null;
     },
     setFilters: (state, action) => {
-      state.filters = { ...state.filters, ...action.payload };
+      // যদি course change হয়
+      if (action.payload.course !== undefined) {
+        state.filters.course = action.payload.course;
+        state.filters.batch = null; // নতুন course হলে batch reset করো
+        state.selectedCourseEncryptedId = action.payload.course; // sync করো
+      }
+      if (action.payload.batch !== undefined) {
+        state.filters.batch = action.payload.batch;
+      }
+      if (action.payload.search !== undefined) {
+        state.filters.search = action.payload.search;
+      }
     },
     clearFilters: (state) => {
       state.filters = { course: null, batch: null, search: "" };
+      state.selectedCourseEncryptedId = null;
+      state.selectedStudent = null; // student selection ও clear করুন
     },
     setShowPopup: (state, action) => {
       state.showPopup = action.payload;
@@ -60,7 +73,7 @@ export const {
   setShowPopup,
   setShowStickyBtn,
   setSelectedStudent,
-  clearSelectedStudent, // নতুন action export
+  clearSelectedStudent,
   setStudentPaymentData,
   setFilters,
   clearFilters,

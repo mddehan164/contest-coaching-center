@@ -32,18 +32,18 @@ const FilterBox = ({
 
         <h2 className="text-lg font-bold mb-4">Select Course & Batch</h2>
 
-        {/* Course Dropdown */}
+        {/* Course Dropdown - এখানে encrypted_id ব্যবহার করুন */}
         <select
           className="border px-3 py-2 w-full mb-3"
-          value={selectedCourse ?? ""} // keep controlled
+          value={selectedCourse || ""} // string হিসেবে রাখুন
           onChange={(e) => {
-            const val = e.target.value === "" ? null : Number(e.target.value);
+            const val = e.target.value === "" ? null : e.target.value;
             setSelectedCourse(val);
           }}
         >
           <option value="">-- Select Course --</option>
           {courseBatchData.map((c) => (
-            <option key={c.id} value={c.id}>
+            <option key={c.encrypted_id} value={c.encrypted_id}>
               {c.title}
             </option>
           ))}
@@ -52,9 +52,9 @@ const FilterBox = ({
         {/* Batch Dropdown */}
         <select
           className="border px-3 py-2 w-full mb-3"
-          value={selectedBatch ?? ""} // keep controlled
+          value={selectedBatch || ""} // string হিসেবে রাখুন
           onChange={(e) => {
-            const val = e.target.value === "" ? null : Number(e.target.value);
+            const val = e.target.value === "" ? null : e.target.value;
             setSelectedBatch(val);
           }}
           disabled={!selectedCourse}
@@ -62,7 +62,7 @@ const FilterBox = ({
           <option value="">-- Select Batch --</option>
           {selectedCourse &&
             courseBatchData
-              .find((c) => c.id === selectedCourse)
+              .find((c) => c.encrypted_id === selectedCourse)
               ?.batches.map((b) => (
                 <option key={b.value} value={b.value}>
                   {b.label}
@@ -85,7 +85,12 @@ const FilterBox = ({
         {/* Apply Button */}
         <button
           onClick={onApply}
-          className="bg-headerColor hover:bg-headerColorHover text-white px-4 py-2 rounded w-full"
+          disabled={!selectedCourse} // Course না থাকলে disable
+          className={`px-4 py-2 rounded w-full ${
+            selectedCourse
+              ? "bg-headerColor hover:bg-headerColorHover text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           Apply Filter
         </button>

@@ -11,7 +11,6 @@ import {
   setLoading,
 } from "../redux-rtk/payment/paymentSlice";
 import {
-  // useGetAllStudentsPaymentQuery,
   useGetStudentPaymentsByCourseBatchQuery,
   useAddPaymentDetailMutation,
   useEditPaymentDetailMutation,
@@ -25,7 +24,7 @@ export const usePayment = () => {
   // Redux state
   const {
     studentPayments,
-    selectedStudent, // selected student state
+    selectedStudent,
     filters,
     selectedCourseEncryptedId,
     loading,
@@ -38,30 +37,17 @@ export const usePayment = () => {
     error: errorCourses,
   } = useGetAllCoursesQuery();
 
-  // 🔹 Query: Batches for selected course
+  // 🔹 Query: Batches for selected course - এখানে encrypted_id ব্যবহার করুন
   const {
     data: batchesData,
     isLoading: loadingBatches,
     error: errorBatches,
   } = useGetCourseBatchesQuery(selectedCourseEncryptedId, {
-    skip: !selectedCourseEncryptedId,
+    skip: !selectedCourseEncryptedId, // selectedCourseEncryptedId ব্যবহার করুন
     refetchOnMountOrArgChange: true,
   });
 
-  // 🔹 Query: All students payment (with search filter)
-  // const {
-  //   data: allPayments,
-  //   isLoading: loadingAll,
-  //   error: errorAll,
-  // } = useGetAllStudentsPaymentQuery(
-  //   { search: filters.search || "" },
-  //   {
-  //     skip: !!(filters.course || filters.batch),
-  //     refetchOnMountOrArgChange: true,
-  //   }
-  // );
-
-  // 🔹 Query: Filtered by course & batch
+  // 🔹 Query: Filtered by course & batch - Apply filter এ click করার পর call হবে
   const {
     data: filteredPayments,
     isLoading: loadingFiltered,
@@ -72,12 +58,12 @@ export const usePayment = () => {
       encrypted_batch_id: filters.batch || "",
     },
     {
-      skip: !filters.course || !filters.batch,
+      skip: !filters.course, // শুধু course থাকলেই fetch করবে
       refetchOnMountOrArgChange: true,
     }
   );
 
-  // 🔹 Query: Single student payment details - selected student এর জন্য
+  // 🔹 Query: Single student payment details
   const {
     data: singlePayment,
     isLoading: loadingSingle,
@@ -97,7 +83,7 @@ export const usePayment = () => {
   const [toggleStatus, { isLoading: toggling }] =
     useTogglePaymentDetailStatusMutation();
 
-  // 🔹 Select student - এই function টি student select করবে
+  // 🔹 Select student
   const selectStudent = (student) => {
     dispatch(setSelectedStudent(student));
   };
@@ -115,7 +101,6 @@ export const usePayment = () => {
         detailData,
       }).unwrap();
 
-      // Payment add করার পরে selected student এর data refresh করুন
       if (selectedStudent) {
         refetchStudentPayment();
       }
@@ -135,7 +120,6 @@ export const usePayment = () => {
         detailData,
       }).unwrap();
 
-      // Payment edit করার পরে selected student এর data refresh করুন
       if (selectedStudent) {
         refetchStudentPayment();
       }
@@ -154,7 +138,6 @@ export const usePayment = () => {
         encrypted_payment_detail_id: detailId,
       }).unwrap();
 
-      // Status toggle করার পরে selected student এর data refresh করুন
       if (selectedStudent) {
         refetchStudentPayment();
       }
@@ -166,11 +149,11 @@ export const usePayment = () => {
     }
   };
 
-  // 🔹 Course options
+  // 🔹 Course options - এখানে encrypted_id store করুন
   const courseOptions = useMemo(() => {
     return (
       coursesData?.data?.courses?.map((course) => ({
-        value: course.encrypted_id,
+        value: course.encrypted_id, // encrypted_id ব্যবহার করুন
         label: course.title,
         encrypted_id: course.encrypted_id,
       })) || []
@@ -201,22 +184,29 @@ export const usePayment = () => {
     );
   }, [loadingCourses, loadingBatches, dispatch]);
 
+  // 🔹 Debug logs
+  // useEffect(() => {
+  //   console.log(
+  //     "🔍 Debug - selectedCourseEncryptedId:",
+  //     selectedCourseEncryptedId
+  //   );
+  //   console.log("🔍 Debug - filters:", filters);
+  //   console.log("🔍 Debug - batchesData:", batchesData);
+  // }, [selectedCourseEncryptedId, filters, batchesData]);
+
   return {
     // Redux state
     studentPayments,
-    selectedStudent, // selected student return করুন
+    selectedStudent,
     filters,
     selectedCourseEncryptedId,
     loading,
 
     // API Data
-    // allPayments,
-    // loadingAll,
-    // errorAll,
     filteredPayments,
     loadingFiltered,
     errorFiltered,
-    singlePayment, // selected student এর payment data
+    singlePayment,
     loadingSingle,
     errorSingle,
 
@@ -234,8 +224,8 @@ export const usePayment = () => {
 
     // Actions
     selectStudent,
-    clearSelectedStudent, // নতুন function
+    clearSelectedStudent,
     updateSelectedCourseEncryptedId,
-    refetchStudentPayment, // refetch function
+    refetchStudentPayment,
   };
 };
