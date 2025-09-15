@@ -38,4 +38,5 @@ export { default as TeacherPay } from "./Payment/TeacherPay";
 export { default as ViewModal } from "./ViewModal";
 export { default as PaymentDetails } from "./PaymentDetails";
 export { default as PaymentAdd } from "./PaymentAdd";
+export { default as PaymentEdit } from "./PaymentEdit";
 export { default as FilterPerson } from "./FilterPerson";

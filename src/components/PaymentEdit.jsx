@@ -2,48 +2,54 @@ import { X, CheckCircle, XCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CustomSpinner from "../shared/custom/CustomSpinner";
 
-const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
-  console.log(loading);
-  // initial form data
+const PaymentEdit = ({
+  details = null,
+  onClose = null,
+  onUpdatePayment = null,
+  type = null,
+  initialPayment = null,
+}) => {
+  // initialPayment এ থাকবে edit-এর জন্য আগের payment-এর data:
+  // যেমন: { amount: 5500.00, payment_date: "2025-09-11 15:30:00", description: "Updated first installment payment", payment_method: "bank_transfer" }
+
+  // formData initialising
   const initialFormData =
     type === "student"
       ? {
-          payable_amount: "",
-          payment_date: "",
-          payment_description: "",
-          payment_method: "",
+          payable_amount: initialPayment?.amount || "",
+          payment_date: initialPayment?.payment_date || "",
+          payment_description: initialPayment?.description || "",
+          payment_method: initialPayment?.payment_method || "",
         }
       : {
-          class_fee: "",
-          status: 0,
-          payment_date: "",
+          class_fee: initialPayment?.amount || "",
+          status: initialPayment?.status || 0, // তুমি যদি status করে রাখতে চাও
+          payment_date: initialPayment?.payment_date || "",
         };
 
   const [formData, setFormData] = useState(initialFormData);
   const [statusPaid, setStatusPaid] = useState(false);
 
-  // live check: when user types the amount, check if it's equal to total
+  // check statusPaid logic
   useEffect(() => {
     if (type === "student") {
       const amt = Number(formData.payable_amount);
       const total = Number(details?.due_amount);
 
-      // jodi total defined na thake, ail out
       if (isNaN(amt) || isNaN(total)) {
         setStatusPaid(false);
-        setFormData((prev) => ({ ...prev, status: 0 }));
         return;
       }
-
-      // jodi besi amount try kore
       if (amt > total) {
-        toast.error(`Amount cannot exceed total: ${details.total_amount}`, {
-          position: "top-right",
-          autoClose: 2000,
-        });
-        // ekhane formData.payable_amount ke reset korle valo hobe ba previous value e rekhe dibe
+        toast.error(
+          `Amount cannot exceed remaining amount: ${details.due_amount}`,
+          {
+            position: "top-right",
+            autoClose: 2000,
+          }
+        );
+        // অতিরিক্ত amount দিলে পুরোনো value রেখে দিবে
         setFormData((prev) => ({
           ...prev,
           payable_amount: prev.payable_amount,
@@ -51,15 +57,13 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
         setStatusPaid(false);
         return;
       }
-
-      // jodi exact match hoi
       if (amt === total) {
         setStatusPaid(true);
       } else {
         setStatusPaid(false);
       }
     }
-  }, [formData.payable_amount, details.total_amount, type]);
+  }, [formData.payable_amount, details.due_amount, type]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,10 +73,10 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // You may want to validate
+    // validation
     if (
       type === "student" &&
       (!formData.payable_amount || formData.payable_amount === "")
@@ -88,38 +92,55 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
       return;
     }
 
-    const newPayment = {
-      ...(type === "student"
+    // Prepare body same রকম হওয়া উচিত যেমন তোমার বসিয়েছো postman body
+    const updatedPayment =
+      type === "student"
         ? {
-            payable_amount: Number(formData.payable_amount),
-            payment_description: formData.payment_description,
+            amount: Number(formData.payable_amount),
+            payment_date: formData.payment_date || null,
+            description: formData.payment_description,
             payment_method: formData.payment_method.toLowerCase(),
           }
         : {
-            class_fee: Number(formData.class_fee),
-            subject: details.subject,
-          }),
-      payment_date: formData.payment_date || null,
-    };
+            amount: Number(formData.class_fee),
+            payment_date: formData.payment_date || null,
+            // যদি `status` থাকে
+            status: formData.status,
+            // অন্যান্য প্রয়োজনীয় field যদি থাকে
+          };
 
-    onAddPayment(newPayment);
-
-    // reset
-    setFormData(initialFormData);
-    setStatusPaid(false);
-    onClose();
+    // API কল: তোমার `{{base_url}}/payment-details/{{encrypted_payment_detail_id}}`
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/payment-details/${initialPayment?.id}`, // ধরো initialPayment.id এ encrypted_payment_detail_id আছে
+        {
+          method: "PUT", // অথবা PATCH, API যেটা expect করে সেটি
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedPayment),
+        }
+      );
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || "Failed to update payment");
+      }
+      const data = await response.json();
+      toast.success("Payment updated successfully", { autoClose: 2000 });
+      // callback
+      onUpdatePayment(data);
+      onClose();
+    } catch (error) {
+      console.error("Error updating payment:", error);
+      toast.error("Error updating payment", { autoClose: 2000 });
+    }
   };
-
-  if (loading)
-    <div className="w-full h-screen flex items-center justify-center">
-      <CustomSpinner />;
-    </div>;
 
   return (
     <>
       <ToastContainer
         position="top-right"
-        autoClose={1000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={true}
         closeOnClick
@@ -136,11 +157,8 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
           onClick={(e) => e.stopPropagation()}
           className="bg-white w-[90%] md:w-[50%] max-h-[80%] overflow-auto rounded-lg shadow-lg relative p-6"
         >
-          <h1
-            className={`text-lg font-semibold mb-4 text-center lg:text-2xl text-headerColorHover
-            `}
-          >
-            Add Payment
+          <h1 className="text-lg font-semibold mb-4 text-center lg:text-2xl text-headerColorHover">
+            Edit Payment
           </h1>
 
           <button
@@ -149,13 +167,13 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
           >
             <X size={24} />
           </button>
+
           <form
             onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             {type === "student" ? (
               <>
-                {/* Display total course fee */}
                 <div className="col-span-1 md:col-span-2">
                   <span
                     className={`text-lg font-semibold mb-4 text-center ${
@@ -165,24 +183,16 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
                     Total Course Fee : {details.total_amount}
                   </span>
                 </div>
-                {details.due_amount ? (
-                  <div className="col-span-1 md:col-span-2">
-                    <span
-                      className={`text-lg font-semibold mb-4 text-center ${
-                        statusPaid ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      Remaining : {details.due_amount}
-                    </span>
-                  </div>
-                ) : (
-                  <span></span>
-                )}
-                <div
-                  className={`${
-                    details.due_amount === 0 ? "col-span-2" : "col-span-1"
-                  }`}
-                >
+                <div className="col-span-1 md:col-span-2">
+                  <span
+                    className={`text-lg font-semibold mb-4 text-center ${
+                      statusPaid ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    Remaining : {details.due_amount}
+                  </span>
+                </div>
+                <div className="col-span-1">
                   <input
                     type="number"
                     name="payable_amount"
@@ -207,16 +217,17 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
                 />
               </div>
             )}
+
             <div>
               <input
-                type="date"
+                type="datetime-local"
                 name="payment_date"
                 value={formData.payment_date}
                 onChange={handleChange}
                 className="border p-2 rounded-md w-full"
               />
             </div>
-            <div>
+            <div className="md:col-span-2">
               <input
                 type="text"
                 name="payment_description"
@@ -226,21 +237,18 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
                 className="border p-2 rounded-md w-full"
               />
             </div>
-            <div>
+            <div className="md:col-span-2">
               <input
                 type="text"
                 name="payment_method"
-                value={formData.payment_method}
                 placeholder="Payment Method"
+                value={formData.payment_method}
                 onChange={handleChange}
                 className="border p-2 rounded-md w-full"
               />
             </div>
-            <div
-              className={`${
-                details.due_amount === 0 ? "col-span-1" : "md:col-span-1"
-              } flex items-center space-x-2`}
-            >
+
+            <div className="col-span-1 md:col-span-2 flex items-center space-x-2">
               {statusPaid ? (
                 <>
                   <CheckCircle className="text-green-500" size={20} />
@@ -258,7 +266,7 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
               type="submit"
               className="col-span-1 md:col-span-2 bg-headerColor hover:bg-headerColorHover text-white py-2 px-4 rounded-md"
             >
-              Add Payment
+              Update Payment
             </button>
           </form>
         </div>
@@ -267,4 +275,4 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
   );
 };
 
-export default PaymentAdd;
+export default PaymentEdit;

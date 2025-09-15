@@ -25,6 +25,9 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     editPaymentDetail,
     toggleDetailStatus,
     clearSelectedStudent,
+    adding,
+    editing,
+    toggling,
   } = usePayment();
 
   const handleCloseDetails = () => {
@@ -38,16 +41,12 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
   };
 
   const handleAddPayment = async (paymentData) => {
-    console.log("🔍 Payment data:", paymentData);
-    console.log("🔍 Single payment:", singlePayment);
-
     const student = selectedStudentData || selectedStudent;
     if (!student) {
       console.warn("Missing data - selectedStudent:", student);
       alert("Please select a student first");
       return;
     }
-
     const payment = singlePayment?.data?.payment;
     if (!payment) {
       console.warn("Missing data - singlePayment:", singlePayment);
@@ -63,8 +62,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
         payment_method: paymentData.payment_method,
         payment_date: paymentData.payment_date,
       });
-
-      console.log("✅ Payment added via API:", result);
 
       closeAddModal(); // modal বন্ধ করো
     } catch (error) {
@@ -125,6 +122,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       {isOpenAddModal && selectedStudentData && (
         <PaymentAdd
           details={selectedStudentData.payment_summary}
+          loading={adding}
           type={person}
           onClose={handleCloseAdd}
           onAddPayment={handleAddPayment}

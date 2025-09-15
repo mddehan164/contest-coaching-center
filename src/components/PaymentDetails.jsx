@@ -2,15 +2,17 @@ import { X } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { setIsOpenAddModal } from "../redux-rtk/payment/paymentSlice";
 import CustomSpinner from "../shared/custom/CustomSpinner";
+import PaymentEdit from "./PaymentEdit";
 
 const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
+  const isDisabled = paymentData?.remaining_amount === 0;
   const dispatch = useDispatch();
 
   const handleOpenAddModal = () => {
     dispatch(setIsOpenAddModal(true));
   };
 
-  if (loading) {
+  if (loading || !paymentData) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <CustomSpinner />
@@ -72,7 +74,7 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
               </tr>
             </thead>
             <tbody>
-              {paymentData?.payment_details?.length > 0 ? (
+              {paymentData?.payment_details?.length > 0 && !loading ? (
                 paymentData.payment_details.map((item) => {
                   return (
                     <tr
@@ -86,7 +88,8 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
                         {item?.payment_date?.split(" ")[0] || "Not Found"}
                       </td>
                       <td className="px-4 py-2 border">
-                        {item?.payment_method || "Not Found"}
+                        {item?.payment_method[0].toUpperCase() +
+                          item?.payment_method.slice(1) || "Not Found"}
                       </td>
                       <td className="px-4 py-2 border">
                         {type === "student"
@@ -102,13 +105,15 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
                         {item?.updated_by || "Not Found"}
                       </td>
                       <td className="px-4 py-2 border">
-                        {item.status === 1 ? (
-                          <span className="text-green-600 font-medium">
-                            {paymentData?.status_text}
+                        {item?.status === "active" ? (
+                          <span className="text-green-600">
+                            {item?.status[0].toUpperCase() +
+                              item?.status.slice(1)}
                           </span>
                         ) : (
-                          <span className="text-red-600 font-medium">
-                            {paymentData?.status_text}
+                          <span className="text-red-600">
+                            {item?.status[0].toUpperCase() +
+                              item?.status.slice(1)}
                           </span>
                         )}
                       </td>
@@ -127,14 +132,22 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
           {paymentData?.payment_details?.length > 0 && (
             <div className="w-full flex items-center justify-end gap-5 py-5 font-semibold">
               <div>
-                <p className="text-green-500">
-                  Total Paid : ৳ {paymentData?.total_paid}
+                <p>
+                  Total Paid :
+                  <span className="text-green-500">
+                    &nbsp; ৳ {paymentData?.total_paid}
+                  </span>
                 </p>
-                <p className="text-red-500">
+                <p>
                   {paymentData?.remaining_amount === 0 ? (
                     <span className="text-green-500">Paid</span>
                   ) : (
-                    <span>Remaining: ৳ {paymentData?.remaining_amount}</span>
+                    <span>
+                      Remaining: ৳{" "}
+                      <span className="text-red-500">
+                        {paymentData?.remaining_amount}
+                      </span>
+                    </span>
                   )}
                 </p>
               </div>
@@ -144,13 +157,22 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
           {/* Add Payment button */}
           <div className="flex justify-end">
             <button
-              className="bg-headerColorHover px-3 py-2 text-white rounded-md mt-4 hover:bg-headerColor"
-              onClick={handleOpenAddModal}
+              className={`${
+                isDisabled
+                  ? "opacity-50 cursor-not-allowed"
+                  : " bg-headerColor hover:bg-headerColorHover text-white "
+              } col-span-1 md:col-span-2 py-2 px-4 rounded-md`}
+              onClick={() => {
+                if (isDisabled) return;
+                handleOpenAddModal();
+              }}
             >
               Add Payments
             </button>
           </div>
         </div>
+
+        <PaymentEdit />
       </div>
     </div>
   );
