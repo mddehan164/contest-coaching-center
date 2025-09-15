@@ -3,28 +3,33 @@ import PaymentDetails from "./PaymentDetails";
 import PaymentAdd from "./PaymentAdd";
 import { ErrorUi } from "../shared/ui";
 import { usePayment } from "../hooks/usePayment";
-import { useState } from "react";
-// import { selectedStudentData } from "../redux-rtk/payment/paymentSlice";
 import { useSelector } from "react-redux";
 
 const FilterPerson = ({ dataList = [], person = "Student" }) => {
-  const { selectedStudentData, showDetailsModal, isOpenAddModal } = useSelector(
-    (state) => state.payment
-  );
+  const {
+    selectedStudentData,
+    showDetailsModal,
+    isOpenAddModal,
+    isOpenEditModal,
+    editingPaymentData,
+  } = useSelector((state) => state.payment);
   const {
     selectedStudent,
     singlePayment,
     loadingSingle,
-    clearSelectedStudent,
     closeDetailsModal,
     closeAddModal,
+    closeEditModal,
+    openEditModal,
     addPaymentDetail,
     editPaymentDetail,
     toggleDetailStatus,
+    clearSelectedStudent,
   } = usePayment();
 
   const handleCloseDetails = () => {
     closeDetailsModal();
+    clearSelectedStudent();
   };
 
   const handleCloseAdd = () => {
@@ -33,24 +38,37 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
   };
 
   const handleAddPayment = async (paymentData) => {
+    console.log("🔍 Payment data:", paymentData);
+    console.log("🔍 Single payment:", singlePayment);
+
+    const student = selectedStudentData || selectedStudent;
+    if (!student) {
+      console.warn("Missing data - selectedStudent:", student);
+      alert("Please select a student first");
+      return;
+    }
+
+    const payment = singlePayment?.data?.payment;
+    if (!payment) {
+      console.warn("Missing data - singlePayment:", singlePayment);
+      alert("Payment details not loaded yet");
+      return;
+    }
+
     try {
-      if (selectedStudent && singlePayment?.data?.payment?.encrypted_id) {
-        console.log(
-          "🔍 FilterPerson - Adding payment for:",
-          selectedStudent.name,
-          paymentData
-        );
-        await addPaymentDetail(
-          singlePayment.data.payment.encrypted_id,
-          paymentData
-        );
-        closeAddModal();
-      } else {
-        console.error("Missing required data for adding payment");
-        alert("Missing required data. Please try again.");
-      }
+      // 🔹 আসল API call
+      const result = await addPaymentDetail(payment.id, {
+        amount: paymentData.payable_amount,
+        description: paymentData.payment_description,
+        payment_method: paymentData.payment_method,
+        payment_date: paymentData.payment_date,
+      });
+
+      console.log("✅ Payment added via API:", result);
+
+      closeAddModal(); // modal বন্ধ করো
     } catch (error) {
-      console.error("Error adding payment:", error);
+      console.error("❌ Error adding payment:", error);
       alert("Failed to add payment. Please try again.");
     }
   };
@@ -94,8 +112,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       {/* Payment Details Modal - এই condition টা ঠিক করেছি */}
       {showDetailsModal && selectedStudentData && (
         <PaymentDetails
-          student={selectedStudentData}
-          paymentData={singlePayment?.data}
+          paymentData={singlePayment?.data.payment}
           loading={loadingSingle}
           type={person}
           onClose={handleCloseDetails}
@@ -105,7 +122,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       )}
 
       {/* Add Payment Modal */}
-      {isOpenAddModal && (
+      {isOpenAddModal && selectedStudentData && (
         <PaymentAdd
           details={selectedStudentData.payment_summary}
           type={person}

@@ -4,13 +4,22 @@ import {
   setSelectedStudentData,
   setShowDetailsModal,
 } from "../redux-rtk/payment/paymentSlice";
+import { usePayment } from "../hooks/usePayment";
 
 const PaymentCard = ({ status = 1, type = "student", data }) => {
+  const { selectStudent } = usePayment();
   const dispatch = useDispatch();
   const handleDetails = () => {
-    dispatch(setSelectedStudentData(data));
+    dispatch(
+      setSelectedStudentData({
+        ...data,
+        encrypted_id: data.student_id, // 🔑 normalize
+      })
+    );
     dispatch(setShowDetailsModal(true));
+    selectStudent({ ...data, encrypted_id: data.student_id });
   };
+
   return (
     <div className="border flex justify-between gap-2 px-2 py-2 rounded-md hover:shadow-md hover:scale-105 transition-all duration-100 max-w-72 aspect-video text-[0.85rem]">
       <div className="w-[40%] h-full overflow-hidden rounded-sm">

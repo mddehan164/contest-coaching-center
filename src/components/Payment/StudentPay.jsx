@@ -219,7 +219,7 @@ const StudentPay = () => {
         {!shouldFetchStudents && (
           <div className="text-center py-10 w-full">
             <p className="text-gray-600 font-medium text-lg xl:text-3xl">
-              Please select a course & batch then click Apply to see students
+              Please select a course & batch to see the students
             </p>
           </div>
         )}

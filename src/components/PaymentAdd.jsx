@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
-  const max = Number(details.total_amount);
+const PaymentAdd = ({ details, onClose, onAddPayment, type }) => {
   // initial form data
   const initialFormData =
     type === "student"
       ? {
           payable_amount: "",
-          status: 0,
           payment_date: "",
           payment_description: "",
           payment_method: "",
@@ -49,17 +47,14 @@ const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
           payable_amount: prev.payable_amount,
         }));
         setStatusPaid(false);
-        setFormData((prev) => ({ ...prev, status: 0 }));
         return;
       }
 
       // jodi exact match hoi
       if (amt === total) {
         setStatusPaid(true);
-        setFormData((prev) => ({ ...prev, status: 1 }));
       } else {
         setStatusPaid(false);
-        setFormData((prev) => ({ ...prev, status: 0 }));
       }
     }
   }, [formData.payable_amount, details.total_amount, type]);
@@ -92,24 +87,20 @@ const PaymentAdd = ({ details, onClose, handleAddData, type }) => {
     }
 
     const newPayment = {
-      id: details.id,
-      // assuming details has id etc.
-      name: details.name,
-      course_title: details.course_title,
-      batch_title: details.batch_title,
       ...(type === "student"
         ? {
             payable_amount: Number(formData.payable_amount),
+            payment_description: formData.payment_description,
+            payment_method: formData.payment_method,
           }
         : {
             class_fee: Number(formData.class_fee),
             subject: details.subject,
           }),
-      status: statusPaid ? 1 : 0,
       payment_date: formData.payment_date || null,
     };
 
-    handleAddData(newPayment);
+    onAddPayment(newPayment);
 
     // reset
     setFormData(initialFormData);

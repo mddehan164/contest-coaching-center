@@ -1,25 +1,30 @@
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setIsOpenAddModal } from "../redux-rtk/payment/paymentSlice";
+import CustomSpinner from "../shared/custom/CustomSpinner";
 
-const PaymentDetails = ({ student, onClose, newData, type }) => {
-  if (!student) return null;
-  const [paymentDetails, setPaymentDetails] = useState(student || {});
-
+const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
   const dispatch = useDispatch();
 
   const handleOpenAddModal = () => {
     dispatch(setIsOpenAddModal(true));
   };
 
-  useEffect(() => {
-    if (newData) {
-      setPaymentDetails((prevDetails) => [...prevDetails, newData]);
-    }
-  }, [newData]);
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
-  if (!paymentDetails) return null;
+  if (!paymentData) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <p className="text-red-500">No payment data found</p>
+      </div>
+    );
+  }
   return (
     // Backdrop (fade bg)
     <div
@@ -34,7 +39,11 @@ const PaymentDetails = ({ student, onClose, newData, type }) => {
         {/* Header */}
         <div className="flex justify-between students-center mb-4">
           <h2 className="text-xl md:text-2xl font-bold text-headerColorHover">
-            Payment Details
+            Payment Details :
+            <span className="font-semibold text-gray-500 inline-block mx-2">
+              {paymentData.payer_name}
+            </span>
+            <span className="text-gray-400">({paymentData.payer_type})</span>
           </h2>
           <button
             className="text-gray-500 hover:text-red-500"
@@ -49,55 +58,88 @@ const PaymentDetails = ({ student, onClose, newData, type }) => {
           <table className="w-full border-collapse text-sm md:text-base rounded-lg overflow-hidden">
             <thead className="bg-[#102542] text-white lg:text-lg">
               <tr>
-                <th className="px-4 py-2 border">Name</th>
-                <th className="px-4 py-2 border">Course Title</th>
-                <th className="px-4 py-2 border">Batch</th>
+                <th className="px-4 py-2 border">Description</th>
+                <th className="px-4 py-2 border">Payment Date</th>
+                <th className="px-4 py-2 border">Method</th>
                 <th className="px-4 py-2 border">
-                  {type === "student" ? "Course Fee" : "Subject"}
+                  {type === "student" ? "Total Fee" : "Subject"}
                 </th>
                 <th className="px-4 py-2 border">
-                  {type === "student" ? "Paid" : "Class Fee"}
+                  {type === "student" ? "Paid Amount" : "Class Fee"}
                 </th>
-                <th className="px-4 py-2 border">Due</th>
+                <th className="px-4 py-2 border">Added By</th>
                 <th className="px-4 py-2 border">Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="hover:bg-contestLight text-center">
-                <td className="px-4 py-2 border">
-                  {student?.name || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {student?.course_info.name || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {student?.batch_info.name || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {type === "student"
-                    ? "৳ " + student?.payment_summary.total_amount
-                    : student?.subject || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {type === "student"
-                    ? "৳ " + student?.payment_summary.total_paid
-                    : student?.class_fee || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {type === "student"
-                    ? "৳ " + student?.payment_summary.due_amount
-                    : student?.class_fee || "Not Found"}
-                </td>
-                <td className="px-4 py-2 border">
-                  {student.status === 1 ? (
-                    <span className="text-green-600 font-medium">Paid</span>
-                  ) : (
-                    <span className="text-red-600 font-medium">Unpaid</span>
-                  )}
-                </td>
-              </tr>
+              {paymentData?.payment_details?.length > 0 ? (
+                paymentData.payment_details.map((item) => {
+                  return (
+                    <tr
+                      key={item.id}
+                      className="hover:bg-contestLight text-center"
+                    >
+                      <td className="px-4 py-2 border">
+                        {item?.description || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {item?.payment_date?.split(" ")[0] || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {item?.payment_method || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {type === "student"
+                          ? "৳ " + paymentData?.total_amount
+                          : item?.subject || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {type === "student"
+                          ? "৳ " + item?.amount
+                          : item?.class_fee || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {item?.updated_by || "Not Found"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {item.status === 1 ? (
+                          <span className="text-green-600 font-medium">
+                            {paymentData?.status_text}
+                          </span>
+                        ) : (
+                          <span className="text-red-600 font-medium">
+                            {paymentData?.status_text}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center py-4 text-red-500">
+                    No Payment Data Available
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
+          {paymentData?.payment_details?.length > 0 && (
+            <div className="w-full flex items-center justify-end gap-5 py-5 font-semibold">
+              <div>
+                <p className="text-green-500">
+                  Total Paid : ৳ {paymentData?.total_paid}
+                </p>
+                <p className="text-red-500">
+                  {paymentData?.remaining_amount === 0 ? (
+                    <span className="text-green-500">Paid</span>
+                  ) : (
+                    <span>Remaining: ৳ {paymentData?.remaining_amount}</span>
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Add Payment button */}
           <div className="flex justify-end">

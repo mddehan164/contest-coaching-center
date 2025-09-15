@@ -7,6 +7,8 @@ const initialState = {
   selectedStudentData: {},
   showDetailsModal: false,
   isOpenAddModal: false,
+  isOpenEditModal: false, // 🆕 Edit modal state
+  editingPaymentData: null, // 🆕 Edit data state
   filters: {
     course: null,
     batch: null,
@@ -52,6 +54,12 @@ const paymentSlice = createSlice({
         state.filters.search = action.payload.search;
       }
     },
+    setIsOpenEditModal: (state, action) => {
+      state.isOpenEditModal = action.payload;
+    },
+    setEditingPaymentData: (state, action) => {
+      state.editingPaymentData = action.payload;
+    },
     setSelectedStudentData: (state, action) => {
       state.selectedStudentData = action.payload;
     },
@@ -94,6 +102,8 @@ export const {
   setSelectedStudentData,
   setShowDetailsModal,
   setIsOpenAddModal,
+  setIsOpenEditModal, // 🆕 Export new actions
+  setEditingPaymentData, // 🆕 Export new actions
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

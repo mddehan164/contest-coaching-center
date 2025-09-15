@@ -11,6 +11,7 @@ import {
   setLoading,
   setShowDetailsModal,
   setIsOpenAddModal,
+  setSelectedStudentData,
 } from "../redux-rtk/payment/paymentSlice";
 import {
   useGetStudentPaymentsByCourseBatchQuery,
@@ -27,6 +28,7 @@ export const usePayment = () => {
   const {
     studentPayments,
     selectedStudent,
+    selectedStudentData,
     filters,
     selectedCourseEncryptedId,
     loading,
@@ -72,9 +74,9 @@ export const usePayment = () => {
     error: errorSingle,
     refetch: refetchStudentPayment,
   } = useGetPaymentByStudentQuery(
-    { encrypted_student_id: selectedStudent?.encrypted_id || "" },
+    { encrypted_student_id: selectedStudentData?.encrypted_id || "" },
     {
-      skip: !selectedStudent?.encrypted_id,
+      skip: !selectedStudentData?.encrypted_id,
       refetchOnMountOrArgChange: true,
     }
   );
@@ -88,11 +90,13 @@ export const usePayment = () => {
   // 🔹 Select student
   const selectStudent = (student) => {
     dispatch(setSelectedStudent(student));
+    dispatch(setSelectedStudentData(student)); // এই লাইনটা যোগ করো
   };
 
   // 🔹 Clear selected student
   const clearSelectedStudent = () => {
     dispatch(setSelectedStudent(null));
+    dispatch(setSelectedStudentData(null));
   };
 
   // close details modal
@@ -112,7 +116,11 @@ export const usePayment = () => {
         encrypted_payment_id: paymentId,
         detailData,
       }).unwrap();
+      console.log(result);
 
+      if (selectedStudentData) {
+        refetchStudentPayment();
+      }
       if (selectedStudent) {
         refetchStudentPayment();
       }
@@ -200,6 +208,7 @@ export const usePayment = () => {
     // Redux state
     studentPayments,
     selectedStudent,
+    selectedStudentData,
     filters,
     selectedCourseEncryptedId,
     loading,
