@@ -10,11 +10,9 @@ const CourseDetails = () => {
   const dispatch = useDispatch();
   const { course, loading, error } = useSelector((state) => state.course);
 
-  console.log(id);
   useEffect(() => {
     if (id) dispatch(fetchCourseByIdThunk(id));
   }, [dispatch, id]);
-  console.log(course);
 
   if (loading)
     return (
@@ -28,14 +26,6 @@ const CourseDetails = () => {
   if (!course)
     return <div className="text-center py-10">কোর্স খুঁজে পাওয়া যায়নি</div>;
 
-  const bulletStyles = {
-    circle: "list-disc",
-    arrow: 'list-[">>"]',
-    decimal: "list-decimal",
-    roman: "list-[upper-roman]",
-    alpha: "list-[upper-alpha]",
-  };
-  console.log(course);
   return (
     <div className="w-full max-w-[80%] space-y-6 px-5 sm:px-5 md:px-10 lg:px-20 xl:px-44">
       {/* Title */}

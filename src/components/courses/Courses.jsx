@@ -3,10 +3,7 @@ import MainBtn from "../MainBtn";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
-import {
-  fetchCoursesPage,
-  // setEncryptedId,
-} from "../../redux-rtk/course/courseSlice";
+import { fetchCoursesPage } from "../../redux-rtk/course/courseSlice";
 import { useEffect } from "react";
 
 const CourseMain = () => {
@@ -57,6 +54,7 @@ const CourseMain = () => {
             <Card
               key={idx}
               data={course}
+              encryptedId={course.encrypted_id || null}
               btn={{
                 btnName: ["Enroll Now", "Details"],
                 btnStyle: {
