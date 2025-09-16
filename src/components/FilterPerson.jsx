@@ -4,6 +4,8 @@ import PaymentAdd from "./PaymentAdd";
 import { ErrorUi } from "../shared/ui";
 import { usePayment } from "../hooks/usePayment";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import PaymentEdit from "./PaymentEdit";
 
 const FilterPerson = ({ dataList = [], person = "Student" }) => {
   const {
@@ -11,7 +13,8 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     showDetailsModal,
     isOpenAddModal,
     isOpenEditModal,
-    editingPaymentData,
+    editedPaymentData,
+    selectedPaymentData,
   } = useSelector((state) => state.payment);
   const {
     selectedStudent,
@@ -20,7 +23,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     closeDetailsModal,
     closeAddModal,
     closeEditModal,
-    openEditModal,
     addPaymentDetail,
     editPaymentDetail,
     toggleDetailStatus,
@@ -30,6 +32,12 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     toggling,
   } = usePayment();
 
+  useEffect(() => {
+    if (selectedPaymentData) {
+      console.log(selectedPaymentData);
+    }
+  }, [selectedPaymentData]);
+
   const handleCloseDetails = () => {
     closeDetailsModal();
     clearSelectedStudent();
@@ -38,6 +46,10 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
   const handleCloseAdd = () => {
     console.log("🔍 FilterPerson - Closing add modal");
     closeAddModal();
+  };
+  const handleCloseEdit = () => {
+    console.log("🔍 FilterPerson - Closing edit modal");
+    closeEditModal();
   };
 
   const handleAddPayment = async (paymentData) => {
@@ -70,13 +82,18 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     }
   };
 
-  const handleEditPayment = async (detailId, paymentData) => {
+  const handleEditPayment = async (paymentId, editedPaymentData) => {
     try {
       console.log(
         "🔍 FilterPerson - Editing payment for:",
         selectedStudent?.name
       );
-      await editPaymentDetail(detailId, paymentData);
+      if (paymentId) {
+        console.log(paymentId);
+        await editPaymentDetail(paymentId, editedPaymentData);
+      } else {
+        console.log("no id found");
+      }
     } catch (error) {
       console.error("Error editing payment:", error);
       alert("Failed to edit payment. Please try again.");
@@ -126,6 +143,16 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
           type={person}
           onClose={handleCloseAdd}
           onAddPayment={handleAddPayment}
+        />
+      )}
+
+      {selectedPaymentData && isOpenEditModal && (
+        <PaymentEdit
+          details={selectedStudentData.payment_summary}
+          initialPayment={selectedPaymentData}
+          onClose={handleCloseEdit}
+          onEditPayment={handleEditPayment}
+          type={person}
         />
       )}
     </div>

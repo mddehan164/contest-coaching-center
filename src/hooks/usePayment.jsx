@@ -12,6 +12,8 @@ import {
   setShowDetailsModal,
   setIsOpenAddModal,
   setSelectedStudentData,
+  setSelectedPaymentData,
+  setIsOpenEditModal,
 } from "../redux-rtk/payment/paymentSlice";
 import {
   useGetStudentPaymentsByCourseBatchQuery,
@@ -109,6 +111,21 @@ export const usePayment = () => {
     dispatch(setIsOpenAddModal(false));
   };
 
+  // 🔹 Select payment
+  const selectPaymentData = (data) => {
+    dispatch(setSelectedPaymentData(data));
+  };
+
+  // 🔹 clear Selected payment
+  const clearPaymentData = () => {
+    dispatch(setSelectedPaymentData(null));
+  };
+
+  // 🔹 clear Selected payment
+  const closeEditModal = () => {
+    dispatch(setIsOpenEditModal(false));
+  };
+
   // 🔹 Add payment detail
   const addPaymentDetail = async (paymentId, detailData) => {
     try {
@@ -140,7 +157,7 @@ export const usePayment = () => {
         detailData,
       }).unwrap();
 
-      if (selectedStudent) {
+      if (selectedStudentData) {
         refetchStudentPayment();
       }
 
@@ -240,5 +257,8 @@ export const usePayment = () => {
     refetchStudentPayment,
     closeDetailsModal,
     closeAddModal,
+    selectPaymentData,
+    clearPaymentData,
+    closeEditModal,
   };
 };

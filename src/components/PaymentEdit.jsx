@@ -6,13 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 const PaymentEdit = ({
   details = null,
   onClose = null,
-  onUpdatePayment = null,
   type = null,
   initialPayment = null,
+  onEditPayment,
 }) => {
-  // initialPayment এ থাকবে edit-এর জন্য আগের payment-এর data:
-  // যেমন: { amount: 5500.00, payment_date: "2025-09-11 15:30:00", description: "Updated first installment payment", payment_method: "bank_transfer" }
-
   // formData initialising
   const initialFormData =
     type === "student"
@@ -63,7 +60,7 @@ const PaymentEdit = ({
         setStatusPaid(false);
       }
     }
-  }, [formData.payable_amount, details.due_amount, type]);
+  }, [formData.payable_amount, details?.due_amount, type]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,32 +105,34 @@ const PaymentEdit = ({
             status: formData.status,
             // অন্যান্য প্রয়োজনীয় field যদি থাকে
           };
+    console.log(initialPayment.id);
 
+    onEditPayment(initialPayment.id, updatedPayment);
     // API কল: তোমার `{{base_url}}/payment-details/{{encrypted_payment_detail_id}}`
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/payment-details/${initialPayment?.id}`, // ধরো initialPayment.id এ encrypted_payment_detail_id আছে
-        {
-          method: "PUT", // অথবা PATCH, API যেটা expect করে সেটি
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedPayment),
-        }
-      );
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Failed to update payment");
-      }
-      const data = await response.json();
-      toast.success("Payment updated successfully", { autoClose: 2000 });
-      // callback
-      onUpdatePayment(data);
-      onClose();
-    } catch (error) {
-      console.error("Error updating payment:", error);
-      toast.error("Error updating payment", { autoClose: 2000 });
-    }
+    // try {
+    //   const response = await fetch(
+    //     // `${process.env.REACT_APP_BASE_URL}/payment-details/${initialPayment?.id}`, // ধরো initialPayment.id এ encrypted_payment_detail_id আছে
+    //     {
+    //       method: "PUT", // অথবা PATCH, API যেটা expect করে সেটি
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(updatedPayment),
+    //     }
+    //   );
+    //   if (!response.ok) {
+    //     const err = await response.json();
+    //     throw new Error(err.message || "Failed to update payment");
+    //   }
+    //   const data = await response.json();
+    //   toast.success("Payment updated successfully", { autoClose: 2000 });
+    //   // callback
+    //   onUpdatePayment(data);
+    //   onClose();
+    // } catch (error) {
+    //   console.error("Error updating payment:", error);
+    //   toast.error("Error updating payment", { autoClose: 2000 });
+    // }
   };
 
   return (
@@ -227,7 +226,7 @@ const PaymentEdit = ({
                 className="border p-2 rounded-md w-full"
               />
             </div>
-            <div className="md:col-span-2">
+            <div className="col-span-1">
               <input
                 type="text"
                 name="payment_description"
@@ -237,7 +236,7 @@ const PaymentEdit = ({
                 className="border p-2 rounded-md w-full"
               />
             </div>
-            <div className="md:col-span-2">
+            <div className="col-span-1">
               <input
                 type="text"
                 name="payment_method"

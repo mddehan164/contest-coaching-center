@@ -33,7 +33,6 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
       // jodi total defined na thake, ail out
       if (isNaN(amt) || isNaN(total)) {
         setStatusPaid(false);
-        setFormData((prev) => ({ ...prev, status: 0 }));
         return;
       }
 
@@ -59,7 +58,12 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
         setStatusPaid(false);
       }
     }
-  }, [formData.payable_amount, details.total_amount, type]);
+  }, [
+    formData.payable_amount,
+    details?.due_amount,
+    details?.total_amount,
+    type,
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

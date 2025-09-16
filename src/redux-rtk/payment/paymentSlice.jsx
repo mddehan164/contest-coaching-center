@@ -2,13 +2,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  //student Data
   studentPayments: [],
   selectedStudent: null,
   selectedStudentData: {},
+  // payment data
+  selectedPaymentData: {},
+  // actions
   showDetailsModal: false,
   isOpenAddModal: false,
   isOpenEditModal: false, // 🆕 Edit modal state
-  editingPaymentData: null, // 🆕 Edit data state
+  editedPaymentData: null, // 🆕 Edit data state
   filters: {
     course: null,
     batch: null,
@@ -57,8 +61,8 @@ const paymentSlice = createSlice({
     setIsOpenEditModal: (state, action) => {
       state.isOpenEditModal = action.payload;
     },
-    setEditingPaymentData: (state, action) => {
-      state.editingPaymentData = action.payload;
+    setEditedPaymentData: (state, action) => {
+      state.editedPaymentData = action.payload;
     },
     setSelectedStudentData: (state, action) => {
       state.selectedStudentData = action.payload;
@@ -69,6 +73,10 @@ const paymentSlice = createSlice({
     setIsOpenAddModal: (state, action) => {
       state.isOpenAddModal = action.payload;
     },
+    setSelectedPaymentData: (state, action) => {
+      state.selectedPaymentData = action.payload;
+    },
+
     clearFilters: (state) => {
       state.filters = { course: null, batch: null, search: "" };
       state.selectedCourseEncryptedId = null;
@@ -102,8 +110,9 @@ export const {
   setSelectedStudentData,
   setShowDetailsModal,
   setIsOpenAddModal,
+  setSelectedPaymentData,
   setIsOpenEditModal, // 🆕 Export new actions
-  setEditingPaymentData, // 🆕 Export new actions
+  setEditedPaymentData, // 🆕 Export new actions
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

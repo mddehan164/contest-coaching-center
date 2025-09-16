@@ -1,15 +1,24 @@
-import { X } from "lucide-react";
+import { EditIcon, X } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { setIsOpenAddModal } from "../redux-rtk/payment/paymentSlice";
+import {
+  setIsOpenAddModal,
+  setIsOpenEditModal,
+} from "../redux-rtk/payment/paymentSlice";
 import CustomSpinner from "../shared/custom/CustomSpinner";
-import PaymentEdit from "./PaymentEdit";
+import { usePayment } from "../hooks/usePayment";
 
 const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
+  const { selectPaymentData } = usePayment();
   const isDisabled = paymentData?.remaining_amount === 0;
   const dispatch = useDispatch();
 
   const handleOpenAddModal = () => {
     dispatch(setIsOpenAddModal(true));
+  };
+
+  const handleEditPayment = (paymentItem) => {
+    selectPaymentData(paymentItem);
+    dispatch(setIsOpenEditModal(true));
   };
 
   if (loading || !paymentData) {
@@ -71,6 +80,7 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
                 </th>
                 <th className="px-4 py-2 border">Added By</th>
                 <th className="px-4 py-2 border">Status</th>
+                <th className="px-4 py-2 border">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -116,6 +126,14 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
                               item?.status.slice(1)}
                           </span>
                         )}
+                      </td>
+                      <td className="px-4 py-2 border flex items-center justify-center">
+                        <button
+                          onClick={() => handleEditPayment(item)}
+                          className="hover:text-headerColor hover:cursor-pointer"
+                        >
+                          <EditIcon size={24} />
+                        </button>
                       </td>
                     </tr>
                   );
@@ -171,8 +189,6 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
             </button>
           </div>
         </div>
-
-        <PaymentEdit />
       </div>
     </div>
   );
