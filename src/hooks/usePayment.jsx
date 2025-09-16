@@ -133,7 +133,6 @@ export const usePayment = () => {
         encrypted_payment_id: paymentId,
         detailData,
       }).unwrap();
-      console.log(result);
 
       if (selectedStudentData) {
         refetchStudentPayment();
@@ -153,7 +152,7 @@ export const usePayment = () => {
   const editPaymentDetail = async (paymentId, detailData) => {
     try {
       const result = await editDetail({
-        encrypted_payment_id: paymentId,
+        encrypted_payment_detail_id: paymentId,
         detailData,
       }).unwrap();
 

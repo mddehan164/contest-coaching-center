@@ -4,7 +4,6 @@ import PaymentAdd from "./PaymentAdd";
 import { ErrorUi } from "../shared/ui";
 import { usePayment } from "../hooks/usePayment";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import PaymentEdit from "./PaymentEdit";
 
 const FilterPerson = ({ dataList = [], person = "Student" }) => {
@@ -13,7 +12,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     showDetailsModal,
     isOpenAddModal,
     isOpenEditModal,
-    editedPaymentData,
     selectedPaymentData,
   } = useSelector((state) => state.payment);
   const {
@@ -32,23 +30,15 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     toggling,
   } = usePayment();
 
-  useEffect(() => {
-    if (selectedPaymentData) {
-      console.log(selectedPaymentData);
-    }
-  }, [selectedPaymentData]);
-
   const handleCloseDetails = () => {
     closeDetailsModal();
     clearSelectedStudent();
   };
 
   const handleCloseAdd = () => {
-    console.log("🔍 FilterPerson - Closing add modal");
     closeAddModal();
   };
   const handleCloseEdit = () => {
-    console.log("🔍 FilterPerson - Closing edit modal");
     closeEditModal();
   };
 
@@ -56,13 +46,11 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     const student = selectedStudentData || selectedStudent;
     if (!student) {
       console.warn("Missing data - selectedStudent:", student);
-      alert("Please select a student first");
       return;
     }
     const payment = singlePayment?.data?.payment;
     if (!payment) {
       console.warn("Missing data - singlePayment:", singlePayment);
-      alert("Payment details not loaded yet");
       return;
     }
 
@@ -74,29 +62,26 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
         payment_method: paymentData.payment_method,
         payment_date: paymentData.payment_date,
       });
-
-      closeAddModal(); // modal বন্ধ করো
+      if (result.success) {
+        closeAddModal(); // modal বন্ধ করো
+      }
     } catch (error) {
       console.error("❌ Error adding payment:", error);
-      alert("Failed to add payment. Please try again.");
+      alert(`Failed to adding for ${error.message}`);
     }
   };
 
   const handleEditPayment = async (paymentId, editedPaymentData) => {
     try {
-      console.log(
-        "🔍 FilterPerson - Editing payment for:",
-        selectedStudent?.name
-      );
       if (paymentId) {
-        console.log(paymentId);
-        await editPaymentDetail(paymentId, editedPaymentData);
-      } else {
-        console.log("no id found");
+        const res = await editPaymentDetail(paymentId, editedPaymentData);
+        if (res.success) {
+          handleCloseEdit();
+        }
       }
     } catch (error) {
-      console.error("Error editing payment:", error);
-      alert("Failed to edit payment. Please try again.");
+      console.error("Error editing payment:", error.message);
+      alert(`Failed to edit payment for ${error.message}`);
     }
   };
 
@@ -104,7 +89,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     try {
       await toggleDetailStatus(detailId);
     } catch (error) {
-      console.error("Error toggling status:", error);
+      console.error("Error toggling status:", error.message);
       alert("Failed to toggle status. Please try again.");
     }
   };
@@ -153,6 +138,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
           onClose={handleCloseEdit}
           onEditPayment={handleEditPayment}
           type={person}
+          loading={editing}
         />
       )}
     </div>

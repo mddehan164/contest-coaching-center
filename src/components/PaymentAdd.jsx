@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import CustomSpinner from "../shared/custom/CustomSpinner";
 
 const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
-  console.log(loading);
   // initial form data
   const initialFormData =
     type === "student"

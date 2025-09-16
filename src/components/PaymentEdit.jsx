@@ -1,7 +1,9 @@
 import { X, CheckCircle, XCircle } from "lucide-react";
-import { useState, useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomSpinner from "../shared/custom/CustomSpinner";
+import NotifyContainer from "../utils/notify";
 
 const PaymentEdit = ({
   details = null,
@@ -9,8 +11,8 @@ const PaymentEdit = ({
   type = null,
   initialPayment = null,
   onEditPayment,
+  loading,
 }) => {
-  // formData initialising
   const initialFormData =
     type === "student"
       ? {
@@ -21,46 +23,70 @@ const PaymentEdit = ({
         }
       : {
           class_fee: initialPayment?.amount || "",
-          status: initialPayment?.status || 0, // তুমি যদি status করে রাখতে চাও
+          status: initialPayment?.status || 0,
           payment_date: initialPayment?.payment_date || "",
         };
 
   const [formData, setFormData] = useState(initialFormData);
   const [statusPaid, setStatusPaid] = useState(false);
 
-  // check statusPaid logic
   useEffect(() => {
-    if (type === "student") {
-      const amt = Number(formData.payable_amount);
-      const total = Number(details?.due_amount);
-
-      if (isNaN(amt) || isNaN(total)) {
+    if (type === "student" && details) {
+      const amount = Number(formData.payable_amount);
+      const due = Number(details?.due_amount);
+      const totalPaid = details?.total_paid;
+      const totalAmt = details?.total_amount;
+      const prevAmount = initialPayment?.amount;
+      // যদি ধরা হয় amt invalid number বা details নেই
+      if (isNaN(amount) || amount <= 0) {
         setStatusPaid(false);
         return;
       }
-      if (amt > total) {
-        toast.error(
-          `Amount cannot exceed remaining amount: ${details.due_amount}`,
-          {
-            position: "top-right",
-            autoClose: 2000,
-          }
-        );
-        // অতিরিক্ত amount দিলে পুরোনো value রেখে দিবে
+
+      // যদি paid state হয় (i.e. amt === total), পরবর্তীতে amount কম দিলে error
+      if (due === 0 && amount > prevAmount) {
+        toast.error(`Payment can't be higher from total fee.`, {
+          position: "top-right",
+          autoClose: 2000,
+        });
         setFormData((prev) => ({
           ...prev,
-          payable_amount: prev.payable_amount,
+          payable_amount: prevAmount,
         }));
-        setStatusPaid(false);
         return;
       }
-      if (amt === total) {
+      if (due === 0 && amount === prevAmount) {
+        setStatusPaid(true);
+        return;
+      } else {
+        setStatusPaid(false);
+      }
+      if (amount + due > totalAmt && due !== 0) {
+        toast.error(`Payment can't be higher from total fee.`, {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          payable_amount: prevAmount,
+        }));
+        return;
+      }
+      if (amount === due + totalPaid) {
         setStatusPaid(true);
       } else {
         setStatusPaid(false);
       }
+      return;
     }
-  }, [formData.payable_amount, details?.due_amount, type]);
+  }, [
+    formData.payable_amount,
+    details?.due_amount,
+    type,
+    details?.total_paid,
+    details?.total_amount,
+    initialPayment?.amount,
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,23 +99,16 @@ const PaymentEdit = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // validation
-    if (
-      type === "student" &&
-      (!formData.payable_amount || formData.payable_amount === "")
-    ) {
-      alert("Please enter payable amount");
-      return;
-    }
-    if (
-      type !== "student" &&
-      (!formData.class_fee || formData.class_fee === "")
-    ) {
-      alert("Please enter class fee");
-      return;
+    if (type === "student") {
+      if (formData.payable_amount === "") {
+        toast.error("Please enter payable amount", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        return;
+      }
     }
 
-    // Prepare body same রকম হওয়া উচিত যেমন তোমার বসিয়েছো postman body
     const updatedPayment =
       type === "student"
         ? {
@@ -101,53 +120,30 @@ const PaymentEdit = ({
         : {
             amount: Number(formData.class_fee),
             payment_date: formData.payment_date || null,
-            // যদি `status` থাকে
             status: formData.status,
-            // অন্যান্য প্রয়োজনীয় field যদি থাকে
           };
-    console.log(initialPayment.id);
 
-    onEditPayment(initialPayment.id, updatedPayment);
-    // API কল: তোমার `{{base_url}}/payment-details/{{encrypted_payment_detail_id}}`
-    // try {
-    //   const response = await fetch(
-    //     // `${process.env.REACT_APP_BASE_URL}/payment-details/${initialPayment?.id}`, // ধরো initialPayment.id এ encrypted_payment_detail_id আছে
-    //     {
-    //       method: "PUT", // অথবা PATCH, API যেটা expect করে সেটি
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(updatedPayment),
-    //     }
-    //   );
-    //   if (!response.ok) {
-    //     const err = await response.json();
-    //     throw new Error(err.message || "Failed to update payment");
-    //   }
-    //   const data = await response.json();
-    //   toast.success("Payment updated successfully", { autoClose: 2000 });
-    //   // callback
-    //   onUpdatePayment(data);
-    //   onClose();
-    // } catch (error) {
-    //   console.error("Error updating payment:", error);
-    //   toast.error("Error updating payment", { autoClose: 2000 });
-    // }
+    try {
+      await onEditPayment(initialPayment.id, updatedPayment);
+    } catch (err) {
+      toast.error("Failed to edit payment. Please try again.", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <NotifyContainer />
       <div
         className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         onClick={onClose}
@@ -188,7 +184,7 @@ const PaymentEdit = ({
                       statusPaid ? "text-green-500" : "text-red-500"
                     }`}
                   >
-                    Remaining : {details.due_amount}
+                    Previous Amount : {initialPayment?.amount}
                   </span>
                 </div>
                 <div className="col-span-1">
