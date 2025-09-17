@@ -98,8 +98,14 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
                         {item?.payment_date?.split(" ")[0] || "Not Found"}
                       </td>
                       <td className="px-4 py-2 border">
-                        {item?.payment_method[0].toUpperCase() +
-                          item?.payment_method.slice(1) || "Not Found"}
+                        {item?.payment_method
+                          ?.replace(/_/g, " ")
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ") || "Not Found"}
                       </td>
                       <td className="px-4 py-2 border">
                         {type === "student"

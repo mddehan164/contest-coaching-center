@@ -1,5 +1,5 @@
 import { X, CheckCircle, XCircle } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomSpinner from "../shared/custom/CustomSpinner";
@@ -12,6 +12,8 @@ const PaymentEdit = ({
   initialPayment = null,
   onEditPayment,
   loading,
+  onToggle,
+  toggleLoad,
 }) => {
   const initialFormData =
     type === "student"
@@ -19,7 +21,8 @@ const PaymentEdit = ({
           payable_amount: initialPayment?.amount || "",
           payment_date: initialPayment?.payment_date || "",
           payment_description: initialPayment?.description || "",
-          payment_method: initialPayment?.payment_method || "",
+          payment_method:
+            initialPayment?.payment_method?.replace(/_/g, " ") || "",
         }
       : {
           class_fee: initialPayment?.amount || "",
@@ -79,14 +82,7 @@ const PaymentEdit = ({
       }
       return;
     }
-  }, [
-    formData.payable_amount,
-    details?.due_amount,
-    type,
-    details?.total_paid,
-    details?.total_amount,
-    initialPayment?.amount,
-  ]);
+  }, [formData.payable_amount, details, type, initialPayment?.amount]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,7 +111,9 @@ const PaymentEdit = ({
             amount: Number(formData.payable_amount),
             payment_date: formData.payment_date || null,
             description: formData.payment_description,
-            payment_method: formData.payment_method.toLowerCase(),
+            payment_method: formData.payment_method
+              .toLowerCase()
+              .replace(/\s+/g, "_"),
           }
         : {
             amount: Number(formData.class_fee),
@@ -125,7 +123,7 @@ const PaymentEdit = ({
 
     try {
       await onEditPayment(initialPayment.id, updatedPayment);
-    } catch (err) {
+    } catch {
       toast.error("Failed to edit payment. Please try again.", {
         position: "top-right",
         autoClose: 2000,
@@ -243,7 +241,7 @@ const PaymentEdit = ({
               />
             </div>
 
-            <div className="col-span-1 md:col-span-2 flex items-center space-x-2">
+            <div className="col-span-1 flex items-center space-x-2">
               {statusPaid ? (
                 <>
                   <CheckCircle className="text-green-500" size={20} />
@@ -256,6 +254,24 @@ const PaymentEdit = ({
                 </>
               )}
             </div>
+            <div className="col-span-1 flex items-center space-x-2">
+              <button
+                type="button"
+                onClick={() => onToggle(initialPayment.id)}
+                disabled={toggleLoad}
+                className={`px-3 py-1 rounded text-sm ${
+                  initialPayment?.status === "active"
+                    ? "bg-red-100 text-red-600 hover:bg-red-200"
+                    : "bg-green-100 text-green-600 hover:bg-green-200"
+                } ${toggleLoad ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                {toggleLoad
+                  ? "Loading..."
+                  : initialPayment?.status === "active"
+                  ? "Deactivate"
+                  : "Activate"}
+              </button>
+            </div>
 
             <button
               type="submit"
@@ -263,6 +279,7 @@ const PaymentEdit = ({
             >
               Update Payment
             </button>
+            {/* Toggle Button */}
           </form>
         </div>
       </div>

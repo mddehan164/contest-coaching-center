@@ -27,7 +27,7 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
   useEffect(() => {
     if (type === "student") {
       const amt = Number(formData.payable_amount);
-      const total = Number(details?.due_amount);
+      const total = Number(details?.remaining_amount);
 
       // jodi total defined na thake, ail out
       if (isNaN(amt) || isNaN(total)) {
@@ -59,7 +59,7 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
     }
   }, [
     formData.payable_amount,
-    details?.due_amount,
+    details?.remaining_amount,
     details?.total_amount,
     type,
   ]);
@@ -72,15 +72,19 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // You may want to validate
     if (
       type === "student" &&
-      (!formData.payable_amount || formData.payable_amount === "")
+      (!formData.payable_amount ||
+        !formData.payable_amount === "" ||
+        !formData.payment_date === 0 ||
+        !formData.payment_description === "" ||
+        !formData.payment_method === 0)
     ) {
-      alert("Please enter payable amount");
+      alert("Fields can't be empty");
       return;
     }
     if (
@@ -96,7 +100,9 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
         ? {
             payable_amount: Number(formData.payable_amount),
             payment_description: formData.payment_description,
-            payment_method: formData.payment_method.toLowerCase(),
+            payment_method: formData.payment_method
+              .toLowerCase()
+              .replace(/\s+/g, "_"),
           }
         : {
             class_fee: Number(formData.class_fee),
@@ -105,12 +111,15 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
       payment_date: formData.payment_date || null,
     };
 
-    onAddPayment(newPayment);
+    try {
+      await onAddPayment(newPayment);
+      setFormData(initialFormData);
+      setStatusPaid(false);
+    } catch (error) {
+      console.log(error);
+    }
 
     // reset
-    setFormData(initialFormData);
-    setStatusPaid(false);
-    onClose();
   };
 
   if (loading)
@@ -168,14 +177,14 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
                     Total Course Fee : {details.total_amount}
                   </span>
                 </div>
-                {details.due_amount ? (
+                {details.remaining_amount ? (
                   <div className="col-span-1 md:col-span-2">
                     <span
                       className={`text-lg font-semibold mb-4 text-center ${
                         statusPaid ? "text-green-500" : "text-red-500"
                       }`}
                     >
-                      Remaining : {details.due_amount}
+                      Remaining : {details.remaining_amount}
                     </span>
                   </div>
                 ) : (
@@ -259,9 +268,14 @@ const PaymentAdd = ({ details, onClose, onAddPayment, type, loading }) => {
 
             <button
               type="submit"
-              className="col-span-1 md:col-span-2 bg-headerColor hover:bg-headerColorHover text-white py-2 px-4 rounded-md"
+              disabled={loading}
+              className={`col-span-1 md:col-span-2 py-2 px-4 rounded-md ${
+                loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "bg-headerColor hover:bg-headerColorHover text-white "
+              }`}
             >
-              Add Payment
+              {loading ? "Loading..." : "Add Payment"}
             </button>
           </form>
         </div>

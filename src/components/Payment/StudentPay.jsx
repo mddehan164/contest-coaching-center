@@ -25,7 +25,6 @@ const StudentPay = () => {
     batchesOptions,
     updateSelectedCourseEncryptedId,
     selectStudent,
-    clearSelectedStudent,
     loading, // batch loading state
   } = usePayment();
 
@@ -47,7 +46,7 @@ const StudentPay = () => {
       encrypted_batch_id: filters.batch || "",
     },
     {
-      skip: !shouldFetchStudents || !filters.course, // Apply করার পর এবং course থাকলে
+      skip: !shouldFetchStudents || !filters.course || !filters.batch, // Apply করার পর এবং course থাকলে
       refetchOnMountOrArgChange: true,
     }
   );
@@ -74,15 +73,13 @@ const StudentPay = () => {
   // Course change করলে
   const handleCourseChange = (courseEncryptedId) => {
     // Redux state update করুন
-    dispatch(setFilters({ course: courseEncryptedId || null }));
-
-    // selectedCourseEncryptedId update করুন batch fetch এর জন্য
+    dispatch(setFilters({ course: courseEncryptedId || null, batch: null })); // batch reset করো
     updateSelectedCourseEncryptedId(courseEncryptedId);
   };
 
   // Apply filter function
   const handleApplyFilter = () => {
-    if (filters.course) {
+    if (filters.course && filters.batch) {
       setShouldFetchStudents(true);
       dispatch(setShowPopup(false));
       dispatch(setShowStickyBtn(true));
@@ -100,11 +97,6 @@ const StudentPay = () => {
   // Student select করলে
   const handleSelectStudent = (student) => {
     selectStudent(student);
-  };
-
-  // Student details close করলে
-  const handleCloseDetails = () => {
-    clearSelectedStudent();
   };
 
   const isLoading = loadingFilteredStudents;

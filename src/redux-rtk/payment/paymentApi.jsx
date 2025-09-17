@@ -91,7 +91,7 @@ export const paymentApi = apiSlice.injectEndpoints({
       query: ({ encrypted_payment_detail_id }) => ({
         // 🔹 URL change according to Postman
         url: `payment-details/${encrypted_payment_detail_id}/toggle-status`,
-        method: "POST",
+        method: "PATCH",
       }),
       invalidatesTags: ["Payments", "StudentPayment"],
     }),

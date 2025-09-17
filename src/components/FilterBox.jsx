@@ -85,9 +85,9 @@ const FilterBox = ({
         {/* Apply Button */}
         <button
           onClick={onApply}
-          disabled={!selectedCourse} // Course না থাকলে disable
+          disabled={!selectedCourse || !selectedBatch}
           className={`px-4 py-2 rounded w-full ${
-            selectedCourse
+            selectedCourse && selectedBatch
               ? "bg-headerColor hover:bg-headerColorHover text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}

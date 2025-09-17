@@ -15,7 +15,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     selectedPaymentData,
   } = useSelector((state) => state.payment);
   const {
-    selectedStudent,
     singlePayment,
     loadingSingle,
     closeDetailsModal,
@@ -25,6 +24,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     editPaymentDetail,
     toggleDetailStatus,
     clearSelectedStudent,
+    clearPaymentData,
     adding,
     editing,
     toggling,
@@ -37,13 +37,15 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
 
   const handleCloseAdd = () => {
     closeAddModal();
+    clearPaymentData();
   };
   const handleCloseEdit = () => {
     closeEditModal();
+    clearPaymentData();
   };
 
   const handleAddPayment = async (paymentData) => {
-    const student = selectedStudentData || selectedStudent;
+    const student = selectedStudentData;
     if (!student) {
       console.warn("Missing data - selectedStudent:", student);
       return;
@@ -87,7 +89,10 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
 
   const handleToggleStatus = async (detailId) => {
     try {
-      await toggleDetailStatus(detailId);
+      const res = await toggleDetailStatus(detailId);
+      if (res.success) {
+        handleCloseEdit();
+      }
     } catch (error) {
       console.error("Error toggling status:", error.message);
       alert("Failed to toggle status. Please try again.");
@@ -123,7 +128,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       {/* Add Payment Modal */}
       {isOpenAddModal && selectedStudentData && (
         <PaymentAdd
-          details={selectedStudentData.payment_summary}
+          details={singlePayment?.data.payment}
           loading={adding}
           type={person}
           onClose={handleCloseAdd}
@@ -139,6 +144,8 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
           onEditPayment={handleEditPayment}
           type={person}
           loading={editing}
+          toggleLoad={toggling}
+          onToggle={handleToggleStatus}
         />
       )}
     </div>

@@ -7,7 +7,6 @@ import {
 } from "../redux-rtk/course";
 import {
   setSelectedCourseEncryptedId,
-  setSelectedStudent,
   setLoading,
   setShowDetailsModal,
   setIsOpenAddModal,
@@ -29,7 +28,7 @@ export const usePayment = () => {
   // Redux state
   const {
     studentPayments,
-    selectedStudent,
+    // selectedStudent,
     selectedStudentData,
     filters,
     selectedCourseEncryptedId,
@@ -37,21 +36,15 @@ export const usePayment = () => {
   } = useSelector((state) => state.payment);
 
   // 🔹 Query: All courses
-  const {
-    data: coursesData,
-    isLoading: loadingCourses,
-    error: errorCourses,
-  } = useGetAllCoursesQuery();
+  const { data: coursesData, isLoading: loadingCourses } =
+    useGetAllCoursesQuery();
 
   // 🔹 Query: Batches for selected course - এখানে encrypted_id ব্যবহার করুন
-  const {
-    data: batchesData,
-    isLoading: loadingBatches,
-    error: errorBatches,
-  } = useGetCourseBatchesQuery(selectedCourseEncryptedId, {
-    skip: !selectedCourseEncryptedId, // selectedCourseEncryptedId ব্যবহার করুন
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: batchesData, isLoading: loadingBatches } =
+    useGetCourseBatchesQuery(selectedCourseEncryptedId, {
+      skip: !selectedCourseEncryptedId, // selectedCourseEncryptedId ব্যবহার করুন
+      refetchOnMountOrArgChange: true,
+    });
 
   // 🔹 Query: Filtered by course & batch - Apply filter এ click করার পর call হবে
   const {
@@ -64,7 +57,7 @@ export const usePayment = () => {
       encrypted_batch_id: filters.batch || "",
     },
     {
-      skip: !filters.course, // শুধু course থাকলেই fetch করবে
+      skip: !filters.course || !filters.batch,
       refetchOnMountOrArgChange: true,
     }
   );
@@ -91,13 +84,11 @@ export const usePayment = () => {
 
   // 🔹 Select student
   const selectStudent = (student) => {
-    dispatch(setSelectedStudent(student));
     dispatch(setSelectedStudentData(student)); // এই লাইনটা যোগ করো
   };
 
   // 🔹 Clear selected student
   const clearSelectedStudent = () => {
-    dispatch(setSelectedStudent(null));
     dispatch(setSelectedStudentData(null));
   };
 
@@ -137,9 +128,9 @@ export const usePayment = () => {
       if (selectedStudentData) {
         refetchStudentPayment();
       }
-      if (selectedStudent) {
-        refetchStudentPayment();
-      }
+      // if (selectedStudent) {
+      //   refetchStudentPayment();
+      // }
 
       return result;
     } catch (err) {
@@ -174,7 +165,7 @@ export const usePayment = () => {
         encrypted_payment_detail_id: detailId,
       }).unwrap();
 
-      if (selectedStudent) {
+      if (selectedStudentData) {
         refetchStudentPayment();
       }
 
@@ -223,7 +214,7 @@ export const usePayment = () => {
   return {
     // Redux state
     studentPayments,
-    selectedStudent,
+    // selectedStudent,
     selectedStudentData,
     filters,
     selectedCourseEncryptedId,
