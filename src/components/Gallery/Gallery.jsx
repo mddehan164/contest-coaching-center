@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { galleryData } from "../../data/galleryData";
+// import { galleryData } from "../../data/galleryData";
 
-const categories = ["All", "Success", "Campus", "Students", "Others"];
+const categories = ["All", "Success", "Campus", "Student", "Others"];
 
-const Gallery = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+const Gallery = ({ galleryData, loading }) => {
+  const [selectedCategory, setSelectedCategory] = useState("All".toLowerCase());
   const [displayData, setDisplayData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState(null);
 
   // Load gallery data based on selected category
   useEffect(() => {
-    setLoading(true);
-    const timeout = setTimeout(() => {
-      if (selectedCategory === "All") {
-        setDisplayData(galleryData);
-      } else {
-        setDisplayData(galleryData.filter(item => item.category === selectedCategory));
-      }
-      setLoading(false);
-    }, 500); // fake loading effect
-
-    return () => clearTimeout(timeout);
-  }, [selectedCategory]);
+    if (selectedCategory === "All".toLowerCase()) {
+      setDisplayData(galleryData);
+    } else {
+      setDisplayData(
+        galleryData?.filter(
+          (item) => item.category === selectedCategory.toLowerCase()
+        )
+      );
+    }
+  }, [selectedCategory, galleryData]);
 
   // Handle full screen modal opening
   const openModal = (image) => {
@@ -46,9 +43,9 @@ const Gallery = () => {
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat)}
+            onClick={() => setSelectedCategory(cat.toLowerCase())}
             className={`px-6 py-3 border rounded-lg font-medium text-sm transition-all ${
-              selectedCategory === cat
+              selectedCategory === cat.toLowerCase()
                 ? "bg-headerColorHover text-white"
                 : "bg-headerColor text-black hover:bg-headerColorHover"
             }`}
@@ -62,8 +59,18 @@ const Gallery = () => {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="bg-gray-300 h-48 rounded-lg animate-pulse"></div>
+            <div
+              key={i}
+              className="bg-gray-400 h-48 rounded-lg animate-pulse"
+            ></div>
           ))}
+        </div>
+      ) : displayData.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-red-500 text-lg mb-2">
+            কোনো ছবি পাওয়া যায়নি
+          </div>
+          <p className="text-gray-400">এই বিভাগে কোনো ছবি আপলোড করা হয়নি।</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

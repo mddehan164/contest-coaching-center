@@ -43,9 +43,11 @@ const CourseMain = () => {
           </div>
         ))}
       {error && (
-        <div className="flex justify-center items-center py-10">
+        <div className="flex justify-center items-center py-10 relative">
           <CustomSpinner />
-          <p className="text-red-500 italic font-medium">{error}</p>
+          <p className="text-red-500 italic font-medium absolute bottom-10">
+            {error}
+          </p>
         </div>
       )}
       {!loading && !error && (
