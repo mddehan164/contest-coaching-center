@@ -1,18 +1,17 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { noticeBtnData } from '../../data/data'
-import { setActiveTab } from '../../redux-rtk/uiSlice';
-import MainBtn from '../mainBtn';
+import { useSelector, useDispatch } from "react-redux";
+import { noticeBtnData } from "../../data/data";
+import { setActiveTab } from "../../redux-rtk/uiSlice";
+import MainBtn from "../MainBtn";
 
 const NoticeBtn = () => {
-    const dispatch = useDispatch();
-    const activeTab = useSelector(state => state.ui.activeTab);
-    
-    const handleSetActiveTab = (tab) => {
-        dispatch(setActiveTab(tab));
-    };
+  const dispatch = useDispatch();
+  const activeTab = useSelector((state) => state.ui.activeTab);
+
+  const handleSetActiveTab = (tab) => {
+    dispatch(setActiveTab(tab));
+  };
   return (
-    <div className='flex flex-wrap gap-1 pt-2 w-full'>
+    <div className="flex flex-wrap gap-1 pt-2 w-full">
       {noticeBtnData.btnName.map((btn, idx) => {
         const isActive = activeTab === btn;
         return (
@@ -24,11 +23,11 @@ const NoticeBtn = () => {
             isActive={isActive}
             onClick={() => handleSetActiveTab(btn)}
           />
-        )
+        );
       })}
-      <hr className='w-full'/>
+      <hr className="w-full" />
     </div>
-  )
-}
+  );
+};
 
-export default NoticeBtn
+export default NoticeBtn;

@@ -16,28 +16,23 @@ import {
   useDeleteNoticeMutation,
   useGetAllNoticesQuery,
   useUpdateNoticeMutation,
-  useGetNoticeBatchesQuery,
   useGetBranchesQuery,
 } from "../redux-rtk/notice";
-import {
-  CreateNoticeSchema,
-  EditNoticeSchema,
-  validateZodSchema,
-} from "@utils/validations";
+
 import { useDebouncedSearch } from "./useDebounce";
 
 // Helper function to format date for API (MySQL datetime format)
 const formatDateForAPI = (dateObj) => {
   if (!dateObj) return null;
   const date = new Date(dateObj);
-  
+
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-  
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
@@ -56,12 +51,12 @@ export const useNotices = () => {
     useDeleteNoticeMutation();
   const { isLoading, isFetching, isError, error } = useGetAllNoticesQuery(
     { page: currentPage, limit: pageSize, search: debouncedSearch },
-    { 
+    {
       refetchOnMountOrArgChange: false, // Don't refetch on every mount
       skip: false,
       // Cache data for 5 minutes to avoid unnecessary refetches
       refetchOnFocus: false,
-      refetchOnReconnect: true
+      refetchOnReconnect: true,
     }
   );
 
@@ -229,16 +224,21 @@ export const useAddNotice = () => {
 
     // Use FormData for proper file upload that Laravel can parse
     const formData = new FormData();
-    
+
     // Ensure data is properly formatted for Laravel - try different approaches
-    formData.append('title', String(data.title).trim());
-    formData.append('type', parseInt(data.type)); // Send as integer
-    formData.append('date', formatDateForAPI(data.date));
-    
+    formData.append("title", String(data.title).trim());
+    formData.append("type", parseInt(data.type)); // Send as integer
+    formData.append("date", formatDateForAPI(data.date));
+
     // Add file if it exists (actual File object)
     if (data.file && data.file instanceof File) {
-      formData.append('file', data.file, data.file.name);
-      console.log("Adding file to FormData:", data.file.name, data.file.type, data.file.size);
+      formData.append("file", data.file, data.file.name);
+      console.log(
+        "Adding file to FormData:",
+        data.file.name,
+        data.file.type,
+        data.file.size
+      );
     }
 
     // Debug FormData contents
@@ -248,9 +248,11 @@ export const useAddNotice = () => {
     }
 
     // Try adding Laravel specific fields
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      ?.getAttribute("content");
     if (csrfToken) {
-      formData.append('_token', csrfToken);
+      formData.append("_token", csrfToken);
     }
 
     console.log("Sending FormData to Laravel...");
@@ -316,29 +318,29 @@ export const useEditNotice = ({ data }) => {
     if (data) {
       setValue("title", data.title || "");
       setValue("type", Number(data.type) || null);
-      
+
       // Convert ISO date to Date object for the date picker
       if (data.date) {
         const dateObj = new Date(data.date);
         setValue("date", dateObj);
       }
-      
+
       // Handle existing file properly
       if (data.file) {
         // Store the file URL for reference but don't set it in the form
         // The form field should remain null for existing files until a new file is selected
         setValue("file", null);
-        
+
         // Extract filename from URL for preview
-        const filename = data.file.split('/').pop() || data.file;
+        const filename = data.file.split("/").pop() || data.file;
         setImagePreview(filename);
-        
+
         console.log("Setting existing file preview:", filename);
       } else {
         setValue("file", null);
         setImagePreview("");
       }
-      
+
       //   setValue("long_des", data.long_des || "");
       //   setValue("price", data.price?.toString() || "");
       //   setValue("offer_price", data.offer_price?.toString() || "");
@@ -432,20 +434,25 @@ export const useEditNotice = ({ data }) => {
 
     // Use FormData for proper file upload that Laravel can parse
     const formData = new FormData();
-    
+
     // Ensure data is properly formatted for Laravel
-    formData.append('title', String(data.title).trim());
-    formData.append('type', String(data.type));
-    formData.append('date', formatDateForAPI(data.date));
-    
+    formData.append("title", String(data.title).trim());
+    formData.append("type", String(data.type));
+    formData.append("date", formatDateForAPI(data.date));
+
     // Add file if it exists (actual File object)
     if (data.file && data.file instanceof File) {
-      formData.append('file', data.file, data.file.name);
-      console.log("Adding file to FormData for update:", data.file.name, data.file.type, data.file.size);
+      formData.append("file", data.file, data.file.name);
+      console.log(
+        "Adding file to FormData for update:",
+        data.file.name,
+        data.file.type,
+        data.file.size
+      );
     }
 
     // Add Laravel method spoofing for PUT request if needed
-    formData.append('_method', 'PUT');
+    formData.append("_method", "PUT");
 
     updateNotice({ data: formData, noticeId: selectedData?.encrypted_id })
       .unwrap()

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FormInput from "../../shared/forms/FormInput";
-import { AddSvg, DeleteSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
+import { AddSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";
 import AddNoticeModal from "./AddNoticeModal";
 import EditNoticeModal from "./EditNoticeModal";
@@ -28,7 +28,6 @@ const Notice = () => {
     handleOpenEditNoticeModal,
     handleOpenAddNoticeModal,
     isConfirmModalOpen,
-    handleOpenConfirmationModal,
     handleCloseConfirmationModal,
   } = useNotices();
 
@@ -36,7 +35,10 @@ const Notice = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleViewDetails = (notice) => {
-    handleSetSelectedNotice({ ...notice, actionType: SelectedSliceTypeEnum.VIEW });
+    handleSetSelectedNotice({
+      ...notice,
+      actionType: SelectedSliceTypeEnum.VIEW,
+    });
     setIsOpen(true);
   };
 
@@ -87,10 +89,14 @@ const Notice = () => {
         >
           {dataList?.map((item, index) => (
             <tr className="table_row" key={index}>
-              <td className="table_td">{(meta?.current_page - 1) * meta?.per_page + index + 1}</td>
+              <td className="table_td">
+                {(meta?.current_page - 1) * meta?.per_page + index + 1}
+              </td>
               <td className="table_td">{item?.title || "N/A"}</td>
               <td className="table_td truncate">{item?.type_name || "N/A"}</td>
-              <td className="table_td">{item?.created_at?.split("T")[0] || "N/A"}</td>
+              <td className="table_td">
+                {item?.created_at?.split("T")[0] || "N/A"}
+              </td>
               <td className="table_td">
                 {item?.branch?.name || "N/A"},{item?.branch?.location || "N/A"}
               </td>
@@ -105,9 +111,7 @@ const Notice = () => {
               </td>
               <td className="table_td flex justify-center">
                 <div className="flex items-center gap-x-3">
-                  <button
-                    onClick={() => handleViewDetails(item)}
-                  >
+                  <button onClick={() => handleViewDetails(item)}>
                     <EyeOpenSvg />
                   </button>
                   <button
@@ -121,14 +125,6 @@ const Notice = () => {
                   >
                     <EditSvg />
                   </button>
-                  {/* <button
-                                        onClick={() => {
-                                            handleSetSelectedNotice({ ...item, type: SelectedSliceTypeEnum.DELETE });
-                                            handleOpenConfirmationModal();
-                                        }}
-                                    >
-                                        <DeleteSvg />
-                                    </button> */}
                 </div>
               </td>
             </tr>
@@ -143,14 +139,14 @@ const Notice = () => {
         onClose={() => setIsOpen(false)}
         title="Notice Details"
         fieldsToShow={[
-          'title',
-          'type_name',
-          'date',
-          'branch.name',
-          'file_url',
-          'status',
-          'created_at',
-          'creator.name'
+          "title",
+          "type_name",
+          "date",
+          "branch.name",
+          "file_url",
+          "status",
+          "created_at",
+          "creator.name",
         ]}
       />
 
@@ -165,7 +161,8 @@ const Notice = () => {
         isOpen={isConfirmModalOpen}
         onClose={handleCloseConfirmationModal}
         title={
-          selectedData?.actionType === SelectedSliceTypeEnum.DELETE && "Are you sure?"
+          selectedData?.actionType === SelectedSliceTypeEnum.DELETE &&
+          "Are you sure?"
         }
         description={
           selectedData?.actionType === SelectedSliceTypeEnum.DELETE

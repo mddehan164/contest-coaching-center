@@ -1,14 +1,13 @@
-import React from 'react'
-import NoticeBtn from './NoticeBtn'
-import MainNoticePanel from './MainNoticePanel'
+import NoticeBtn from "./NoticeBtn";
+import MainNoticePanel from "./MainNoticePanel";
 
 const NoticeBody = () => {
   return (
-    <div className='w-full h-auto'>
+    <div className="w-full">
       <NoticeBtn />
       <MainNoticePanel />
     </div>
-  )
-}
+  );
+};
 
-export default NoticeBody
+export default NoticeBody;

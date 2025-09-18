@@ -1,29 +1,69 @@
-import React from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { noticeData, noticeBtnData } from "../../data/data";
+import { noticeBtnData } from "../../data/data";
 import NoticePanel from "./NoticePanel";
-import MainBtn from "../mainBtn";
+import { useNotices } from "../../hooks/useNotice";
+import BranchFilter from "../BranchFilter";
+import CustomSpinner from "../../shared/custom/CustomSpinner";
 
 const MainNoticePanel = () => {
-  const { notices, tabLabelMap } = noticeData;
-  const activeTab = useSelector(state => state.ui.activeTab);
+  const { isLoading, dataList, handleSetSelectedNotice } = useNotices();
+  const activeTab = useSelector((state) => state.ui.activeTab);
+
+  // ✅ Branch filter state
+  const [selectedBranch, setSelectedBranch] = useState(null);
+
+  // 🔹 Branch অনুযায়ী filter
+  const filteredByBranch = selectedBranch
+    ? dataList.filter((n) => n.branch?.name === selectedBranch)
+    : dataList;
+
+  // 🔹 Tab অনুযায়ী filter
+  const admissionNotice = filteredByBranch?.filter(
+    (n) => n.type_name === noticeBtnData.btnName[0]
+  );
+  const administrationNotice = filteredByBranch?.filter(
+    (n) => n.type_name === noticeBtnData.btnName[1]
+  );
+  const departmentNotice = filteredByBranch?.filter(
+    (n) => n.type_name === noticeBtnData.btnName[2]
+  );
+
+  if (isLoading) {
+    return (
+      <div className="w-full flex items-center justify-between">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="w-full">
+      {/* 🔹 Branch Filter Buttons */}
+      <BranchFilter notices={dataList} onFilter={setSelectedBranch} />
+
+      {/* 🔹 Notices by Tab */}
       {activeTab === "Admission" && (
-        <NoticePanel notices={notices.admissionNotices} />
+        <NoticePanel
+          notices={admissionNotice}
+          onSelect={handleSetSelectedNotice}
+          loading={isLoading}
+        />
       )}
       {activeTab === "Administration" && (
-        <NoticePanel notices={notices.administrationNotices} />
+        <NoticePanel
+          notices={administrationNotice}
+          onSelect={handleSetSelectedNotice}
+          loading={isLoading}
+        />
       )}
       {activeTab === "Department" && (
-        <NoticePanel notices={notices.departmentNotices} />
+        <NoticePanel
+          notices={departmentNotice}
+          onSelect={handleSetSelectedNotice}
+          loading={isLoading}
+        />
       )}
-
-      <MainBtn
-        data={tabLabelMap[activeTab]} // ✅ ট্যাব অনুযায়ী নাম
-        btnStyle={noticeBtnData.btnStyle}
-      />
     </div>
   );
 };
