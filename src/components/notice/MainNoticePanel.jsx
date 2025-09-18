@@ -4,19 +4,19 @@ import { noticeBtnData } from "../../data/data";
 import NoticePanel from "./NoticePanel";
 import { useNotices } from "../../hooks/useNotice";
 import BranchFilter from "../BranchFilter";
-import CustomSpinner from "../../shared/custom/CustomSpinner";
 
 const MainNoticePanel = () => {
   const { isLoading, dataList, handleSetSelectedNotice } = useNotices();
   const activeTab = useSelector((state) => state.ui.activeTab);
-
+  // Filter out status 0 first
+  const validNotices = dataList.filter((n) => n.status !== 0);
   // ✅ Branch filter state
   const [selectedBranch, setSelectedBranch] = useState(null);
 
   // 🔹 Branch অনুযায়ী filter
   const filteredByBranch = selectedBranch
-    ? dataList.filter((n) => n.branch?.name === selectedBranch)
-    : dataList;
+    ? validNotices.filter((n) => n.branch?.name === selectedBranch)
+    : validNotices;
 
   // 🔹 Tab অনুযায়ী filter
   const admissionNotice = filteredByBranch?.filter(
@@ -28,14 +28,6 @@ const MainNoticePanel = () => {
   const departmentNotice = filteredByBranch?.filter(
     (n) => n.type_name === noticeBtnData.btnName[2]
   );
-
-  if (isLoading) {
-    return (
-      <div className="w-full flex items-center justify-between">
-        <CustomSpinner />
-      </div>
-    );
-  }
 
   return (
     <div className="w-full">

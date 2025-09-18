@@ -55,7 +55,7 @@ export const useBatchs = () => {
   useEffect(() => {
     if (viewData?.success) {
       dispatch(setSelectedBatchData(viewData.data));
-      successNotify(viewData.message);
+      // successNotify(viewData.message);
       dispatch(viewBatchFromList({ id: selectedData?.encrypted_id }));
       dispatch(setBatchConfirmationModal(false));
     }

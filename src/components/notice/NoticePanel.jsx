@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaFilePdf } from "react-icons/fa6";
 import PreviewNotice from "./PreviewNotice";
+import CustomSpinner from "../../shared/custom/CustomSpinner";
+const BASE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
 
 const NoticePanel = ({ notices, onSelect, loading }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,8 +23,8 @@ const NoticePanel = ({ notices, onSelect, loading }) => {
 
   // তারিখ format function
   const formatDate = (dateStr) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateStr).toLocaleDateString("bn-BD", options);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateStr).toLocaleDateString("en-US", options);
   };
 
   return (
@@ -50,7 +52,7 @@ const NoticePanel = ({ notices, onSelect, loading }) => {
                   <div className="flex gap-3 mt-1">
                     {/* Preview in new tab */}
                     <a
-                      href={notice.file_url}
+                      href={`${BASE_IMAGE_URL}${notice?.file_url}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 text-xs underline"
@@ -60,7 +62,7 @@ const NoticePanel = ({ notices, onSelect, loading }) => {
 
                     {/* Force download */}
                     <a
-                      href={notice.file_url}
+                      href={`${notice?.file_url}`}
                       download
                       className="text-green-600 text-xs underline"
                     >
@@ -74,10 +76,10 @@ const NoticePanel = ({ notices, onSelect, loading }) => {
         </div>
 
         {/* Right side: Selected Notice */}
-        <div className="w-full md:w-[48%] lg:w-[35%] border p-2 lg:p-5 rounded ">
-          {loading && <p>Loading...</p>}
+        <div className="w-full md:w-[48%] lg:w-[35%] p-2 lg:p-5 rounded">
+          {loading && <CustomSpinner />}
           {!loading && (
-            <div className="w-full mx-auto">
+            <div className="w-full m-auto">
               <PreviewNotice />
             </div>
           )}

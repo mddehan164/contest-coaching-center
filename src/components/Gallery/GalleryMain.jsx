@@ -1,6 +1,5 @@
 import Gallery from "./Gallery";
 import ScrollAnimatedSection from "../ScrollAnimatedSection";
-import ViewModal from "../ViewModal";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 
@@ -40,7 +39,6 @@ const GalleryMain = () => {
       <ScrollAnimatedSection id="gallery" direction="right">
         <Gallery galleryData={images} loading={loading} />
       </ScrollAnimatedSection>
-      <ViewModal />
     </div>
   );
 };

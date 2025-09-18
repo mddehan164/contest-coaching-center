@@ -9,6 +9,9 @@ const User = ({ logout }) => {
     ...(user?.role === "admin"
       ? [{ feature: "Dashboard", action: "", link: "dashboard" }]
       : []),
+    ...(user?.role === "superadmin"
+      ? [{ feature: "Dashboard", action: "", link: "dashboard" }]
+      : []),
     ...(user?.role === "student"
       ? [{ feature: "Profile", action: "", link: "profile" }]
       : []),
@@ -21,16 +24,10 @@ const User = ({ logout }) => {
   }
   return (
     <div
-      className="rounded-full w-10 aspect-square cursor-pointer relative"
+      className="sm:rounded-full font-semibold sm:w-10 sm:aspect-square cursor-pointer relative hover:text-white hover:bg-headerColorHover  bg-headerColor px-5 sm:flex sm:items-center sm:justify-center max-sm:h-10"
       onClick={() => setClick(!click)}
     >
-      <img
-        src={`https://ui-avatars.com/api/?name=${
-          user?.name || "User"
-        }&background=86defe&color=fff&rounded=true`}
-        alt="User Avatar"
-        className="rounded-full w-10 aspect-square hover:bg-headerColor hover:w-12"
-      />
+      <div>{user?.name.slice(0, 2) + "."}</div>
       <div
         className={`${
           click ? "absolute" : "hidden"

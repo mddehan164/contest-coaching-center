@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 import User from "../User";
@@ -12,7 +12,7 @@ const NavbarBtn = (props) => {
   const navigate = useNavigate();
   const [logoutMutation] = useLogoutMutation();
 
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const NavbarBtn = (props) => {
   const confirmDelete = async () => {
     setLoading(true);
     setMsg("Logging out...");
-    
+
     try {
       // Try to call logout API, but don't fail if it errors
       await logoutMutation().unwrap();
@@ -48,7 +48,7 @@ const NavbarBtn = (props) => {
       {!isAuthenticated && (
         <Link
           to="/login"
-          className={`max-sm:py-2 max-sm:px-6 max-sm:rounded-none sm:py-2 sm:px-4 bg-${props.data.data.btnStyle.btnColor} px-6 py-4 text-white rounded-lg hover:bg-headerColorHover`}
+          className={`py-2 px-6 rounded-none sm:py-2 sm:px-4 bg-${props.data.data.btnStyle.btnColor} md:px-6 md:py-4 text-white sm:rounded-full hover:bg-headerColorHover`}
         >
           {props.data.data.btnName}
         </Link>

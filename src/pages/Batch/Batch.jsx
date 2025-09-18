@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FormInput from "../../shared/forms/FormInput";
 import { AddSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";
@@ -10,7 +10,7 @@ import { useBatchs } from "../../hooks/useBatch";
 import { SelectedSliceTypeEnum } from "../../utils/enums";
 import NotifyContainer from "../../utils/notify";
 import { BatchStatusToggleSelect } from "../../components/statusToggleSelect";
-import ViewModal from "../../components/ViewModal";
+// import ViewModal from "../../components/ViewModal";
 
 const Batch = () => {
   const {
@@ -25,12 +25,10 @@ const Batch = () => {
     setSearchKeyword,
     handleSetSelectedBatch,
     updatePageMeta,
-    viewLoading,
     handleView,
     handleOpenEditBatchModal,
     handleOpenAddBatchModal,
     isConfirmModalOpen,
-    handleOpenConfirmationModal,
     handleCloseConfirmationModal,
   } = useBatchs();
 
@@ -137,7 +135,7 @@ const Batch = () => {
 
       {/* edit batch modal */}
       <EditBatchModal data={selectedData} />
-      <ViewModal title={"Batch Data"} data={selectedData} />
+      {/* <ViewModal title={"Batch Data"} data={selectedData} /> */}
 
       {/* view modal */}
       <CustomConfirmationModal

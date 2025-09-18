@@ -39,7 +39,7 @@ const Gallery = ({ galleryData, loading }) => {
       <h2 className="text-2xl font-bold text-center mb-6">ফটো গ্যালারি</h2>
 
       {/* Tabs */}
-      <div className="flex justify-center space-x-4 mb-6 flex-wrap">
+      <div className="flex sm:justify-center gap-3 flex-wrap mb-5">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -57,7 +57,7 @@ const Gallery = ({ galleryData, loading }) => {
 
       {/* Gallery */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-pulse">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
@@ -73,7 +73,7 @@ const Gallery = ({ galleryData, loading }) => {
           <p className="text-gray-400">এই বিভাগে কোনো ছবি আপলোড করা হয়নি।</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {displayData.map((item) => (
             <div
               key={item.id}

@@ -35,7 +35,6 @@ export { default as Customise } from "./Customise";
 export { default as User } from "./User";
 export { default as StudentPay } from "./Payment/StudentPay";
 export { default as TeacherPay } from "./Payment/TeacherPay";
-export { default as ViewModal } from "./ViewModal";
 export { default as PaymentDetails } from "./PaymentDetails";
 export { default as PaymentAdd } from "./PaymentAdd";
 export { default as PaymentEdit } from "./PaymentEdit";
