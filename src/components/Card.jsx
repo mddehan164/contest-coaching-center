@@ -79,6 +79,7 @@ const Card = ({ data, btn, encryptedId }) => {
           src={data.image}
           alt={data.title || "Course Image"}
           className="w-full h-auto object-cover"
+          loading="lazy"
         />
       )}
 

@@ -51,6 +51,7 @@ const BranchCard = () => {
                 alt={`Slide ${currentSlide}`}
                 className="w-64 h-64 object-contain rounded cursor-pointer"
                 onClick={() => openFullscreen(branch.images[currentSlide])}
+                loading="lazy"
               />
               <button
                 className="absolute right-2 text-3xl text-gray-600 hover:text-black font-bold z-10"
@@ -91,6 +92,7 @@ const BranchCard = () => {
             src={fullscreenImg}
             alt="Full View"
             className="max-w-screen max-h-screen object-contain rounded shadow-lg"
+            loading="lazy"
           />
         </div>
       )}

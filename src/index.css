@@ -1,35 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Tiro+Bangla:ital@0;1&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Tiro+Bangla:ital@0;1&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Outfit","Tiro Bangla", sans-serif;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Outfit", "Tiro Bangla", sans-serif;
 }
 
 @layer base {
-  html, body {
+  html,
+  body {
     @apply overflow-x-hidden;
-    
   }
 }
 .fc .fc-daygrid-day.fc-day-today {
   background-color: rgb(184, 239, 253) !important; /* yellow-100 */
 }
 
-
-
 @layer utilities {
-    @media (min-width: 200px) {
+  @media (min-width: 200px) {
     .padding {
       padding-top: 100px;
     }
   }
-
 
   @media (min-width: 400px) and (max-width: 700px) {
     .padding {
@@ -42,7 +39,7 @@
     }
   }
 
-   @media (min-width: 701px){
+  @media (min-width: 701px) {
     .padding {
       padding-top: 180px;
     }
@@ -79,11 +76,10 @@
 }
 
 .ellipsis {
-  @apply overflow-hidden text-ellipsis whitespace-nowrap
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 @layer utilities {
-
   /*==========TABLE START============*/
   .table {
     @apply w-full text-text-700 text-base md:text-base rounded-lg;
@@ -115,6 +111,6 @@
 
   /*==========TABLE END============*/
 }
-.css-mnyndp-control{
+.css-mnyndp-control {
   padding: 0px !important;
 }

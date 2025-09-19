@@ -84,6 +84,7 @@ const Gallery = ({ galleryData, loading }) => {
                 src={item.src}
                 alt={`Gallery ${item.id}`}
                 className="w-full aspect-video object-contain bg-zinc-900 transition-all duration-300 transform group-hover:scale-105 group-hover:opacity-80"
+                loading="lazy"
               />
               {/* Fullscreen icon */}
               <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -107,6 +108,7 @@ const Gallery = ({ galleryData, loading }) => {
               src={modalImage}
               alt="Full-screen view"
               className="max-w-screen max-h-screen object-contain"
+              loading="lazy"
             />
             {/* Cancel Button */}
             <button

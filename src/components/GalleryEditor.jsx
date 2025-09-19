@@ -448,6 +448,7 @@ const GalleryEditor = () => {
                     src={preview.url}
                     alt={`Preview ${index + 1}`}
                     className="w-full h-24 object-cover rounded-md border"
+                    loading="lazy"
                   />
                   <button
                     onClick={() => removePreviewImage(index)}
@@ -509,6 +510,7 @@ const GalleryEditor = () => {
                 src={image.src}
                 alt={`Gallery ${image.category}`}
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
               />
 
               {/* Overlay with actions */}
@@ -616,6 +618,7 @@ const GalleryEditor = () => {
               src={modalImage}
               alt="Gallery preview"
               className="max-w-full max-h-full object-contain"
+              loading="lazy"
             />
             <button
               className="absolute top-4 right-4 text-white bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-all"
@@ -652,6 +655,7 @@ const GalleryEditor = () => {
                   src={tempEditedImage.src}
                   alt="Edit preview"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
 

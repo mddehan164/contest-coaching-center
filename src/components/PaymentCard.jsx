@@ -27,6 +27,7 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
           className="w-full h-full object-cover object-center"
           src={img}
           alt={data?.name || "image"}
+          loading="lazy"
         />
       </div>
       <div className="w-[58%] p-2 flex flex-col justify-center ">

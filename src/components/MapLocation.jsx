@@ -1,5 +1,4 @@
 // src/components/MapLocation.jsx
-import React from "react";
 
 const MapLocation = () => {
   return (

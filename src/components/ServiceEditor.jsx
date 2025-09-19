@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { services } from "../data/data"; // Assuming you have a services data file
 import {
   FaBookOpen,
   FaHeadphones,
-  FaUsers,
   FaFileAlt,
   FaQuestion,
   FaSms,

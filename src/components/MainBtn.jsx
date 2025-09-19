@@ -1,5 +1,3 @@
-import React from "react";
-
 const MainBtn = ({ data, btnStyle, isActive, onClick }) => {
   const bgColor = isActive ? "white" : btnStyle.btnBgColor;
   const textColor = isActive ? "text-black border-2" : "text-white";

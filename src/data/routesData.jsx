@@ -1,47 +1,20 @@
-import {
-  AllSuccessCard,
-  BranchEditor,
-  CourseDetails,
-  Customise,
-  Error,
-  GalleryEditor,
-  GalleryMain,
-  ServiceEditor,
-  StatsEditor,
-  StudentPay,
-  SuccessEditor,
-  SummaryEditor,
-  TeacherPay,
-} from "../components";
-import {
-  // DCourse,
-  DSlider,
-  Help,
-  Logout,
-  // Notice,
-  Payments,
-  Schedule,
-  Settings,
-} from "../dashboardPages";
+import { lazy } from "react";
 
-import {
-  Admission,
-  BeforeVerify,
-  Branches,
-  Courses,
-  Login,
-  Profile,
-  Register,
-  Verify,
-} from "../pages";
-import Batch from "../pages/Batch/Batch";
-import Branch from "../pages/Branch/Branch";
-import { Course } from "../pages/Course";
-import { Notice } from "../pages/Notice";
-import Review from "../pages/Review/Review";
-import Student from "../pages/Student/Student";
-import { Teacher } from "../pages/Teacher";
-// import { Student } from "../pages/Student";
+// main pages
+const Courses = lazy(() => import("../pages/Courses"));
+const Admission = lazy(() => import("../pages/Admission"));
+const BeforeVerify = lazy(() => import("../pages/BeforeVerify"));
+const Branches = lazy(() => import("../pages/Branches"));
+const Login = lazy(() => import("../pages/Login"));
+const Profile = lazy(() => import("../pages/Profile"));
+const Register = lazy(() => import("../pages/Register"));
+const Verify = lazy(() => import("../pages/Verify"));
+const GalleryMain = lazy(() => import("../components/Gallery/GalleryMain"));
+const AllSuccessCard = lazy(() =>
+  import("../components/successfullPerson/AllSuccessCard")
+);
+const CourseDetails = lazy(() => import("../components/courses/CourseDetails"));
+const Error = lazy(() => import("../components/Error"));
 
 export let mainPageRoutes = [
   { element: <Courses />, path: "courses" },
@@ -57,6 +30,28 @@ export let mainPageRoutes = [
   { element: <Verify />, path: "verify/:id/:hash" },
   { element: <Error />, path: "*" },
 ];
+// dashboard pages
+const Schedule = lazy(() => import("../dashboardPages/Schedule"));
+const Branch = lazy(() => import("../pages/Branch/Branch"));
+const Student = lazy(() => import("../pages/Student/Student"));
+const Batch = lazy(() => import("../pages/Batch/Batch"));
+const Teacher = lazy(() => import("../pages/Teacher/Teacher"));
+const Course = lazy(() => import("../pages/Course/Course"));
+const Notice = lazy(() => import("../pages/Notice/Notice"));
+const Review = lazy(() => import("../pages/Review/Review"));
+const SuccessEditor = lazy(() => import("..//components/SuccessEditor"));
+const StatsEditor = lazy(() => import("../components/StatsEditor "));
+const SummaryEditor = lazy(() => import("../components/SummaryEditor"));
+const ServiceEditor = lazy(() => import("../components/ServiceEditor"));
+const GalleryEditor = lazy(() => import("../components//GalleryEditor"));
+const BranchEditor = lazy(() => import("../components/BranchEditor"));
+const Customise = lazy(() => import("../components/Customise"));
+const Settings = lazy(() => import("../dashboardPages/Settings"));
+const Help = lazy(() => import("../dashboardPages/Help"));
+const Logout = lazy(() => import("../dashboardPages/Logout"));
+const Payments = lazy(() => import("../dashboardPages/Payments"));
+const TeacherPay = lazy(() => import("../components/Payment/TeacherPay"));
+const StudentPay = lazy(() => import("../components/Payment/StudentPay"));
 
 export let dashboardPageRoutes = [
   { element: <Schedule />, path: "schedule" },
@@ -65,10 +60,8 @@ export let dashboardPageRoutes = [
   { element: <Batch />, path: "batch" },
   { element: <Teacher />, path: "teacher" },
   { element: <Course />, path: "course" },
-  // { element: <DSlider />, path: "slider" },
   { element: <Notice />, path: "notice" },
   { element: <Review />, path: "review" },
-  // { element: <DCourse />, path: "course-editor" },
   { element: <SuccessEditor />, path: "success-editor" },
   { element: <StatsEditor />, path: "stats-editor" },
   { element: <ServiceEditor />, path: "service-editor" },

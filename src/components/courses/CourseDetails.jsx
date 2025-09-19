@@ -40,6 +40,7 @@ const CourseDetails = () => {
             src={course.image}
             alt={course.title}
             className="w-full h-auto object-cover rounded-lg shadow-md"
+            loading="lazy"
           />
         </div>
         <div className="space-y-4">

@@ -48,7 +48,7 @@ const NavbarBtn = (props) => {
       {!isAuthenticated && (
         <Link
           to="/login"
-          className={`py-2 px-6 rounded-none sm:py-2 sm:px-4 bg-${props.data.data.btnStyle.btnColor} md:px-6 md:py-4 text-white sm:rounded-full hover:bg-headerColorHover`}
+          className={`py-2 px-6 sm:py-2 sm:px-4 bg-${props.data.data.btnStyle.btnColor} md:px-5 md:py-3 font-semibold text-white rounded-md hover:bg-headerColorHover`}
         >
           {props.data.data.btnName}
         </Link>

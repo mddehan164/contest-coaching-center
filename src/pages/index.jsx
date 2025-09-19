@@ -1,9 +1,9 @@
-export {default as Branches} from './Branches';
-export {default as Courses} from './Courses';
-export {default as Admission} from './Asmission';
-export {default as Home} from './Home';
-export {default as Login} from './Login';
-export {default as Register} from './Register';
-export {default as Verify} from './Verify';
-export {default as BeforeVerify} from './BeforeVerify';
-export {default as Profile} from './Profile';
+export { default as Branches } from "./Branches";
+export { default as Courses } from "./Courses";
+export { default as Admission } from "./Admission";
+export { default as Home } from "./Home";
+export { default as Login } from "./Login";
+export { default as Register } from "./Register";
+export { default as Verify } from "./Verify";
+export { default as BeforeVerify } from "./BeforeVerify";
+export { default as Profile } from "./Profile";

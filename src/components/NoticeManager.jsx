@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { noticeData, noticeBtnData } from "../data/data";
 import { FaEdit, FaTrash, FaDownload } from "react-icons/fa";
 

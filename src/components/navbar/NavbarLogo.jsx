@@ -22,7 +22,12 @@ const NavbarLogo = () => {
         }}
         className="w-1/6 h-auto flex items-center justify-center py-4 gap-3 max-sm:w-1/2 max-sm:gap-1 max-sm:py-2 sm:w-1/4 sm:gap-1 sm:py-3 sm:px-0 "
       >
-        <img src={logo} alt="Contest" className="w-1/4 max-sm:w-1/4 lg:w-1/5" />
+        <img
+          src={logo}
+          alt="Contest"
+          className="w-1/4 max-sm:w-1/4 lg:w-1/5"
+          loading="lazy"
+        />
         <div className="">
           <h1 className="font-semibold text-5xl max-sm:text-xl max-sm:leading-4 sm:text-2xl lg:text-3xl xl:text-4xl xl:leading-[1.3]">
             {title}

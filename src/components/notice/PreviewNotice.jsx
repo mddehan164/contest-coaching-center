@@ -22,6 +22,7 @@ const PreviewNotice = () => {
               src={`${BASE_IMAGE_URL}${selectedData?.file_url}`}
               title="PDF Preview"
               className="w-full h-full object-contain "
+              loading="lazy"
             ></iframe>
           </div>
           <h2 className="text-lg font-semibold mb-2">{selectedData.title}</h2>

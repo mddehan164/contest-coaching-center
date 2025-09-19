@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sliderData } from "../data/data";
 
@@ -53,8 +53,13 @@ const SliderEditor = () => {
       const img = new Image();
       img.onload = () => {
         const ratio = img.width / img.height;
-        if (Math.abs(ratio - RATIO) > 0.01 || file.size > MAX_SIZE_MB * 1024 * 1024) {
-          alert("You uploaded image must be 8:3 ratio and file size limit max. 2MB");
+        if (
+          Math.abs(ratio - RATIO) > 0.01 ||
+          file.size > MAX_SIZE_MB * 1024 * 1024
+        ) {
+          alert(
+            "You uploaded image must be 8:3 ratio and file size limit max. 2MB"
+          );
           return;
         }
         callback(e.target.result);
@@ -172,7 +177,9 @@ const SliderEditor = () => {
                 <button
                   className="bg-contestRed hover:bg-red-600 text-white px-2 py-1 rounded"
                   onClick={() => handleDeleteSlider(idx)}
-                  disabled={deletedCount >= MAX_DELETE || sliders.length <= MIN_SLIDERS}
+                  disabled={
+                    deletedCount >= MAX_DELETE || sliders.length <= MIN_SLIDERS
+                  }
                 >
                   Delete
                 </button>
