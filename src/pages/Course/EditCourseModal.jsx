@@ -1,192 +1,198 @@
-import { Controller } from 'react-hook-form';
-import { useEditCourse } from '@hooks/useCourse';
-import { CustomContainerModal } from '@shared/custom';
-import { FormInput, FormSelect, FormTextarea } from '@shared/forms';
-import ImageUpload from '../../shared/forms/ImageUpload';
-import NotifyContainer from '../../utils/notify';
-import { useState } from 'react';
+import { Controller } from "react-hook-form";
+import { useEditCourse } from "@hooks/useCourse";
+import { CustomContainerModal } from "@shared/custom";
+import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
+import ImageUpload from "../../shared/forms/ImageUpload";
+import NotifyContainer from "../../utils/notify";
+import { useState } from "react";
 
 const EditCourseModal = ({ data }) => {
-    const {
-        isEditModalOpen,
-        handleCloseEditCourseModal,
-        control,
-        isActionBtnDisabled,
-        isLoading,
-        handleUpdate,
-        handleSubmit,
-        formValues,
-        branchOptions,
-        handleFileSelect,
-        imagePreview,
-        isUploading,
-        handleManualUrlInput,
-    } = useEditCourse({ data });
+  const {
+    isEditModalOpen,
+    handleCloseEditCourseModal,
+    control,
+    isActionBtnDisabled,
+    isLoading,
+    handleUpdate,
+    handleSubmit,
+    formValues,
+    branchOptions,
+    handleFileSelect,
+    imagePreview,
+    isUploading,
+    handleManualUrlInput,
+  } = useEditCourse({ data });
 
-    const [manualUrl, setManualUrl] = useState("");
+  const [manualUrl, setManualUrl] = useState("");
 
-    // Group options
-    const groupOptions = [
-        { value: "science", label: "Science" },
-        { value: "arts", label: "Arts" },
-        { value: "commerce", label: "Commerce" },
-        { value: "technology", label: "Technology" },
-        { value: "business", label: "Business" },
-    ];
+  // Group options
+  const groupOptions = [
+    { value: "science", label: "Science" },
+    { value: "arts", label: "Arts" },
+    { value: "commerce", label: "Commerce" },
+  ];
 
-    const handleManualUrlSubmit = () => {
-        if (manualUrl.trim()) {
-            handleManualUrlInput(manualUrl.trim());
-            setManualUrl("");
-        }
-    };
+  const handleManualUrlSubmit = () => {
+    if (manualUrl.trim()) {
+      handleManualUrlInput(manualUrl.trim());
+      setManualUrl("");
+    }
+  };
 
-    return (
-        <CustomContainerModal
-            isOpen={isEditModalOpen}
-            onClose={handleCloseEditCourseModal}
-            title="Edit Course"
-            description="Update course details easily"
-            handler={handleSubmit(handleUpdate)}
-            actionBtnText="Update Course"
-            isActionBtnDisabled={isActionBtnDisabled}
-            isLoading={isLoading}
-        >
-            <div className='my-10 space-y-5'>
-                {/* Course Title */}
-                <Controller
-                    name="title"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Course Title"
-                            placeholder="Enter course title"
-                            id="title"
-                            isLoading={isLoading}
-                            isCol={true}
-                            {...field}
-                        />
-                    )}
-                />
+  return (
+    <CustomContainerModal
+      isOpen={isEditModalOpen}
+      onClose={handleCloseEditCourseModal}
+      title="Edit Course"
+      description="Update course details easily"
+      handler={handleSubmit(handleUpdate)}
+      actionBtnText="Update Course"
+      isActionBtnDisabled={isActionBtnDisabled}
+      isLoading={isLoading}
+    >
+      <div className="my-10 space-y-5">
+        {/* Course Title */}
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              label="Course Title"
+              placeholder="Enter course title"
+              id="title"
+              isLoading={isLoading}
+              isCol={true}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Image Upload */}
-                <ImageUpload
-                    name="image"
-                    control={control}
-                    label="Course Image"
-                    module="course"
-                    accept="image/*"
-                    maxSize={5 * 1024 * 1024} // 5MB
-                    required={true}
-                    currentImage={data?.image}
-                />
+        {/* Image Upload */}
+        <ImageUpload
+          name="image"
+          control={control}
+          label="Course Image"
+          module="course"
+          accept="image/*"
+          maxSize={5 * 1024 * 1024} // 5MB
+          required={true}
+          currentImage={data?.image}
+        />
 
-                {/* Short Description */}
-                <Controller
-                    name="short_des"
-                    control={control}
-                    render={({ field }) => (
-                        <FormTextarea
-                            label="Short Description"
-                            placeholder="Enter short description"
-                            id="short_des"
-                            rows={3}
-                            {...field}
-                        />
-                    )}
-                />
+        {/* Short Description */}
+        <Controller
+          name="short_des"
+          control={control}
+          render={({ field }) => (
+            <FormTextarea
+              label="Short Description"
+              placeholder="Enter short description"
+              id="short_des"
+              rows={3}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Long Description */}
-                <Controller
-                    name="long_des"
-                    control={control}
-                    render={({ field }) => (
-                        <FormTextarea
-                            label="Long Description"
-                            placeholder="Enter detailed description"
-                            id="long_des"
-                            rows={5}
-                            {...field}
-                        />
-                    )}
-                />
+        {/* Long Description */}
+        <Controller
+          name="long_des"
+          control={control}
+          render={({ field }) => (
+            <FormTextarea
+              label="Long Description"
+              placeholder="Enter detailed description"
+              id="long_des"
+              rows={5}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Price */}
-                <Controller
-                    name="price"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Price"
-                            placeholder="Enter price"
-                            id="price"
-                            type="number"
-                            isLoading={isLoading}
-                            isCol={true}
-                            {...field}
-                        />
-                    )}
-                />
+        {/* Price */}
+        <Controller
+          name="price"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              label="Price"
+              placeholder="Enter price"
+              id="price"
+              type="number"
+              isLoading={isLoading}
+              isCol={true}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Offer Price */}
-                <Controller
-                    name="offer_price"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Offer Price"
-                            placeholder="Enter offer price"
-                            id="offer_price"
-                            type="number"
-                            isLoading={isLoading}
-                            isCol={true}
-                            {...field}
-                        />
-                    )}
-                />
+        {/* Offer Price */}
+        <Controller
+          name="offer_price"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              label="Offer Price"
+              placeholder="Enter offer price"
+              id="offer_price"
+              type="number"
+              isLoading={isLoading}
+              isCol={true}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Branches */}
-                <Controller
-                    name="branch_id"
-                    control={control}
-                    render={({ field }) => (
-                        <FormSelect
-                            label="Branches"
-                            options={branchOptions}
-                            selectedOption={branchOptions.filter(opt => field.value?.includes(opt.value))}
-                            handleChange={(selectedOptions) =>
-                                field.onChange(selectedOptions ? selectedOptions.map(opt => opt.value) : [])
-                            }
-                            isLoading={isLoading}
-                            placeholder="Select branches"
-                            isCol={true}
-                            isMulti={true}
-                            isSearchable={true}
-                        />
-                    )}
-                />
+        {/* Branches */}
+        <Controller
+          name="branch_id"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              label="Branches"
+              options={branchOptions}
+              selectedOption={branchOptions.filter((opt) =>
+                field.value?.includes(opt.value)
+              )}
+              handleChange={(selectedOptions) =>
+                field.onChange(
+                  selectedOptions ? selectedOptions.map((opt) => opt.value) : []
+                )
+              }
+              isLoading={isLoading}
+              placeholder="Select branches"
+              isCol={true}
+              isMulti={true}
+              isSearchable={true}
+            />
+          )}
+        />
 
-                {/* Group */}
-                <Controller
-                    name="group"
-                    control={control}
-                    render={({ field }) => (
-                        <FormSelect
-                            label="Group"
-                            options={groupOptions}
-                            selectedOption={groupOptions.find(opt => opt.value === field.value)}
-                            handleChange={(selectedOption) => field.onChange(selectedOption?.value)}
-                            isLoading={isLoading}
-                            placeholder="Select group"
-                            isCol={true}
-                            isSearchable={true}
-                        />
-                    )}
-                />
-            </div>
-            <NotifyContainer />
-        </CustomContainerModal>
-    );
+        {/* Group */}
+        <Controller
+          name="group"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              label="Group"
+              options={groupOptions}
+              selectedOption={groupOptions.find(
+                (opt) => opt.value === field.value
+              )}
+              handleChange={(selectedOption) =>
+                field.onChange(selectedOption?.value)
+              }
+              isLoading={isLoading}
+              placeholder="Select group"
+              isCol={true}
+              isSearchable={true}
+            />
+          )}
+        />
+      </div>
+      <NotifyContainer />
+    </CustomContainerModal>
+  );
 };
 
 export default EditCourseModal;

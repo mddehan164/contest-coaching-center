@@ -45,79 +45,134 @@ const AddTeacherModal = () => {
       isLoading={isLoading}
     >
       <div className="my-10 space-y-5">
-        <Controller name="name" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true} label="Teacher Name" placeholder="Enter name" {...field} />
-        )} />
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Teacher Name"
+              placeholder="Enter name"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="subject" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true} label="Subject" placeholder="Enter subject" {...field} />
-        )} />
+        <Controller
+          name="subject"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Subject"
+              placeholder="Enter subject"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="course_id" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Select Course"
-            options={courseOptions}
-            selectedOption={courseOptions.find(opt => opt.value === field.value)}
-            handleChange={(opt) => field.onChange(opt?.value)}
-            placeholder="Choose a course"
-            isSearchable={true}
-          />
-        )} />
+        <Controller
+          name="course_id"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Select Course"
+              options={courseOptions}
+              selectedOption={courseOptions.find(
+                (opt) => opt.value === field.value
+              )}
+              handleChange={(opt) => field.onChange(opt?.value)}
+              placeholder="Choose a course"
+              isSearchable={true}
+            />
+          )}
+        />
 
-        <Controller name="batch_id" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Select Batch"
-            options={batchesOptions}
-            selectedOption={batchesOptions.find(opt => opt.value === field.value)}
-            handleChange={(opt) => field.onChange(opt?.value)}
-            placeholder="Choose a batch"
-            isSearchable={true}
-          />
-        )} />
+        <Controller
+          name="batch_id"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Select Batch"
+              options={batchesOptions}
+              selectedOption={batchesOptions.find(
+                (opt) => opt.value === field.value
+              )}
+              handleChange={(opt) => field.onChange(opt?.value)}
+              placeholder="Choose a batch"
+              isSearchable={true}
+            />
+          )}
+        />
 
-        <Controller name="gender" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Gender"
-            options={[
-              { value: "male", label: "Male" },
-              { value: "female", label: "Female" },
-            ]}
-            selectedOption={{ value: field.value, label: field.value }}
-            handleChange={(opt) => field.onChange(opt.value)}
-          />
-        )} />
+        <Controller
+          name="gender"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Gender"
+              options={[
+                { value: "male", label: "Male" },
+                { value: "female", label: "Female" },
+              ]}
+              selectedOption={{ value: field.value, label: field.value }}
+              handleChange={(opt) => field.onChange(opt.value)}
+            />
+          )}
+        />
 
-        <Controller name="mobile" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true} label="Mobile" placeholder="01712345678" {...field} />
-        )} />
+        <Controller
+          name="mobile"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Mobile"
+              placeholder="01712345678"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="address" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true} label="Address" placeholder="Enter address" {...field} />
-        )} />
+        <Controller
+          name="address"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Address"
+              placeholder="Enter address"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="status" isCol={true} control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Status"
-            options={[{ value: 1, label: "Active" }, { value: 0, label: "Inactive" }]}
-            selectedOption={{ value: field.value, label: field.value === 1 ? "Active" : "Inactive" }}
-            handleChange={(opt) => field.onChange(opt.value)}
-          />
-        )} />
+        <Controller
+          name="status"
+          isCol={true}
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Status"
+              options={[
+                { value: 1, label: "Active" },
+                { value: 0, label: "Inactive" },
+              ]}
+              selectedOption={{
+                value: field.value,
+                label: field.value === 1 ? "Active" : "Inactive",
+              }}
+              handleChange={(opt) => field.onChange(opt.value)}
+            />
+          )}
+        />
 
         {/* Image Upload Field */}
         <div>
-          <label className="block text-sm font-medium text-text-600 mb-2">
-            Teacher Image
-          </label>
-
           {/* Image Upload */}
           <ImageUpload
             name="image"
