@@ -16,7 +16,7 @@ const DSidebar = () => {
     <div className="relative">
       {/* Expand/Collapse Toggle Button */}
       <LuArrowRightLeft
-        className="absolute top-0 right-0 cursor-pointer text-white"
+        className="hidden md:block absolute top-0 right-0 cursor-pointer text-white"
         onClick={handleToggleExpand}
       />
 
