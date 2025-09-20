@@ -138,7 +138,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
 
       {selectedPaymentData && isOpenEditModal && (
         <PaymentEdit
-          details={selectedStudentData.payment_summary}
+          details={singlePayment?.data.payment}
           initialPayment={selectedPaymentData}
           onClose={handleCloseEdit}
           onEditPayment={handleEditPayment}

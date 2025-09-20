@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import axiosInstance from "../../../api/axiosInstance";
 import { API_CONFIG } from "../../constants/api";
@@ -65,16 +65,14 @@ const ImageUpload = ({
         const fullUrl = `${API_CONFIG.BASE_URL.replace(
           "/api",
           ""
-        )}/${imagePath}`;
-        console.log(fullUrl);
+        )}/public/${imagePath}`;
 
         // Set preview URL for display
         setPreviewUrl(fullUrl);
         setFileName("" + response.data.data.original_name);
 
         // Update form value with the image path
-        onChange(imagePath);
-
+        onChange(fullUrl);
         // Call callback if provided
         if (onImageUploaded) {
           onImageUploaded(response.data.data);
@@ -131,7 +129,8 @@ const ImageUpload = ({
                 <div className="text-gray-500 text-sm">Uploading...</div>
               ) : previewUrl ? (
                 <img
-                  src={`${BASE_IMAGE_URL}/${previewUrl}`}
+                  // src={`${BASE_IMAGE_URL}/public/${previewUrl}`}
+                  src={previewUrl}
                   alt="Preview"
                   className="w-full h-full object-cover rounded-lg"
                 />
@@ -174,11 +173,7 @@ const ImageUpload = ({
                   File: {fileName}
                 </p>
               )}
-              {value && (
-                <p className="text-sm text-green-600 truncate mb-1">
-                  Image Path: {value}
-                </p>
-              )}
+
               {isUploading && (
                 <p className="text-sm text-blue-600">Uploading image...</p>
               )}

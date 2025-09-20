@@ -14,11 +14,6 @@ const EditBranchModal = ({ data }) => {
     isLoading,
     handleSubmit,
     handleEditBranch,
-    formValues,
-    isUploading,
-    imagePreview,
-    handleFileSelect,
-    handleManualUrlInput,
   } = useEditBranch({ data });
 
   return (
@@ -27,7 +22,7 @@ const EditBranchModal = ({ data }) => {
       onClose={handleCloseEditBranchModal}
       title="Edit Branch"
       description="Update branch details"
-      handler={handleSubmit(handleEditBranch)}
+      handler={handleSubmit(() => handleEditBranch(data))}
       actionBtnText="Update Branch"
       isActionBtnDisabled={isActionBtnDisabled}
       isLoading={isLoading}
@@ -104,6 +99,7 @@ const EditBranchModal = ({ data }) => {
             accept="image/*"
             maxSize={5 * 1024 * 1024} // 5MB
             required={false}
+            currentImage={data?.image}
           />
         </div>
       </div>

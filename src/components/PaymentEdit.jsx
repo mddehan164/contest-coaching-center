@@ -36,7 +36,7 @@ const PaymentEdit = ({
   useEffect(() => {
     if (type === "student" && details) {
       const amount = Number(formData.payable_amount);
-      const due = Number(details?.due_amount);
+      const due = Number(details?.remaining_amount);
       const totalPaid = details?.total_paid;
       const totalAmt = details?.total_amount;
       const prevAmount = initialPayment?.amount;
@@ -48,7 +48,7 @@ const PaymentEdit = ({
 
       // যদি paid state হয় (i.e. amt === total), পরবর্তীতে amount কম দিলে error
       if (due === 0 && amount > prevAmount) {
-        toast.error(`Payment can't be higher from total fee.`, {
+        toast.error(`Payment can't be higher from total fees.`, {
           position: "top-right",
           autoClose: 2000,
         });
@@ -64,7 +64,7 @@ const PaymentEdit = ({
       } else {
         setStatusPaid(false);
       }
-      if (amount + due > totalAmt && due !== 0) {
+      if (due !== 0 && amount > totalPaid) {
         toast.error(`Payment can't be higher from total fee.`, {
           position: "top-right",
           autoClose: 2000,

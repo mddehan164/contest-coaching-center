@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import { successNotify, errorNotify } from "../utils/notify";
+import NotifyContainer, { successNotify, errorNotify } from "../utils/notify";
 
 const GalleryEditor = () => {
   const [images, setImages] = useState([]);
@@ -154,9 +154,9 @@ const GalleryEditor = () => {
     }
   };
 
-  const toggleImageStatus = async (imageId, currentStatus) => {
+  const toggleImageStatus = async (imageId) => {
     try {
-      const response = await axiosInstance.put(
+      const response = await axiosInstance.patch(
         `/photo-gallery/${imageId}/status`
       );
       if (response.data.success) {
@@ -369,6 +369,7 @@ const GalleryEditor = () => {
 
   return (
     <div className="w-full mx-auto p-4 xl:px-44">
+      <NotifyContainer />
       <h2 className="text-2xl font-bold text-center mb-6">Gallery Editor</h2>
 
       {/* Filter Buttons */}
@@ -509,26 +510,15 @@ const GalleryEditor = () => {
               <img
                 src={image.src}
                 alt={`Gallery ${image.category}`}
-                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                className={`w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105 ${
+                  image.status === 0 ? "opacity-10" : ""
+                }`}
                 loading="lazy"
               />
 
               {/* Overlay with actions */}
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity duration-300 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-2">
-                  {/* View button */}
-                  {/* <button
-                    className="text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-full transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(image.src, e);
-                    }}
-                    title="View Image"
-                  >
-                    <ViewIcon />
-                  </button> */}
-
-                  {/* Edit button */}
                   <button
                     className="text-white bg-green-600 hover:bg-green-700 p-2 rounded-full transition-colors"
                     onClick={(e) => {
