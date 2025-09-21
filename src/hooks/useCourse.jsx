@@ -405,8 +405,6 @@ export const useEditCourse = ({ data }) => {
       })(),
     };
 
-    console.log(processedData);
-
     const validatedData = validateZodSchema({
       schema: EditCourseSchema,
       data: processedData,

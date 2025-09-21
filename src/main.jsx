@@ -10,9 +10,7 @@ import InitialLoader from "./components/InitialLoader.jsx";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
-      <Suspense fallback={<InitialLoader />}>
-        <App />
-      </Suspense>
+      <App />
     </BrowserRouter>
   </Provider>
 );

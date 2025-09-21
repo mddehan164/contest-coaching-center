@@ -65,7 +65,7 @@ const ImageUpload = ({
         const fullUrl = `${API_CONFIG.BASE_URL.replace(
           "/api",
           ""
-        )}/public/${imagePath}`;
+        )}/${imagePath}`;
 
         // Set preview URL for display
         setPreviewUrl(fullUrl);

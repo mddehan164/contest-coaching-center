@@ -281,18 +281,18 @@ export const useEditBatch = ({ data }) => {
   };
 
   const handleUpdate = (data) => {
-    if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE)
-      return errorNotify("Invalid batch type.");
+    // if (selectedData?.type !== SelectedSliceTypeEnum.UPDATE)
+    //   return errorNotify("Invalid batch type.");
 
     const startDate = new Date(data.start_date);
     const endDate = new Date(data.end_date);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (startDate < today) {
-      errorNotify("Start date cannot be before today's date.");
-      return;
-    }
+    // if (startDate < today) {
+    //   errorNotify("Start date cannot be before today's date.");
+    //   return;
+    // }
 
     if (endDate < startDate) {
       errorNotify("End date cannot be before start date.");
@@ -321,7 +321,6 @@ export const useEditBatch = ({ data }) => {
           handleCloseEditBatchModal();
           // Remove this line as it's likely causing issues
           // handleOpenConfirmationModal();
-          console.log({ ...response?.data }, selectedData);
           dispatch(updateBatchInList(response?.data));
           successNotify(response?.message);
         }
