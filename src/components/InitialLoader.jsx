@@ -5,7 +5,7 @@ export default function InitialLoader({ fullScreen = true }) {
   return (
     <div
       className={`${
-        fullScreen ? "w-full h-screen bg-white" : "w-1/2 h-auto"
+        fullScreen ? "w-full h-screen bg-white" : "w-1/4 h-auto"
       } flex items-center justify-center`}
     >
       <div className="relative flex items-center justify-center w-1/4">
@@ -13,7 +13,7 @@ export default function InitialLoader({ fullScreen = true }) {
         <img
           src={logoBorder}
           alt="border"
-          className="absolute"
+          className="absolute w-full"
           loading="lazy"
         />
 
@@ -21,7 +21,7 @@ export default function InitialLoader({ fullScreen = true }) {
         <img
           src={logoMain}
           alt="main"
-          className="w-[70%] animate-fade-in-out"
+          className="w-[50%] animate-fade-in-out"
           loading="lazy"
         />
       </div>

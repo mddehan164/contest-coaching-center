@@ -4,13 +4,14 @@ import Loader from "../Loader";
 import User from "../User";
 import ConfirmModal from "../ConfirmModal";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../../redux-rtk/auth/authApi";
+import api from "../../../api/axiosInstance";
+// import { useLogoutMutation } from "../../redux-rtk/auth/authApi";
 import { logout as logoutAction } from "../../redux-rtk/auth/authSlice";
 
 const NavbarBtn = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [logoutMutation] = useLogoutMutation();
+  // const [logoutMutation] = useLogoutMutation();
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -26,7 +27,7 @@ const NavbarBtn = (props) => {
 
     try {
       // Try to call logout API, but don't fail if it errors
-      await logoutMutation().unwrap();
+      await api.post("/auth/logout");
     } catch (error) {
       // Ignore API errors during logout
       console.log("Logout API call failed, but continuing with local logout");

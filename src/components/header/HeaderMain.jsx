@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import HeaderDetails from "./HeaderDetails.jsx";
 import HeaderIcons from "./HeaderIcons.jsx";
 import { motion, useAnimation } from "framer-motion";
@@ -33,14 +33,11 @@ const Header = () => {
   const isMountedRef = useRef(false);
 
   useEffect(() => {
-    // Use a small delay to ensure Framer Motion controls are fully initialized
-    const timer = setTimeout(() => {
-      isMountedRef.current = true;
-    }, 100);
+    // Mark mounted
+    isMountedRef.current = true;
 
     const handleScroll = () => {
-      // Only proceed if component is mounted and controls are available
-      if (!isMountedRef.current || !controls) return;
+      if (!isMountedRef.current) return;
 
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollYRef.current && currentScrollY > 50) {
@@ -51,16 +48,13 @@ const Header = () => {
       lastScrollYRef.current = currentScrollY;
     };
 
-    // Add scroll listener
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      // Cleanup
-      clearTimeout(timer);
       isMountedRef.current = false;
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [controls]); // Remove lastScrollY from dependencies
+  }, [controls]);
 
   return (
     <motion.header

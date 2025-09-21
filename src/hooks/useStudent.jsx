@@ -19,8 +19,8 @@ import {
 } from "../redux-rtk/student";
 import {
   CreateStudentSchema,
-  EditStudentSchema,
   validateZodSchema,
+  EditStudentSchema,
 } from "@utils/validations";
 import { useDebouncedSearch } from "./useDebounce";
 import {
@@ -314,12 +314,10 @@ export const useAddStudent = () => {
       total_amount: Number(data.total_amount) || 0,
       status: Number(data.status) || 0,
     };
-    console.log(data);
     const validatedData = validateZodSchema({
       schema: CreateStudentSchema,
       data: processedData,
     });
-    console.log(processedData);
     if (!validatedData) return;
 
     addStudent({ data: validatedData })
@@ -419,7 +417,6 @@ export const useEditStudent = ({ data }) => {
       status: 1,
     },
   });
-
   const formValues = watch();
 
   // Initialize form with existing data when selectedData changes
@@ -449,7 +446,7 @@ export const useEditStudent = ({ data }) => {
         setSelectedCourseEncryptedId(data.course.encrypted_id);
       }
     }
-  }, [selectedData, setValue]);
+  }, [selectedData, setValue, data]);
 
   // Dummy image upload handler - simulates upload process
   const handleImageUpload = async (file) => {
@@ -599,9 +596,17 @@ export const useEditStudent = ({ data }) => {
       return errorNotify("Invalid student type.");
     }
 
+    const processedData = {
+      ...data,
+      ssc_result: data.ssc_result ? Number(data.ssc_result) : 0,
+      hsc_result: data.hsc_result ? Number(data.hsc_result) : 0,
+      total_amount: data.total_amount ? Number(data.total_amount) : 0,
+      status: Number(data.status) || 0,
+    };
+
     const validatedData = validateZodSchema({
-      schema: CreateStudentSchema,
-      data,
+      schema: EditStudentSchema,
+      data: processedData,
     });
     if (!validatedData) return;
 
@@ -618,8 +623,7 @@ export const useEditStudent = ({ data }) => {
         }
       })
       .catch((err) => {
-        const errorMessage = err?.data?.message || "Something went wrong!";
-        errorNotify(errorMessage);
+        errorNotify(err?.data?.message || "Something went wrong!");
       });
   };
 

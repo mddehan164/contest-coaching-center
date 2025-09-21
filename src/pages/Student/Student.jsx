@@ -1,11 +1,5 @@
 import FormInput from "../../shared/forms/FormInput";
-import {
-  AddSvg,
-  DeleteSvg,
-  EditSvg,
-  EyeOpenSvg,
-  SearchSvg,
-} from "../../utils/svgs";
+import { AddSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";
 import AddStudentModal from "./AddStudentModal";
 import EditStudentModal from "./EditStudentModal";
@@ -33,7 +27,6 @@ const Student = () => {
     handleOpenEditStudentModal,
     handleOpenAddStudentModal,
     isConfirmModalOpen,
-    handleOpenConfirmationModal,
     handleCloseConfirmationModal,
   } = useStudents();
 
