@@ -58,7 +58,7 @@
 //           error.message.includes("Network Error")
 //         ) {
 //           setError(
-//             "Cannot connect to server. Make sure your Laravel backend is running on http://localhost:8000"
+//             "Cannot connect to server. Make sure your Laravel backend is running on https://contest.shakirahmed.dev"
 //           );
 //         } else {
 //           setError(error.response?.data?.message || "Failed to load courses");

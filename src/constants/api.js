@@ -1,6 +1,6 @@
 // API Configuration Constants
 export const API_CONFIG = {
-  BASE_URL: "http://localhost:8000/api",
+  BASE_URL: "https://contest.shakirahmed.dev/api",
   TIMEOUT: 10000,
   WITH_CREDENTIALS: true,
 };
@@ -19,7 +19,8 @@ export const API_ENDPOINTS = {
 
 // Error Messages
 export const ERROR_MESSAGES = {
-  NETWORK_ERROR: "Cannot connect to server. Please check your internet connection.",
+  NETWORK_ERROR:
+    "Cannot connect to server. Please check your internet connection.",
   AUTH_REQUIRED: "Authentication required. Please login first.",
   SERVER_ERROR: "Internal server error. Please try again later.",
   GENERIC_ERROR: "Something went wrong. Please try again.",
