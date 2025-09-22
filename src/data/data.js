@@ -62,9 +62,9 @@ export const navData = {
 
 // slider data
 
-import slider1 from "../assets/images/slider/slider-1.jpg";
-import slider2 from "../assets/images/slider/slider-2.jpg";
-import slider3 from "../assets/images/slider/slider-3.jpg";
+import slider1 from "../assets/images/slider/slider-1.webp";
+import slider2 from "../assets/images/slider/slider-2.webp";
+import slider3 from "../assets/images/slider/slider-3.webp";
 
 export const sliderData = [
   {
@@ -86,14 +86,14 @@ export const sliderData = [
 
 // start notice data from here
 
-export const noticeBtnMore = {
-  btnName: ["More Notices"],
-  btnStyle: {
-    btnBgColor: "headerColor",
-    btnHoverColor: "headerColorHover",
-    bgFull: true,
-  },
-};
+// export const noticeBtnMore = {
+//   btnName: ["More Notices"],
+//   btnStyle: {
+//     btnBgColor: "headerColor",
+//     btnHoverColor: "headerColorHover",
+//     bgFull: true,
+//   },
+// };
 
 export const noticeBtnData = {
   btnName: ["Admission", "Administration", "Department"],
@@ -103,134 +103,134 @@ export const noticeBtnData = {
   },
 };
 
-export const noticeData = {
-  tabLabelMap: {
-    Admission: "More Admission Notices..",
-    Administration: "More Administration Notices..",
-    Department: "More Department Notices..",
-  },
-  notices: {
-    admissionNotices: [
-      { currentDate: "14/01/2025" },
-      {
-        date: "14/01/2025",
-        title: "Economics, 2nd Admission Test Result Spring-2025",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "Special Admission Test Result Spring-2025 (English)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "CSE Spring 2025 B.Sc in CSE Special Admission Test Result",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Islamic History and Culture (IHC) Special Admission Test Result (Spring-2025)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Nutrition and Food Engineering (NFE) Special Admission Test Result (Spring-2025)",
-        link: "#",
-      },
-    ],
-    administrationNotices: [
-      { currentDate: "25/02/2025" },
-      {
-        date: "14/01/2025",
-        title: "Economics, 2nd Administration Test Result Spring-2025",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "Special Administration Test Result Spring-2025 (English)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "CSE Spring 2025 B.Sc in CSE Special Administration Test Result",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Islamic History and Culture (IHC) Special Administration Test Result (Spring-2025)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Nutrition and Food Engineering (NFE) Special Administration Test Result (Spring-2025)",
-        link: "#",
-      },
-    ],
-    departmentNotices: [
-      { currentDate: "12/05/2025" },
-      {
-        date: "14/01/2025",
-        title: "Economics, 2nd Department Test Result Spring-2025",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "Special Department Test Result Spring-2025 (English)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title: "CSE Spring 2025 B.Sc in CSE Special Department Test Result",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Islamic History and Culture (IHC) Special Department Test Result (Spring-2025)",
-        link: "#",
-      },
-      {
-        date: "13/01/2025",
-        title:
-          "Nutrition and Food Engineering (NFE) Special Department Test Result (Spring-2025)",
-        link: "#",
-      },
-    ],
-  },
-};
+// export const noticeData = {
+//   tabLabelMap: {
+//     Admission: "More Admission Notices..",
+//     Administration: "More Administration Notices..",
+//     Department: "More Department Notices..",
+//   },
+//   notices: {
+//     admissionNotices: [
+//       { currentDate: "14/01/2025" },
+//       {
+//         date: "14/01/2025",
+//         title: "Economics, 2nd Admission Test Result Spring-2025",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "Special Admission Test Result Spring-2025 (English)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "CSE Spring 2025 B.Sc in CSE Special Admission Test Result",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Islamic History and Culture (IHC) Special Admission Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Nutrition and Food Engineering (NFE) Special Admission Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//     ],
+//     administrationNotices: [
+//       { currentDate: "25/02/2025" },
+//       {
+//         date: "14/01/2025",
+//         title: "Economics, 2nd Administration Test Result Spring-2025",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "Special Administration Test Result Spring-2025 (English)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "CSE Spring 2025 B.Sc in CSE Special Administration Test Result",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Islamic History and Culture (IHC) Special Administration Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Nutrition and Food Engineering (NFE) Special Administration Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//     ],
+//     departmentNotices: [
+//       { currentDate: "12/05/2025" },
+//       {
+//         date: "14/01/2025",
+//         title: "Economics, 2nd Department Test Result Spring-2025",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "Special Department Test Result Spring-2025 (English)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title: "CSE Spring 2025 B.Sc in CSE Special Department Test Result",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Islamic History and Culture (IHC) Special Department Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//       {
+//         date: "13/01/2025",
+//         title:
+//           "Nutrition and Food Engineering (NFE) Special Department Test Result (Spring-2025)",
+//         link: "#",
+//       },
+//     ],
+//   },
+// };
 
 // ratio should be 3:2 of each card image
-import card1 from "../assets/images/card/card-1.jpg";
-import card2 from "../assets/images/card/card-2.jpg";
+// import card1 from "../assets/images/card/card-1.jpg";
+// import card2 from "../assets/images/card/card-2.jpg";
 
-export const noticeStydyBtnData = {
-  btnStyle: {
-    btnBgColor: "headerColor",
-    btnHoverColor: "headerColorHover",
-    bgFull: true,
-    fontBold: true,
-  },
-};
-export const noticeStudyPrograms = [
-  {
-    noticeBtn: true,
-    title: "Undergraduate Study",
-    image: card1,
-    icon: true,
-    short_des: ["Academic Programs", "Admission Requirements", "Apply Online"],
-  },
-  {
-    noticeBtn: true,
-    title: "Graduate Study",
-    image: card2,
-    icon: true,
-    short_des: ["Academic Programs", "Admission Requirements", "Apply Online"],
-  },
-];
+// export const noticeStydyBtnData = {
+//   btnStyle: {
+//     btnBgColor: "headerColor",
+//     btnHoverColor: "headerColorHover",
+//     bgFull: true,
+//     fontBold: true,
+//   },
+// };
+// export const noticeStudyPrograms = [
+//   {
+//     noticeBtn: true,
+//     title: "Undergraduate Study",
+//     image: card1,
+//     icon: true,
+//     short_des: ["Academic Programs", "Admission Requirements", "Apply Online"],
+//   },
+//   {
+//     noticeBtn: true,
+//     title: "Graduate Study",
+//     image: card2,
+//     icon: true,
+//     short_des: ["Academic Programs", "Admission Requirements", "Apply Online"],
+//   },
+// ];
 
 // start stats data from here
 

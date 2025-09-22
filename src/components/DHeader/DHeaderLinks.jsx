@@ -1,6 +1,5 @@
-import React from "react";
 import { headerData } from "../../data/Dsidebar&Header";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 

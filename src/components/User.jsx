@@ -14,9 +14,6 @@ const User = ({ logout }) => {
     ...(user?.role === "superadmin"
       ? [{ feature: "Dashboard", action: "", link: "dashboard" }]
       : []),
-    ...(user?.role === "student"
-      ? [{ feature: "Profile", action: "", link: "profile" }]
-      : []),
     { feature: "Logout", action: logout, link: "" },
   ];
   // ক্লিক এলসে বাইরে হলে dropdown বন্ধ হবে

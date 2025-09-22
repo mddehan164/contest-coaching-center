@@ -6,7 +6,6 @@ const Admission = lazy(() => import("../pages/Admission"));
 const BeforeVerify = lazy(() => import("../pages/BeforeVerify"));
 const Branches = lazy(() => import("../pages/Branches"));
 const Login = lazy(() => import("../pages/Login"));
-const Profile = lazy(() => import("../pages/Profile"));
 const Register = lazy(() => import("../pages/Register"));
 const Verify = lazy(() => import("../pages/Verify"));
 const GalleryMain = lazy(() => import("../components/Gallery/GalleryMain"));
@@ -25,7 +24,6 @@ export let mainPageRoutes = [
   { element: <CourseDetails />, path: "courses/:id" },
   { element: <Login />, path: "login" },
   { element: <Register />, path: "register" },
-  { element: <Profile />, path: "profile" },
   { element: <BeforeVerify />, path: "before-verify" },
   { element: <Verify />, path: "verify/:id/:hash" },
   { element: <Error />, path: "*" },

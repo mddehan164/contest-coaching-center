@@ -1,8 +1,7 @@
-import React from 'react';
-import Stats from './Stats';
-import { statsData } from '../../data/data';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import Stats from "./Stats";
+import { statsData } from "../../data/data";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 const StatsMain = () => {
   return (

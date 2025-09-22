@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { courseData, courseHeroData } from "../data/courseData";
 import { FaEdit, FaTrash, FaEye, FaTimes } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";

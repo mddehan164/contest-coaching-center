@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import MainBtn from "./MainBtn";
 
 const UserForm = ({ data, handleChange, handleSubmit }) => {

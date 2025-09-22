@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 // import { galleryData } from "../../data/galleryData";
 
 const categories = ["All", "Success", "Campus", "Student", "Others"];

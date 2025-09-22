@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "motion/react"; // Motion for React (Framer Motion)
 import { footerData } from "../data/data";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const fullText = `${footerData?.copyright} ${footerData?.year}`;

@@ -111,9 +111,9 @@ const CustomTableHelper = ({
 
 const CustomPaginate = ({
   currentPage,
-  rowsPerPage,
+  // rowsPerPage,
   totalPages,
-  updatePage = () => { },
+  updatePage = () => {},
 }) => {
   return (
     <div className="flex items-center justify-end gap-6 py-3">

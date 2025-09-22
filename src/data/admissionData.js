@@ -7,13 +7,18 @@ const admissionFormFields = {
     { label: "Batch", type: "text", key: "batch" },
     { label: "Admission Fee", type: "number", key: "admissionFee" },
     { label: "Deposit", type: "number", key: "deposit" },
-    { label: "Date", type: "date", key: "date" }
+    { label: "Date", type: "date", key: "date" },
   ],
   personalInfo: [
     { label: "Student’s Name (In English)", type: "text", key: "nameEnglish" },
     { label: "Student’s Name (In Bangla)", type: "text", key: "nameBangla" },
     { label: "NID/Birth Certificate No.", type: "text", key: "nidOrBirth" },
-    { label: "Gender", type: "radio", key: "gender", options: ["Male", "Female"] },
+    {
+      label: "Gender",
+      type: "radio",
+      key: "gender",
+      options: ["Male", "Female"],
+    },
     { label: "Blood Group", type: "text", key: "bloodGroup" },
     { label: "Father’s Name", type: "text", key: "fatherName" },
     { label: "Father’s Profession", type: "text", key: "fatherProfession" },
@@ -22,13 +27,21 @@ const admissionFormFields = {
     { label: "NID No. (Father)", type: "text", key: "fatherNid" },
     { label: "Contact Number (Student)", type: "text", key: "studentContact" },
     { label: "Contact Number (Mother)", type: "text", key: "motherContact" },
-    { label: "Contact Number (Guardian)", type: "text", key: "guardianContact" },
+    {
+      label: "Contact Number (Guardian)",
+      type: "text",
+      key: "guardianContact",
+    },
     { label: "Present Address", type: "textarea", key: "presentAddress" },
     { label: "Permanent Address - Village", type: "text", key: "village" },
     { label: "Permanent Address - Thana", type: "text", key: "thana" },
-    { label: "Permanent Address - Post Office", type: "text", key: "postOffice" },
+    {
+      label: "Permanent Address - Post Office",
+      type: "text",
+      key: "postOffice",
+    },
     { label: "Permanent Address - District", type: "text", key: "district" },
-    { label: "Name of College (In Bangla)", type: "text", key: "collegeName" }
+    { label: "Name of College (In Bangla)", type: "text", key: "collegeName" },
   ],
   educationQualifications: [
     {
@@ -39,8 +52,8 @@ const admissionFormFields = {
         { label: "Board", type: "text", key: "sscBoard" },
         { label: "Passing Year", type: "number", key: "sscYear" },
         { label: "Group", type: "text", key: "sscGroup" },
-        { label: "GPA", type: "text", key: "sscGpa" }
-      ]
+        { label: "GPA", type: "text", key: "sscGpa" },
+      ],
     },
     {
       exam: "H.S.C/Alim",
@@ -50,10 +63,10 @@ const admissionFormFields = {
         { label: "Board", type: "text", key: "hscBoard" },
         { label: "Passing Year", type: "number", key: "hscYear" },
         { label: "Group", type: "text", key: "hscGroup" },
-        { label: "GPA", type: "text", key: "hscGpa" }
-      ]
-    }
-  ]
+        { label: "GPA", type: "text", key: "hscGpa" },
+      ],
+    },
+  ],
 };
 
 export default admissionFormFields;

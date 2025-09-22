@@ -1,7 +1,6 @@
-import React from "react";
 import { persons } from "../data/payments";
 import { QuickStat } from "../components";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const Payments = () => {
   return (

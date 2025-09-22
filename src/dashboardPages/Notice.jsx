@@ -1,12 +1,12 @@
-import React from 'react'
-import { NoticeManager } from '../components'
+// import React from 'react'
+// import { NoticeManager } from '../components'
 
-const Notice = () => {
-  return (
-    <div>
-      <NoticeManager/>
-    </div>
-  )
-}
+// const Notice = () => {
+//   return (
+//     <div>
+//       <NoticeManager/>
+//     </div>
+//   )
+// }
 
-export default Notice
+// export default Notice

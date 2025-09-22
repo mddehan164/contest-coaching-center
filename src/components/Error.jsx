@@ -1,5 +1,4 @@
 // src/pages/Error.jsx
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import img from "../assets/images/error.png";

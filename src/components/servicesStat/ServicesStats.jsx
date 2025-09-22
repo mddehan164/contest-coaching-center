@@ -1,4 +1,3 @@
-import React from "react";
 import QuickStat from "../QuickStat";
 import { services } from "../../data/data";
 

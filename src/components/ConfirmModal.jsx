@@ -1,7 +1,11 @@
 // ConfirmModal.jsx
-import React from 'react';
 
-const ConfirmModal = ({ show, onConfirm, onCancel, message = "Are you sure?" }) => {
+const ConfirmModal = ({
+  show,
+  onConfirm,
+  onCancel,
+  message = "Are you sure?",
+}) => {
   if (!show) return null;
 
   return (

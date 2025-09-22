@@ -1,4 +1,3 @@
-import React from "react";
 import { customiseData } from "../data/customiseData";
 import CustomCard from "./CustomCard";
 

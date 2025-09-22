@@ -1,12 +1,12 @@
-import React from 'react'
-import SliderEditor from '../components/SliderEditor'
+// import React from 'react'
+// import SliderEditor from '../components/SliderEditor'
 
-const DSlider = () => {
-  return (
-    <div>
-      <SliderEditor/>
-    </div>
-  )
-}
+// const DSlider = () => {
+//   return (
+//     <div>
+//       <SliderEditor/>
+//     </div>
+//   )
+// }
 
-export default DSlider
+// export default DSlider

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import DHeaderMain from "../components/DHeader/DHeaderMain";
 import DSidebar from "../components/DSidebar/DSidebar";
 
