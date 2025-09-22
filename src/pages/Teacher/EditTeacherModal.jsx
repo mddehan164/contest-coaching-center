@@ -4,7 +4,7 @@ import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
 import ImageUpload from "../../shared/forms/ImageUpload";
 import NotifyContainer from "../../utils/notify";
-import { useState } from 'react';
+// import { useState } from 'react';
 
 const EditTeacherModal = ({ data }) => {
   const {
@@ -17,22 +17,22 @@ const EditTeacherModal = ({ data }) => {
     handleEditTeacher,
     courseOptions,
     batchesOptions,
-    formValues,
+    // formValues,
     isBatchesLoading,
-    isUploading,
-    imagePreview,
-    handleFileSelect,
-    handleManualUrlInput,
+    // isUploading,
+    // imagePreview,
+    // handleFileSelect,
+    // handleManualUrlInput,
   } = useEditTeacher({ data });
 
-  const [manualUrl, setManualUrl] = useState("");
+  // const [manualUrl, setManualUrl] = useState("");
 
-  const handleManualUrlSubmit = () => {
-    if (manualUrl.trim()) {
-      handleManualUrlInput(manualUrl.trim());
-      setManualUrl("");
-    }
-  };
+  // const handleManualUrlSubmit = () => {
+  //   if (manualUrl.trim()) {
+  //     handleManualUrlInput(manualUrl.trim());
+  //     setManualUrl("");
+  //   }
+  // };
 
   return (
     <CustomContainerModal
@@ -45,98 +45,139 @@ const EditTeacherModal = ({ data }) => {
       isActionBtnDisabled={isActionBtnDisabled}
       isLoading={isLoading}
     >
-      <div className="my-10 space-y-5">
-        <Controller name="name" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true}
-            label="Teacher Name"
-            placeholder="Enter name"
-            {...field}
-          />
-        )} />
+      <div className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Teacher Name"
+              placeholder="Enter name"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="subject" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true}
-            label="Subject"
-            placeholder="Enter subject"
-            {...field}
-          />
-        )} />
+        <Controller
+          name="subject"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Subject"
+              placeholder="Enter subject"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="course_id" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Select Course"
-            options={courseOptions}
-            selectedOption={courseOptions.find(opt => opt.value === field.value)}
-            handleChange={(opt) => field.onChange(opt?.value)}
-            placeholder="Choose a course"
-            isSearchable={true}
-          />
-        )} />
+        <Controller
+          name="course_id"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Select Course"
+              options={courseOptions}
+              selectedOption={courseOptions.find(
+                (opt) => opt.value === field.value
+              )}
+              handleChange={(opt) => field.onChange(opt?.value)}
+              placeholder="Choose a course"
+              isSearchable={true}
+            />
+          )}
+        />
 
-        <Controller name="batch_id" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Select Batch"
-            options={batchesOptions}
-            selectedOption={batchesOptions.find(opt => opt.value === field.value)}
-            handleChange={(opt) => field.onChange(opt?.value)}
-            placeholder="Choose a batch"
-            isSearchable={true}
-            isLoading={isBatchesLoading}
-          />
-        )} />
+        <Controller
+          name="batch_id"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Select Batch"
+              options={batchesOptions}
+              selectedOption={batchesOptions.find(
+                (opt) => opt.value === field.value
+              )}
+              handleChange={(opt) => field.onChange(opt?.value)}
+              placeholder="Choose a batch"
+              isSearchable={true}
+              isLoading={isBatchesLoading}
+            />
+          )}
+        />
 
-        <Controller name="gender" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Gender"
-            options={[
-              { value: "male", label: "Male" },
-              { value: "female", label: "Female" },
-            ]}
-            selectedOption={{ value: field.value, label: field.value.charAt(0).toUpperCase() + field.value.slice(1) }}
-            handleChange={(opt) => field.onChange(opt.value)}
-          />
-        )} />
+        <Controller
+          name="gender"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Gender"
+              options={[
+                { value: "male", label: "Male" },
+                { value: "female", label: "Female" },
+              ]}
+              selectedOption={{
+                value: field.value,
+                label:
+                  field.value.charAt(0).toUpperCase() + field.value.slice(1),
+              }}
+              handleChange={(opt) => field.onChange(opt.value)}
+            />
+          )}
+        />
 
-        <Controller name="mobile" control={control} render={({ field }) => (
-          <FormInput
-            isCol={true}
-            label="Mobile"
-            placeholder="01712345678"
-            {...field}
-          />
-        )} />
+        <Controller
+          name="mobile"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Mobile"
+              placeholder="01712345678"
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="address" control={control} render={({ field }) => (
-          <FormTextarea
-            label="Address"
-            placeholder="Enter address"
-            rows={3}
-            {...field}
-          />
-        )} />
+        <Controller
+          name="address"
+          control={control}
+          render={({ field }) => (
+            <FormTextarea
+              label="Address"
+              placeholder="Enter address"
+              rows={1}
+              {...field}
+            />
+          )}
+        />
 
-        <Controller name="status" control={control} render={({ field }) => (
-          <FormSelect
-            isCol={true}
-            label="Status"
-            options={[{ value: 1, label: "Active" }, { value: 0, label: "Inactive" }]}
-            selectedOption={{ value: field.value, label: field.value === 1 ? "Active" : "Inactive" }}
-            handleChange={(opt) => field.onChange(opt.value)}
-          />
-        )} />
+        <Controller
+          name="status"
+          control={control}
+          render={({ field }) => (
+            <FormSelect
+              isCol={true}
+              label="Status"
+              options={[
+                { value: 1, label: "Active" },
+                { value: 0, label: "Inactive" },
+              ]}
+              selectedOption={{
+                value: field.value,
+                label: field.value === 1 ? "Active" : "Inactive",
+              }}
+              handleChange={(opt) => field.onChange(opt.value)}
+            />
+          )}
+        />
 
         {/* Image Upload Field */}
-        <div>
-          <label className="block text-sm font-medium text-text-600 mb-2">
-            Teacher Image
-          </label>
-
-          {/* Image Upload Area */}
+        <div className="sm:col-span-2 md:col-span-3">
           {/* Image Upload */}
           <ImageUpload
             name="image"

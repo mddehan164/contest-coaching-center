@@ -623,6 +623,7 @@ export const useEditStudent = ({ data }) => {
         }
       })
       .catch((err) => {
+        console.log(err?.data?.message);
         errorNotify(err?.data?.message || "Something went wrong!");
       });
   };

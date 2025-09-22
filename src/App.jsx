@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
@@ -9,6 +9,7 @@ import { mainPageRoutes, dashboardPageRoutes } from "./data/routesData";
 import Dashboard from "./layout/Dashboard";
 import { DHome } from "./dashboardPages";
 import { Home } from "./pages";
+import InitialLoader from "./components/InitialLoader";
 // import InitialLoader from "./components/InitialLoader";
 
 const App = () => {
@@ -33,18 +34,9 @@ const App = () => {
   }, [checkAuth, accessToken, dispatch]);
 
   // Don't show loading for public routes when there's no token
-  // if (!authChecked && accessToken) {
-  //   return (
-  //     <div className="h-screen w-screen flex justify-center items-center">
-  //       <img
-  //         src="/images/loading-logo.png"
-  //         className="w-[10%] aspect-square"
-  //         alt="Loading..."
-  //       />
-  //       <p className="text-center text-headerColor">Please Wait..</p>
-  //     </div>
-  //   );
-  // }
+  if (!authChecked && accessToken) {
+    return <InitialLoader />;
+  }
 
   return (
     <Routes>

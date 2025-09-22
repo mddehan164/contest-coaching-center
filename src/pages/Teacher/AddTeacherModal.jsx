@@ -4,7 +4,7 @@ import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect } from "@shared/forms";
 import ImageUpload from "../../shared/forms/ImageUpload";
 import NotifyContainer from "../../utils/notify";
-import { useState } from "react";
+// import { useState } from "react";
 
 const AddTeacherModal = () => {
   const {
@@ -17,21 +17,21 @@ const AddTeacherModal = () => {
     handleAddTeacher,
     courseOptions,
     batchesOptions,
-    formValues,
-    isUploading,
-    imagePreview,
-    handleFileSelect,
-    handleManualUrlInput,
+    // formValues,
+    // isUploading,
+    // imagePreview,
+    // handleFileSelect,
+    // handleManualUrlInput,
   } = useAddTeacher();
 
-  const [manualUrl, setManualUrl] = useState("");
+  // const [manualUrl, setManualUrl] = useState("");
 
-  const handleManualUrlSubmit = () => {
-    if (manualUrl.trim()) {
-      handleManualUrlInput(manualUrl.trim());
-      setManualUrl("");
-    }
-  };
+  // const handleManualUrlSubmit = () => {
+  //   if (manualUrl.trim()) {
+  //     handleManualUrlInput(manualUrl.trim());
+  //     setManualUrl("");
+  //   }
+  // };
 
   return (
     <CustomContainerModal
@@ -44,7 +44,7 @@ const AddTeacherModal = () => {
       isActionBtnDisabled={isActionBtnDisabled}
       isLoading={isLoading}
     >
-      <div className="my-10 space-y-5">
+      <div className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Controller
           name="name"
           control={control}
@@ -172,7 +172,7 @@ const AddTeacherModal = () => {
         />
 
         {/* Image Upload Field */}
-        <div>
+        <div className="sm:col-span-2 md:col-span-3">
           {/* Image Upload */}
           <ImageUpload
             name="image"

@@ -44,6 +44,33 @@ const EditStudentModal = ({ data }) => {
             />
           )}
         />
+        {/* Father's Name */}
+        <Controller
+          name="father_name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Father's Name"
+              placeholder="Enter father's name"
+              {...field}
+            />
+          )}
+        />
+
+        {/* Mother's Name */}
+        <Controller
+          name="mother_name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Mother's Name"
+              placeholder="Enter mother's name"
+              {...field}
+            />
+          )}
+        />
 
         {/* Course */}
         <Controller
@@ -80,34 +107,6 @@ const EditStudentModal = ({ data }) => {
               placeholder="Choose a batch"
               isSearchable={true}
               isLoading={isBatchesLoading}
-            />
-          )}
-        />
-
-        {/* Father's Name */}
-        <Controller
-          name="father_name"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Father's Name"
-              placeholder="Enter father's name"
-              {...field}
-            />
-          )}
-        />
-
-        {/* Mother's Name */}
-        <Controller
-          name="mother_name"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Mother's Name"
-              placeholder="Enter mother's name"
-              {...field}
             />
           )}
         />

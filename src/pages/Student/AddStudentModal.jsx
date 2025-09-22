@@ -59,6 +59,31 @@ const AddStudentModal = () => {
         />
 
         <Controller
+          name="father_name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Father's Name"
+              placeholder="Enter father's name"
+              {...field}
+            />
+          )}
+        />
+
+        <Controller
+          name="mother_name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              isCol={true}
+              label="Mother's Name"
+              placeholder="Enter mother's name"
+              {...field}
+            />
+          )}
+        />
+        <Controller
           name="course_id"
           control={control}
           render={({ field }) => (
@@ -90,32 +115,6 @@ const AddStudentModal = () => {
               handleChange={(opt) => field.onChange(opt?.value)}
               placeholder="Choose a batch"
               isSearchable={true}
-            />
-          )}
-        />
-
-        <Controller
-          name="father_name"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Father's Name"
-              placeholder="Enter father's name"
-              {...field}
-            />
-          )}
-        />
-
-        <Controller
-          name="mother_name"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Mother's Name"
-              placeholder="Enter mother's name"
-              {...field}
             />
           )}
         />

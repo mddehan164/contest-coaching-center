@@ -4,7 +4,7 @@ import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormSelect, FormTextarea } from "@shared/forms";
 import ImageUpload from "../../shared/forms/ImageUpload";
 import NotifyContainer from "../../utils/notify";
-import { useState } from "react";
+// import { useState } from "react";
 
 const EditCourseModal = ({ data }) => {
   const {
@@ -15,15 +15,15 @@ const EditCourseModal = ({ data }) => {
     isLoading,
     handleUpdate,
     handleSubmit,
-    formValues,
+    // formValues,
     branchOptions,
-    handleFileSelect,
-    imagePreview,
-    isUploading,
-    handleManualUrlInput,
+    // handleFileSelect,
+    // imagePreview,
+    // isUploading,
+    // handleManualUrlInput,
   } = useEditCourse({ data });
 
-  const [manualUrl, setManualUrl] = useState("");
+  // const [manualUrl, setManualUrl] = useState("");
 
   // Group options
   const groupOptions = [
@@ -32,12 +32,12 @@ const EditCourseModal = ({ data }) => {
     { value: "commerce", label: "Commerce" },
   ];
 
-  const handleManualUrlSubmit = () => {
-    if (manualUrl.trim()) {
-      handleManualUrlInput(manualUrl.trim());
-      setManualUrl("");
-    }
-  };
+  // const handleManualUrlSubmit = () => {
+  //   if (manualUrl.trim()) {
+  //     handleManualUrlInput(manualUrl.trim());
+  //     setManualUrl("");
+  //   }
+  // };
 
   return (
     <CustomContainerModal
@@ -67,128 +67,138 @@ const EditCourseModal = ({ data }) => {
           )}
         />
 
-        {/* Image Upload */}
-        <ImageUpload
-          name="image"
-          control={control}
-          label="Course Image"
-          module="course"
-          accept="image/*"
-          maxSize={5 * 1024 * 1024} // 5MB
-          required={true}
-          currentImage={data?.image}
-        />
-
-        {/* Short Description */}
-        <Controller
-          name="short_des"
-          control={control}
-          render={({ field }) => (
-            <FormTextarea
-              label="Short Description"
-              placeholder="Enter short description"
-              id="short_des"
-              rows={3}
-              {...field}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            {/* Image Upload */}
+            <ImageUpload
+              name="image"
+              control={control}
+              label="Course Image"
+              module="course"
+              accept="image/*"
+              maxSize={5 * 1024 * 1024} // 5MB
+              required={true}
+              currentImage={data?.image}
             />
-          )}
-        />
-
-        {/* Long Description */}
-        <Controller
-          name="long_des"
-          control={control}
-          render={({ field }) => (
-            <FormTextarea
-              label="Long Description"
-              placeholder="Enter detailed description"
-              id="long_des"
-              rows={5}
-              {...field}
-            />
-          )}
-        />
-
-        {/* Price */}
-        <Controller
-          name="price"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              label="Price"
-              placeholder="Enter price"
-              id="price"
-              type="number"
-              isLoading={isLoading}
-              isCol={true}
-              {...field}
-            />
-          )}
-        />
-
-        {/* Offer Price */}
-        <Controller
-          name="offer_price"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              label="Offer Price"
-              placeholder="Enter offer price"
-              id="offer_price"
-              type="number"
-              isLoading={isLoading}
-              isCol={true}
-              {...field}
-            />
-          )}
-        />
-
-        {/* Branches */}
-        <Controller
-          name="branch_id"
-          control={control}
-          render={({ field }) => (
-            <FormSelect
-              label="Branches"
-              options={branchOptions}
-              selectedOption={branchOptions.filter((opt) =>
-                field.value?.includes(opt.value)
+          </div>
+          <div className="space-y-5">
+            {/* Branches */}
+            <Controller
+              name="branch_id"
+              control={control}
+              render={({ field }) => (
+                <FormSelect
+                  label="Branches"
+                  options={branchOptions}
+                  selectedOption={branchOptions.filter((opt) =>
+                    field.value?.includes(opt.value)
+                  )}
+                  handleChange={(selectedOptions) =>
+                    field.onChange(
+                      selectedOptions
+                        ? selectedOptions.map((opt) => opt.value)
+                        : []
+                    )
+                  }
+                  isLoading={isLoading}
+                  placeholder="Select branches"
+                  isCol={true}
+                  isMulti={true}
+                  isSearchable={true}
+                />
               )}
-              handleChange={(selectedOptions) =>
-                field.onChange(
-                  selectedOptions ? selectedOptions.map((opt) => opt.value) : []
-                )
-              }
-              isLoading={isLoading}
-              placeholder="Select branches"
-              isCol={true}
-              isMulti={true}
-              isSearchable={true}
             />
-          )}
-        />
 
-        {/* Group */}
-        <Controller
-          name="group"
-          control={control}
-          render={({ field }) => (
-            <FormSelect
-              label="Group"
-              options={groupOptions}
-              selectedOption={groupOptions.find(
-                (opt) => opt.value === field.value
+            {/* Group */}
+            <Controller
+              name="group"
+              control={control}
+              render={({ field }) => (
+                <FormSelect
+                  label="Group"
+                  options={groupOptions}
+                  selectedOption={groupOptions.find(
+                    (opt) => opt.value === field.value
+                  )}
+                  handleChange={(selectedOption) =>
+                    field.onChange(selectedOption?.value)
+                  }
+                  isLoading={isLoading}
+                  placeholder="Select group"
+                  isCol={true}
+                  isSearchable={true}
+                />
               )}
-              handleChange={(selectedOption) =>
-                field.onChange(selectedOption?.value)
-              }
-              isLoading={isLoading}
-              placeholder="Select group"
-              isCol={true}
-              isSearchable={true}
             />
-          )}
-        />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Short Description */}
+          <Controller
+            name="short_des"
+            control={control}
+            render={({ field }) => (
+              <FormTextarea
+                label="Short Description"
+                placeholder="Enter short description"
+                id="short_des"
+                rows={5}
+                {...field}
+              />
+            )}
+          />
+
+          {/* Long Description */}
+          <Controller
+            name="long_des"
+            control={control}
+            render={({ field }) => (
+              <FormTextarea
+                label="Long Description"
+                placeholder="Enter detailed description"
+                id="long_des"
+                rows={5}
+                {...field}
+              />
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Price */}
+          <Controller
+            name="price"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                label="Price"
+                placeholder="Enter price"
+                id="price"
+                type="number"
+                isLoading={isLoading}
+                isCol={true}
+                {...field}
+              />
+            )}
+          />
+
+          {/* Offer Price */}
+          <Controller
+            name="offer_price"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                label="Offer Price"
+                placeholder="Enter offer price"
+                id="offer_price"
+                type="number"
+                isLoading={isLoading}
+                isCol={true}
+                {...field}
+              />
+            )}
+          />
+        </div>
       </div>
       <NotifyContainer />
     </CustomContainerModal>

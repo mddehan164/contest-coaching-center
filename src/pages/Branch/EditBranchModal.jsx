@@ -28,31 +28,33 @@ const EditBranchModal = ({ data }) => {
       isLoading={isLoading}
     >
       <div className="my-10 space-y-5">
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Branch Name"
-              placeholder="Enter branch name"
-              {...field}
-            />
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                isCol={true}
+                label="Branch Name"
+                placeholder="Enter branch name"
+                {...field}
+              />
+            )}
+          />
 
-        <Controller
-          name="location"
-          control={control}
-          render={({ field }) => (
-            <FormInput
-              isCol={true}
-              label="Location"
-              placeholder="Enter branch location"
-              {...field}
-            />
-          )}
-        />
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                isCol={true}
+                label="Location"
+                placeholder="Enter branch location"
+                {...field}
+              />
+            )}
+          />
+        </div>
 
         <Controller
           name="description"

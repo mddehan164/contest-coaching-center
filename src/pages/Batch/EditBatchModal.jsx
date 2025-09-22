@@ -1,141 +1,159 @@
-import { Controller } from 'react-hook-form';
-import { useEditBatch } from '@hooks/useBatch';
-import { CustomContainerModal } from '@shared/custom';
-import { FormInput, FormSelect } from '@shared/forms';
-import CustomDatePicker from '@shared/custom/CustomDatePicker';
-import { useGetAllCoursesQuery } from '../../redux-rtk/course';
-import NotifyContainer from '../../utils/notify';
+import { Controller } from "react-hook-form";
+import { useEditBatch } from "@hooks/useBatch";
+import { CustomContainerModal } from "@shared/custom";
+import { FormInput, FormSelect } from "@shared/forms";
+import CustomDatePicker from "@shared/custom/CustomDatePicker";
+import { useGetAllCoursesQuery } from "../../redux-rtk/course";
+import NotifyContainer from "../../utils/notify";
 
 const EditBatchModal = ({ data }) => {
-    const {
-        isEditModalOpen,
-        handleCloseEditBatchModal,
-        control,
-        isActionBtnDisabled,
-        isLoading,
-        handleUpdate,
-        handleSubmit,
-        getStartDateDisabled,
-        getEndDateDisabled,
-        formValues, // Added formValues for dependency tracking
-    } = useEditBatch({ data });
+  const {
+    isEditModalOpen,
+    handleCloseEditBatchModal,
+    control,
+    isActionBtnDisabled,
+    isLoading,
+    handleUpdate,
+    handleSubmit,
+    getStartDateDisabled,
+    getEndDateDisabled,
+    formValues, // Added formValues for dependency tracking
+  } = useEditBatch({ data });
 
-    // Fetch courses for dropdown
-    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({ page: 1, limit: 100 });
-    const courseOptions = coursesData?.data?.courses?.map(course => ({
-        value: course.id,
-        label: course.title,
+  // Fetch courses for dropdown
+  const { data: coursesData, isLoading: isCoursesLoading } =
+    useGetAllCoursesQuery({ page: 1, limit: 100 });
+  const courseOptions =
+    coursesData?.data?.courses?.map((course) => ({
+      value: course.id,
+      label: course.title,
     })) || [];
 
-    return (
-        <CustomContainerModal
-            isOpen={isEditModalOpen}
-            onClose={handleCloseEditBatchModal}
-            title="Edit Batch"
-            description="Update batch details easily"
-            handler={handleSubmit(handleUpdate)}
-            actionBtnText="Update Batch"
-            isActionBtnDisabled={isActionBtnDisabled}
-            isLoading={isLoading}
-        >
-            <div className='my-10 space-y-5'>
-                {/* Batch Name */}
-                <Controller
-                    name="name"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Batch Name"
-                            placeholder="Enter batch name"
-                            id="name"
-                            isLoading={isLoading}
-                            isCol={true}
-                            {...field}
-                        />
-                    )}
-                />
+  return (
+    <CustomContainerModal
+      isOpen={isEditModalOpen}
+      onClose={handleCloseEditBatchModal}
+      title="Edit Batch"
+      description="Update batch details easily"
+      handler={handleSubmit(handleUpdate)}
+      actionBtnText="Update Batch"
+      isActionBtnDisabled={isActionBtnDisabled}
+      isLoading={isLoading}
+    >
+      <div className="my-10 space-y-5">
+        {/* Batch Name */}
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <FormInput
+              label="Batch Name"
+              placeholder="Enter batch name"
+              id="name"
+              isLoading={isLoading}
+              isCol={true}
+              {...field}
+            />
+          )}
+        />
 
-                {/* Select Course */}
-                <Controller
-                    name="course_id"
-                    control={control}
-                    render={({ field }) => (
-                        <FormSelect
-                            label="Select Course"
-                            options={courseOptions}
-                            selectedOption={courseOptions.find(opt => opt.value === field.value)}
-                            handleChange={(selectedOption) => field.onChange(selectedOption?.value)}
-                            isLoading={isLoading || isCoursesLoading}
-                            placeholder="Choose a course"
-                            isCol={true}
-                            isSearchable={true}
-                        />
-                    )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Start Date */}
+          <Controller
+            name="start_date"
+            control={control}
+            render={({ field }) => (
+              <div>
+                <label className="block text-sm font-medium text-text-600 mb-1">
+                  Start Date
+                </label>
+                <CustomDatePicker
+                  selectedDate={field.value}
+                  setSelectedDate={field.onChange}
+                  id="start_date"
+                  isLoading={isLoading}
+                  datePickerDisabled={getStartDateDisabled()}
                 />
+              </div>
+            )}
+          />
 
-                {/* Start Date */}
-                <Controller
-                    name="start_date"
-                    control={control}
-                    render={({ field }) => (
-                        <div>
-                            <label className="block text-sm font-medium text-text-600 mb-1">
-                                Start Date
-                            </label>
-                            <CustomDatePicker
-                                selectedDate={field.value}
-                                setSelectedDate={field.onChange}
-                                id="start_date"
-                                isLoading={isLoading}
-                                datePickerDisabled={getStartDateDisabled()}
-                            />
-                        </div>
-                    )}
+          {/* End Date */}
+          <Controller
+            name="end_date"
+            control={control}
+            render={({ field }) => (
+              <div>
+                <label className="block text-sm font-medium text-text-600 mb-1">
+                  End Date
+                </label>
+                <CustomDatePicker
+                  selectedDate={field.value}
+                  setSelectedDate={field.onChange}
+                  id="end_date"
+                  isLoading={isLoading}
+                  datePickerDisabled={getEndDateDisabled()}
+                  key={
+                    formValues.start_date
+                      ? formValues.start_date.toString()
+                      : "no-start-date"
+                  }
                 />
+              </div>
+            )}
+          />
+        </div>
 
-                {/* End Date */}
-                <Controller
-                    name="end_date"
-                    control={control}
-                    render={({ field }) => (
-                        <div>
-                            <label className="block text-sm font-medium text-text-600 mb-1">
-                                End Date
-                            </label>
-                            <CustomDatePicker
-                                selectedDate={field.value}
-                                setSelectedDate={field.onChange}
-                                id="end_date"
-                                isLoading={isLoading}
-                                datePickerDisabled={getEndDateDisabled()}
-                                key={formValues.start_date ? formValues.start_date.toString() : 'no-start-date'}
-                            />
-                        </div>
-                    )}
-                />
-
-                {/* Status */}
-                <Controller
-                    name="status"
-                    control={control}
-                    render={({ field }) => (
-                        <FormSelect
-                            label="Status"
-                            options={[
-                                { value: 1, label: "Active" },
-                                { value: 0, label: "Inactive" },
-                            ]}
-                            selectedOption={{ value: field.value, label: field.value === 1 ? "Active" : "Inactive" }}
-                            handleChange={(selectedOption) => field.onChange(selectedOption.value)}
-                            isLoading={isLoading}
-                            isCol={true}
-                        />
-                    )}
-                />
-            </div>
-            <NotifyContainer />
-        </CustomContainerModal>
-    );
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Select Course */}
+          <Controller
+            name="course_id"
+            control={control}
+            render={({ field }) => (
+              <FormSelect
+                label="Select Course"
+                options={courseOptions}
+                selectedOption={courseOptions.find(
+                  (opt) => opt.value === field.value
+                )}
+                handleChange={(selectedOption) =>
+                  field.onChange(selectedOption?.value)
+                }
+                isLoading={isLoading || isCoursesLoading}
+                placeholder="Choose a course"
+                isCol={true}
+                isSearchable={true}
+              />
+            )}
+          />
+          {/* Status */}
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <FormSelect
+                label="Status"
+                options={[
+                  { value: 1, label: "Active" },
+                  { value: 0, label: "Inactive" },
+                ]}
+                selectedOption={{
+                  value: field.value,
+                  label: field.value === 1 ? "Active" : "Inactive",
+                }}
+                handleChange={(selectedOption) =>
+                  field.onChange(selectedOption.value)
+                }
+                isLoading={isLoading}
+                isCol={true}
+              />
+            )}
+          />
+        </div>
+      </div>
+      <NotifyContainer />
+    </CustomContainerModal>
+  );
 };
 
 export default EditBatchModal;

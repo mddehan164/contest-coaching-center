@@ -15,10 +15,10 @@ const AddNoticeModal = () => {
     isLoading,
     handleSubmit,
     handleAddNotice,
-    getStartDateDisabled,
+    // getStartDateDisabled,
     formValues,
-    branchOptions,
-    isBranchesLoading,
+    // branchOptions,
+    // isBranchesLoading,
     handleFileSelect,
     imagePreview,
     isUploading,
@@ -72,10 +72,22 @@ const AddNoticeModal = () => {
               ) : imagePreview ? (
                 <div className="w-full h-full flex items-center justify-center p-2">
                   <div className="text-center">
-                    <svg className="w-8 h-8 text-green-500 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      className="w-8 h-8 text-green-500 mx-auto mb-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
-                    <span className="text-xs text-green-600">File Selected</span>
+                    <span className="text-xs text-green-600">
+                      File Selected
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -116,9 +128,7 @@ const AddNoticeModal = () => {
                 </p>
               )}
               {isUploading && (
-                <p className="text-sm text-blue-600">
-                  Uploading file...
-                </p>
+                <p className="text-sm text-blue-600">Uploading file...</p>
               )}
             </div>
           </div>
