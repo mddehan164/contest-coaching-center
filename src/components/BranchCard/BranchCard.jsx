@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { branchData } from "../../data/branchData";
+// import { branchData } from "../../data/branchData";
 import "./BranchCard.css";
+const BASE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
+import CustomSpinner from "../../shared/custom/CustomSpinner";
 
-const BranchCard = () => {
+const BranchCard = ({ data, loading, error }) => {
   const [fullscreenImg, setFullscreenImg] = useState(null);
-  const [slideIndex, setSlideIndex] = useState({}); // প্রতিটি branch এর আলাদা slide index
+  // const [slideIndex, setSlideIndex] = useState({}); // প্রতিটি branch এর আলাদা slide index
 
   const openFullscreen = (img) => {
     setFullscreenImg(img);
@@ -15,69 +17,86 @@ const BranchCard = () => {
   };
 
   // নির্দিষ্ট branch এর index বাড়ানো/কমানোর ফাংশন
-  const changeSlide = (branchId, imagesLength, direction) => {
-    setSlideIndex((prev) => {
-      const currentIndex = prev[branchId] || 0;
-      let newIndex =
-        direction === "prev"
-          ? (currentIndex - 1 + imagesLength) % imagesLength
-          : (currentIndex + 1) % imagesLength;
+  // const changeSlide = (branchId, imagesLength, direction) => {
+  //   setSlideIndex((prev) => {
+  //     const currentIndex = prev[branchId] || 0;
+  //     let newIndex =
+  //       direction === "prev"
+  //         ? (currentIndex - 1 + imagesLength) % imagesLength
+  //         : (currentIndex + 1) % imagesLength;
 
-      return { ...prev, [branchId]: newIndex };
-    });
-  };
+  //     return { ...prev, [branchId]: newIndex };
+  //   });
+  // };
+  if (loading) {
+    return (
+      <div className="w-full h-auto flex justify-center items-center">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-10 p-4 max-w-7xl max-sm:px-20">
-      {branchData.map((branch) => {
-        const currentSlide = slideIndex[branch.id] || 0;
-        return (
-          <div
-            key={branch.id}
-            className="border rounded-xl overflow-hidden shadow hover:shadow-lg transition-all bg-white flex flex-col md:flex-row"
-          >
-            {/* Slider Section */}
-            <div className="md:w-1/2 w-full relative flex items-center justify-center bg-gray-200">
-              <button
+      {!error ? (
+        data?.map((branch) => {
+          // const currentSlide = slideIndex[branch.id] || 0;
+          const image = `${BASE_IMAGE_URL}${branch.image}`;
+          return (
+            <div
+              key={branch.id}
+              className="border rounded-xl overflow-hidden shadow hover:shadow-lg transition-all bg-white flex flex-col md:flex-row"
+            >
+              {/* Slider Section */}
+              <div className="md:w-1/2 w-full relative flex items-center justify-center bg-gray-200">
+                {/* <button
                 className="absolute left-2 text-3xl text-gray-600 hover:text-black font-bold z-10"
-                onClick={() =>
-                  changeSlide(branch.id, branch.images.length, "prev")
-                }
+                // onClick={() =>
+                //   changeSlide(branch.id, branch.images.length, "prev")
+                // }
               >
                 &#8592;
-              </button>
-              <img
-                src={branch.images[currentSlide]}
-                alt={`Slide ${currentSlide}`}
-                className="w-64 h-64 object-contain rounded cursor-pointer"
-                onClick={() => openFullscreen(branch.images[currentSlide])}
-                loading="lazy"
-              />
-              <button
+              </button> */}
+                <img
+                  // src={branch.images[currentSlide]}
+                  src={image}
+                  // alt={`Slide ${currentSlide}`}
+                  alt={branch.name}
+                  className="w-64 h-64 object-contain rounded cursor-pointer"
+                  // onClick={() => openFullscreen(branch.images[currentSlide])}
+                  onClick={() => openFullscreen(image)}
+                  loading="lazy"
+                />
+                {/* <button
                 className="absolute right-2 text-3xl text-gray-600 hover:text-black font-bold z-10"
                 onClick={() =>
                   changeSlide(branch.id, branch.images.length, "next")
                 }
               >
                 &#8594;
-              </button>
-            </div>
+              </button> */}
+              </div>
 
-            {/* Info Section */}
-            <div className="md:w-1/2 w-full p-4 flex flex-col justify-center space-y-2">
-              <h2 className="text-2xl font-bold lg:text-2xl text-headerColorHover">
-                {branch.district}
-              </h2>
-              <p className="text-gray-500 font-medium lg:text-xl">
-                {branch.address}
-              </p>
-              <p className="text-gray-400 text-sm xl:text-lg">
-                {branch.description}
-              </p>
+              {/* Info Section */}
+              <div className="md:w-1/2 w-full p-4 flex flex-col justify-center space-y-2">
+                <h2 className="text-2xl font-bold lg:text-2xl text-headerColorHover">
+                  {branch.name}
+                </h2>
+                <p className="text-gray-500 font-medium lg:text-xl">
+                  {branch.location}
+                </p>
+                <p className="text-gray-400 text-sm xl:text-lg">
+                  {branch.description}
+                </p>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      ) : (
+        <div className="text-red-500 text-lg xl:text-2xl italic">
+          Fail to load branches...
+        </div>
+      )}
 
       {/* Fullscreen View */}
       {fullscreenImg && (
