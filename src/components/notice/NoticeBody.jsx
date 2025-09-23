@@ -1,10 +1,10 @@
 import NoticeBtn from "./NoticeBtn";
 import MainNoticePanel from "./MainNoticePanel";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
-import { useNotices } from "../../hooks/useNotice";
+import { useGetAllPublicNoticesQuery } from "../../redux-rtk/notice";
 
 const NoticeBody = () => {
-  const { isLoading } = useNotices();
+  const { isLoading } = useGetAllPublicNoticesQuery();
   return (
     <div className="w-full">
       <NoticeBtn />

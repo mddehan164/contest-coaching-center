@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
   addNewNoticeToList,
-  viewNoticeFromList,
   setAddNoticeModal,
   setEditNoticeModal,
   setSelectedNoticeData,
@@ -13,7 +12,6 @@ import {
   setNoticeMetaData,
   updateNoticeInList,
   useAddNoticeMutation,
-  useDeleteNoticeMutation,
   useGetAllNoticesQuery,
   useUpdateNoticeMutation,
   useGetBranchesQuery,
@@ -47,8 +45,6 @@ export const useNotices = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebouncedSearch(searchKeyword, 1000);
 
-  const [deleteNotice, { isLoading: deleteLoading }] =
-    useDeleteNoticeMutation();
   const { isLoading, isFetching, isError, error } = useGetAllNoticesQuery(
     { page: currentPage, limit: pageSize, search: debouncedSearch },
     {
@@ -74,24 +70,6 @@ export const useNotices = () => {
     dispatch(setSelectedNoticeData(null));
   };
 
-  const handleDelete = ({ noticeId }) => {
-    if (!noticeId) return errorNotify("Notice ID is required.");
-
-    deleteNotice({ noticeId })
-      .unwrap()
-      .then((response) => {
-        if (response?.success) {
-          handleCloseConfirmationModal();
-          dispatch(viewNoticeFromList({ id: noticeId }));
-          successNotify(response?.message);
-        }
-      })
-      .catch((err) => {
-        errorNotify(err?.data?.message);
-        console.log(err.data.message);
-      });
-  };
-
   return {
     dataList,
     meta,
@@ -99,8 +77,6 @@ export const useNotices = () => {
     isError,
     status: error?.status,
     updatePageMeta,
-    handleDelete,
-    deleteLoading,
     searchKeyword,
     setSearchKeyword,
     selectedData,

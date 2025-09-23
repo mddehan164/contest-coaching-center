@@ -8,7 +8,7 @@ const NoticePanel = ({ notices, onSelect, loading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const noticesPerPage = 5; // প্রতি পেজে কয়টা notice দেখাবে
 
-  if (!notices || notices.length === 0) {
+  if (loading || !notices || notices.length === 0) {
     return (
       <p className="text-sm text-gray-500 p-2">কোনো নোটিশ পাওয়া যায়নি।</p>
     );

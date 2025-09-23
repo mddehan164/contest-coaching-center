@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
   addNewCourseToList,
-  viewCourseFromList,
   setAddCourseModal,
   setEditCourseModal,
   setSelectedCourseData,
@@ -13,10 +12,8 @@ import {
   setCourseMetaData,
   updateCourseInList,
   useAddCourseMutation,
-  useDeleteCourseMutation,
   useGetAllCoursesQuery,
   useUpdateCourseMutation,
-  useGetCourseBatchesQuery,
   useGetBranchesQuery,
 } from "../redux-rtk/course";
 import {
@@ -37,8 +34,6 @@ export const useCourses = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebouncedSearch(searchKeyword, 1000);
 
-  const [deleteCourse, { isLoading: deleteLoading }] =
-    useDeleteCourseMutation();
   const { isLoading, isFetching, isError, error } = useGetAllCoursesQuery(
     { page: currentPage, limit: pageSize, search: debouncedSearch },
     {
@@ -62,24 +57,6 @@ export const useCourses = () => {
     dispatch(setSelectedCourseData(null));
   };
 
-  const handleDelete = ({ courseId }) => {
-    if (!courseId) return errorNotify("Course ID is required.");
-
-    deleteCourse({ courseId })
-      .unwrap()
-      .then((response) => {
-        if (response?.success) {
-          handleCloseConfirmationModal();
-          dispatch(viewCourseFromList({ id: courseId }));
-          successNotify(response?.message);
-        }
-      })
-      .catch((err) => {
-        errorNotify(err?.data?.message);
-        console.log(err.data.message);
-      });
-  };
-
   return {
     dataList,
     meta,
@@ -87,8 +64,6 @@ export const useCourses = () => {
     isError,
     status: error?.status,
     updatePageMeta,
-    handleDelete,
-    deleteLoading,
     searchKeyword,
     setSearchKeyword,
     selectedData,

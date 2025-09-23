@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { noticeBtnData } from "../../data/data";
 import NoticePanel from "./NoticePanel";
-import { useNotices } from "../../hooks/useNotice";
 import BranchFilter from "../BranchFilter";
+import {
+  setSelectedNoticeData,
+  useGetAllPublicNoticesQuery,
+} from "../../redux-rtk/notice";
 
 const MainNoticePanel = () => {
-  const { isLoading, dataList, handleSetSelectedNotice } = useNotices();
+  const dispatch = useDispatch();
+  const { data: publicNotices = { data: [] }, isLoading } =
+    useGetAllPublicNoticesQuery();
   const activeTab = useSelector((state) => state.ui.activeTab);
+
+  const handleSetSelectedNotice = (notice) => {
+    dispatch(setSelectedNoticeData(notice));
+  };
   // Filter out status 0 first
-  const validNotices = dataList.filter((n) => n.status !== 0);
+  const validNotices = publicNotices?.data?.filter((n) => n.status !== 0);
   // ✅ Branch filter state
   const [selectedBranch, setSelectedBranch] = useState(null);
 
@@ -32,7 +41,10 @@ const MainNoticePanel = () => {
   return (
     <div className="w-full">
       {/* 🔹 Branch Filter Buttons */}
-      <BranchFilter notices={dataList} onFilter={setSelectedBranch} />
+      <BranchFilter
+        notices={publicNotices?.data}
+        onFilter={setSelectedBranch}
+      />
 
       {/* 🔹 Notices by Tab */}
       {activeTab === "Admission" && (

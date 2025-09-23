@@ -11,7 +11,7 @@ const initialState = {
   dataList: [],
   data: {},
   selectedData: null,
-
+  publicNotices: [],
   isAddModalOpen: false,
   isEditModalOpen: false,
   isConfirmModalOpen: false,
@@ -33,6 +33,10 @@ const noticeSlice = createSlice({
     setNoticeDataList: (state, action) => {
       // directly assign plain list
       state.dataList = action.payload.data;
+    },
+    setPublicNotices: (state, action) => {
+      // directly assign plain list
+      state.publicNotices = action.payload.data;
     },
 
     setNoticeData: (state, action) => {
@@ -161,6 +165,7 @@ export const {
   setAddNoticeModal,
   setEditNoticeModal,
   updateNoticeStatus,
+  setPublicNotices,
 } = noticeSlice.actions;
 
 export default noticeSlice.reducer;

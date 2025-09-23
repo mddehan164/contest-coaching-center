@@ -1,4 +1,8 @@
-import { setNoticeData, setNoticeMetaData } from "./noticeSlice";
+import {
+  setNoticeData,
+  setNoticeMetaData,
+  setPublicNotices,
+} from "./noticeSlice";
 import { apiSlice } from "../api/apiSlice";
 
 export const noticeApi = apiSlice.injectEndpoints({
@@ -13,8 +17,8 @@ export const noticeApi = apiSlice.injectEndpoints({
         };
       },
       providesTags: (result, error, arg) => [
-        { type: 'Notice', id: 'LIST' },
-        { type: 'Notice', id: `PAGE_${arg.page || 1}` },
+        { type: "Notice", id: "LIST" },
+        { type: "Notice", id: `PAGE_${arg.page || 1}` },
       ],
       // Keep data fresh for 5 minutes
       keepUnusedDataFor: 300,
@@ -28,6 +32,19 @@ export const noticeApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
+    getAllPublicNotices: builder.query({
+      query: () => ({ url: `notices/active`, method: "GET" }),
+      async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+        try {
+          const { data: apiData } = await queryFulfilled;
+          dispatch(setPublicNotices(apiData));
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    }),
+
     getBranches: builder.query({
       query: () => "/branches",
       providesTags: ["Branches"],
@@ -47,17 +64,19 @@ export const noticeApi = apiSlice.injectEndpoints({
       query: ({ data }) => {
         // Check if data is FormData or JSON
         const isFormData = data instanceof FormData;
-        
+
         return {
           url: "notices",
           method: "POST",
           body: data,
-          headers: isFormData ? {} : {
-            'Content-Type': 'application/json',
-          },
+          headers: isFormData
+            ? {}
+            : {
+                "Content-Type": "application/json",
+              },
         };
       },
-      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
+      invalidatesTags: [{ type: "Notice", id: "LIST" }],
     }),
 
     // UPDATE A COURSE
@@ -65,17 +84,19 @@ export const noticeApi = apiSlice.injectEndpoints({
       query: ({ data, noticeId }) => {
         // Check if data is FormData or JSON
         const isFormData = data instanceof FormData;
-        
+
         return {
           url: `notices/${noticeId}`,
           method: "PUT",
           body: data,
-          headers: isFormData ? {} : {
-            'Content-Type': 'application/json',
-          },
+          headers: isFormData
+            ? {}
+            : {
+                "Content-Type": "application/json",
+              },
         };
       },
-      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
+      invalidatesTags: [{ type: "Notice", id: "LIST" }],
     }),
 
     // DELETE A COURSE
@@ -86,7 +107,7 @@ export const noticeApi = apiSlice.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
+      invalidatesTags: [{ type: "Notice", id: "LIST" }],
     }),
 
     toggleNoticeStatus: builder.mutation({
@@ -97,13 +118,14 @@ export const noticeApi = apiSlice.injectEndpoints({
         };
       },
       // Invalidate the cache to refetch the updated data
-      invalidatesTags: [{ type: 'Notice', id: 'LIST' }],
+      invalidatesTags: [{ type: "Notice", id: "LIST" }],
     }),
   }),
 });
 
 export const {
   useGetAllNoticesQuery,
+  useGetAllPublicNoticesQuery,
   useAddNoticeMutation,
   useDeleteNoticeMutation,
   useUpdateNoticeMutation,
