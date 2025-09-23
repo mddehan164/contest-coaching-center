@@ -11,7 +11,12 @@ import {
 const MainNoticePanel = () => {
   const dispatch = useDispatch();
   const { data: publicNotices = { data: [] }, isLoading } =
-    useGetAllPublicNoticesQuery();
+    useGetAllPublicNoticesQuery(undefined, {
+      refetchOnMountOrArgChange: false,
+      refetchOnReconnect: false,
+      refetchOnFocus: false,
+      keepUnusedDataFor: 300, // 5 min cache
+    });
   const activeTab = useSelector((state) => state.ui.activeTab);
 
   const handleSetSelectedNotice = (notice) => {

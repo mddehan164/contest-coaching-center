@@ -1,5 +1,3 @@
-import React from "react";
-
 const QuickStat = ({ data }) => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-3">

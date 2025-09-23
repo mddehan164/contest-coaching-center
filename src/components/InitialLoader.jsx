@@ -5,7 +5,7 @@ export default function InitialLoader({ fullScreen = true }) {
   return (
     <div
       className={`${
-        fullScreen ? "w-full h-screen bg-white" : "w-1/4 h-auto"
+        fullScreen ? "w-full h-screen bg-white" : "w-1/2 h-auto"
       } flex items-center justify-center`}
     >
       <div className="relative flex items-center justify-center w-1/6 lg:w[20%] xl:w-[12%]">

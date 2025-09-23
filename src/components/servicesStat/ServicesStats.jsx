@@ -12,7 +12,7 @@ const ServicesStats = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="aspect-3/2 w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md cursor-pointer"
+            className="aspect-3/2 w-[48%] sm:w-[30%] md:w-[23%] lg:w-[14%] p-1 rounded-md"
           >
             <QuickStat data={service} />
           </div>
