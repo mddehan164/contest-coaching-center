@@ -14,11 +14,11 @@ const EditReviewModal = ({ data }) => {
     isLoading,
     handleSubmit,
     handleUpdateReview,
-    selectedData,
-    imagePreview,
-    imagePreviewUrl,
-    isUploading,
-    handleFileSelect,
+    // selectedData,
+    // imagePreview,
+    // imagePreviewUrl,
+    // isUploading,
+    // handleFileSelect,
   } = useEditReview();
 
   return (
@@ -96,30 +96,6 @@ const EditReviewModal = ({ data }) => {
           )}
         />
 
-        {/* Show existing image if available */}
-        {/* {selectedData?.img_url && (
-                    <div className="flex flex-col space-y-2">
-                        <label className="text-sm font-medium text-gray-700">
-                            Current Image
-                        </label>
-                        <div className="flex items-center gap-4">
-                            <img 
-                                src={selectedData.img_url} 
-                                alt={selectedData.name}
-                                className="w-16 h-16 object-cover rounded-lg border"
-                            />
-                            <a 
-                                href={selectedData.img_url} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:underline text-sm"
-                            >
-                                View Full Image
-                            </a>
-                        </div>
-                    </div>
-                )} */}
-
         {/* Image Upload */}
         <ImageUpload
           name="review_img"
@@ -129,7 +105,7 @@ const EditReviewModal = ({ data }) => {
           accept="image/*"
           maxSize={5 * 1024 * 1024} // 5MB
           required={false}
-          currentImage={selectedData?.review_img}
+          currentImage={data?.img_url}
         />
       </div>
       <NotifyContainer />

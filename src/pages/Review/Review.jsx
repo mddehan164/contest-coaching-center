@@ -107,14 +107,6 @@ const Review = () => {
                   >
                     <EditSvg />
                   </button>
-                  {/* <button
-                                        onClick={() => {
-                                            handleSetSelectedReview({ ...item, type: SelectedSliceTypeEnum.DELETE });
-                                            handleOpenConfirmationModal();
-                                        }}
-                                    >
-                                        <DeleteSvg />
-                                    </button> */}
                 </div>
               </td>
             </tr>

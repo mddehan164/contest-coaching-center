@@ -34,7 +34,7 @@ export const noticeApi = apiSlice.injectEndpoints({
     }),
 
     getAllPublicNotices: builder.query({
-      query: () => ({ url: `notices/active`, method: "GET" }),
+      query: () => ({ url: `notices`, method: "GET" }),
       async onQueryStarted(_args, { queryFulfilled, dispatch }) {
         try {
           const { data: apiData } = await queryFulfilled;

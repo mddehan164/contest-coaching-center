@@ -1,8 +1,8 @@
-import React from "react";
+import error from "../../../public/images/not-available.webp";
 
 const Stats = ({ stat }) => {
-  const gradient = Array.isArray(stat.backgroundGradient)
-    ? stat.backgroundGradient
+  const gradient = Array.isArray(stat?.backgroundGradient)
+    ? stat?.backgroundGradient
     : [];
   const gradientStyle =
     gradient.length === 2
@@ -11,62 +11,55 @@ const Stats = ({ stat }) => {
         }
       : {};
 
+  // fixed height for the card
+  const cardHeight = "h-96 md:h-96 lg:h-96 xl:h-96";
+
   return (
-    <div className="h-auto p-4 bg-white hover:shadow-xl shadow-md cursor-pointer border-t-4 border-headerColor rounded-md">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <div
-          className={`rounded-full w-40 h-40 md:w-48 md:h-48 lg:w-36 lg:h-36 ${
-            !stat.img
-              ? "flex items-center justify-center flex-col text-white font-semibold gap-2"
-              : ""
-          }`}
-          style={!stat.img ? gradientStyle : {}}
-        >
-          {!stat.img ? (
-            React.createElement(stat.icon, {
-              className: "text-4xl md:text-5xl lg:text-6xl",
-            })
-          ) : (
-            <img
-              src={stat.img}
-              alt={stat.title}
-              className="w-full h-full object-cover rounded-full border-2 border-headerColor"
-              loading="lazy"
-            />
-          )}
-          <h1
-            className={`${
-              !stat.img
-                ? "text-2xl md:text-3xl lg:text-2xl text-center"
-                : "text-lg text-center mt-5 font-extrabold leading-5 text-headerColor"
-            }`}
-          >
-            {stat.title}
-          </h1>
-        </div>
-        {!stat.img && (
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-center">
-            {stat.count}
+    <div
+      className={`flex flex-col items-center justify-start gap-4 p-4 bg-white shadow-md hover:shadow-xl border-t-4 border-headerColor rounded-md ${cardHeight}`}
+    >
+      <div
+        className={`rounded-full w-32 h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 flex items-center justify-center text-white font-semibold gap-2`}
+        style={!stat?.img ? gradientStyle : {}}
+      >
+        {stat?.Icon ? (
+          <stat.Icon className="w-16 h-16 text-white" />
+        ) : (
+          <img
+            src={stat?.img_url ? stat.img_url : error}
+            alt={stat?.title || stat?.name}
+            className="w-full h-full object-contain rounded-full border-2 border-headerColor"
+            loading="lazy"
+          />
+        )}
+      </div>
+
+      <div>
+        <h1 className="text-center font-bold text-lg md:text-xl lg:text-lg truncate w-full text-headerColor">
+          {stat?.title || stat?.name || "No Title"}
+        </h1>
+
+        {!stat?.creator && (
+          <h2 className="text-2xl md:text-3xl lg:text-2xl text-center">
+            {stat?.count || "..."}
           </h2>
         )}
-        <p
-          className={`${
-            !stat.img
-              ? "text-sm md:text-sm lg:text-sm text-justify px-2 h-20 overflow-auto"
-              : "text-sm mt-12 font-semibold text-headerColorHover"
-          }`}
-        >
-          {!stat.img ? stat.description : stat.subtitle}
-        </p>
-        {stat.img && (
-          <h2 className="text-lg font-bold -mt-3 md:text-2xl lg:text-2xl text-center text-contestRed">
-            {stat.rank}
-          </h2>
-        )}
-        {stat.img && (
-          <p className="text-sm md:text-sm lg:text-md text-justify px-2 h-32 overflow-auto">
-            {stat.description}
+
+        {!stat?.creator && (
+          <p className="text-sm text-justify px-2 overflow-auto max-h-20">
+            {stat?.des || "..."}
           </p>
+        )}
+
+        {stat?.creator && (
+          <>
+            <h2 className="text-lg font-bold text-center text-contestRed">
+              {stat?.rank || "..."}
+            </h2>
+            <p className="text-sm text-justify px-2 overflow-auto max-h-32">
+              {stat?.description || "-"}
+            </p>
+          </>
         )}
       </div>
     </div>

@@ -14,10 +14,10 @@ const AddReviewModal = () => {
     isLoading,
     handleSubmit,
     handleAddReview,
-    imagePreview,
-    imagePreviewUrl,
-    isUploading,
-    handleFileSelect,
+    // imagePreview,
+    // imagePreviewUrl,
+    // isUploading,
+    // handleFileSelect,
   } = useAddReview();
 
   return (
@@ -97,7 +97,7 @@ const AddReviewModal = () => {
 
         {/* Image Upload */}
         <ImageUpload
-          name="review_img"
+          name="img_url"
           control={control}
           label="Student Image (Optional)"
           module="review"
