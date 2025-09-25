@@ -1,4 +1,4 @@
-import error from "../../../public/images/not-available.webp";
+import error from "../../assets/images/not-available.wepb";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Stats = ({ stat }) => {
