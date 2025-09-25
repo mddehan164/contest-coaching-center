@@ -23,6 +23,7 @@ const PreviewNotice = () => {
               title="PDF Preview"
               className="w-full h-full object-contain "
               loading="lazy"
+              allow="fullscreen"
             ></iframe>
           </div>
           <h2 className="text-lg font-semibold mb-2">{selectedData.title}</h2>
