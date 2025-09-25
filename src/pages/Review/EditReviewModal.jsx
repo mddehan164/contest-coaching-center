@@ -4,6 +4,7 @@ import { CustomContainerModal } from "@shared/custom";
 import { FormInput, FormTextarea } from "@shared/forms";
 import ImageUpload from "../../shared/forms/ImageUpload";
 import NotifyContainer from "../../utils/notify";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditReviewModal = ({ data }) => {
   const {
@@ -19,7 +20,7 @@ const EditReviewModal = ({ data }) => {
     // imagePreviewUrl,
     // isUploading,
     // handleFileSelect,
-  } = useEditReview();
+  } = useEditReview(data);
 
   return (
     <CustomContainerModal
@@ -98,14 +99,14 @@ const EditReviewModal = ({ data }) => {
 
         {/* Image Upload */}
         <ImageUpload
-          name="review_img"
+          name="img"
           control={control}
           label="Update Student Image (Optional)"
           module="review"
           accept="image/*"
           maxSize={5 * 1024 * 1024} // 5MB
           required={false}
-          currentImage={data?.img_url}
+          currentImage={`${BASE_URL}/${data?.img}`} // Show existing image
         />
       </div>
       <NotifyContainer />

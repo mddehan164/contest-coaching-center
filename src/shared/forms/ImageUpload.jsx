@@ -65,14 +65,14 @@ const ImageUpload = ({
         const fullUrl = `${API_CONFIG.BASE_URL.replace(
           "/api",
           ""
-        )}/${imagePath}`;
-
+        )}/${imagePath}`.replace("storage/storage", "storage");
         // Set preview URL for display
         setPreviewUrl(fullUrl);
         setFileName("" + response.data.data.original_name);
+        console.log(response);
 
         // Update form value with the image path
-        onChange(fullUrl);
+        onChange(imagePath);
         // Call callback if provided
         if (onImageUploaded) {
           onImageUploaded(response.data.data);

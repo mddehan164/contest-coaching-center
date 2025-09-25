@@ -97,7 +97,7 @@ const AddReviewModal = () => {
 
         {/* Image Upload */}
         <ImageUpload
-          name="img_url"
+          name="img"
           control={control}
           label="Student Image (Optional)"
           module="review"

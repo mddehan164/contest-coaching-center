@@ -1,4 +1,5 @@
 import error from "../../../public/images/not-available.webp";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Stats = ({ stat }) => {
   const gradient = Array.isArray(stat?.backgroundGradient)
@@ -26,7 +27,7 @@ const Stats = ({ stat }) => {
           <stat.Icon className="w-16 h-16 text-white" />
         ) : (
           <img
-            src={stat?.img_url ? stat.img_url : error}
+            src={stat?.img ? `${BASE_URL}/${stat.img}` : error}
             alt={stat?.title || stat?.name}
             className="w-full h-full object-contain rounded-full border-2 border-headerColor"
             loading="lazy"
@@ -35,7 +36,7 @@ const Stats = ({ stat }) => {
       </div>
 
       <div>
-        <h1 className="text-center font-bold text-lg md:text-xl lg:text-lg truncate w-full text-headerColor">
+        <h1 className="text-center font-bold text-lg md:text-xl lg:text-lg  w-full text-headerColor">
           {stat?.title || stat?.name || "No Title"}
         </h1>
 

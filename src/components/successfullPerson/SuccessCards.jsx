@@ -6,7 +6,6 @@ import Stats from "../stats/Stats";
 
 const SuccessCards = () => {
   const { isLoading, isError, dataList } = useReviews();
-  console.log(dataList);
   const btnData = {
     btnName: ["See More"],
     btnStyle: {
