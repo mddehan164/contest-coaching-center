@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import axiosInstance from "../../../api/axiosInstance";
-import { API_CONFIG } from "../../constants/api";
 const BASE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
 
 const ImageUpload = ({
@@ -62,17 +61,18 @@ const ImageUpload = ({
 
       if (response.data.success) {
         const imagePath = response.data.data.path;
-        const fullUrl = `${API_CONFIG.BASE_URL.replace(
-          "/api",
-          ""
-        )}/${imagePath}`.replace("storage/storage", "storage");
+
+        const fullUrl = `${BASE_IMAGE_URL}/${imagePath}`;
         // Set preview URL for display
         setPreviewUrl(fullUrl);
-        setFileName("" + response.data.data.original_name);
-        console.log(response);
+        onChange(fullUrl);
+
+        setFileName(response.data.data.original_name);
+        console.log("response", response);
+        console.log("fillurl", fullUrl);
+        console.log("path", imagePath);
 
         // Update form value with the image path
-        onChange(imagePath);
         // Call callback if provided
         if (onImageUploaded) {
           onImageUploaded(response.data.data);

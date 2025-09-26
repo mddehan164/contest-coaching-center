@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import MainBtn from "./MainBtn";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 /**
  * Card component for displaying course information
@@ -37,20 +38,14 @@ const Card = ({ data, btn, encryptedId }) => {
    * @returns {JSX.Element|string} Formatted price display
    */
   const renderPrice = () => {
-    if (data?.offer_price) {
+    if (data?.offer_price !== "0.00") {
       return (
-        <p className="text-xs mt-4">
-          <span
-            className={`line-through text-red-600 mr-1 sm:text-lg ${
-              data.offer_price === "0.00" ? "hidden" : ""
-            }`}
-          >
-            {data.offer_price && "৳"}
-            {data.offer_price}
-          </span>
-          <span className="text-headerColorHover font-semibold sm:text-lg">
-            {data.price && "৳"}
-            {data.price}
+        <p className="mt-2 text-lg">
+          <span className="text-headerColorHover font-semibold ">
+            ৳{Number(data.offer_price)}
+          </span>{" "}
+          <span className="line-through text-red-500 ">
+            ৳{Number(data?.price)}
           </span>
         </p>
       );
@@ -65,7 +60,7 @@ const Card = ({ data, btn, encryptedId }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xs max-sm:mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6 relative pb-12">
+    <div className="bg-white rounded-lg shadow-md max-w-xs max-sm:mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer xl:mt-6 relative lg:h-96">
       {/* Title Header */}
       {data.noticeBtn && (
         <div className="bg-headerColor text-white font-bold text-center py-2 xl:text-xl">
@@ -76,9 +71,10 @@ const Card = ({ data, btn, encryptedId }) => {
       {/* Course Image */}
       {data.image && (
         <img
+          // src={`${BASE_URL}/${data.image}`}
           src={data.image}
           alt={data.title || "Course Image"}
-          className="w-full h-auto object-cover"
+          className="w-full h-1/3 object-contain"
           loading="lazy"
         />
       )}
@@ -87,7 +83,7 @@ const Card = ({ data, btn, encryptedId }) => {
       <div className="p-4 md:p-2 xl:p-4">
         {/* Course Title (if not in header) */}
         {!data.noticeBtn && data.title && (
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+          <h3 className="text-lg font-semibold text-headerColorHover mb-2">
             {data.title}
           </h3>
         )}
@@ -96,18 +92,8 @@ const Card = ({ data, btn, encryptedId }) => {
         <ul
           className={`${
             bulletStyles[data.bulletType || "circle"]
-          } list-inside text-sm text-gray-700 space-y-1`}
+          } list-inside text-sm text-gray-700 space-y-1 h-24 overflow-y-auto`}
         >
-          {/* {(data.short_des || []).map((item, index) => (
-            <li
-              key={index}
-              className={
-                btn?.btnStyle?.fontBold ? "sm:font-bold xl:font-extrabold" : ""
-              }
-            >
-              {item}
-            </li>
-          ))} */}
           <li>{data.short_des}</li>
         </ul>
 

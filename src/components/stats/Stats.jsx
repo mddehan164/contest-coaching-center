@@ -1,4 +1,3 @@
-import error from "../../assets/images/not-available.wepb";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Stats = ({ stat }) => {
@@ -27,9 +26,10 @@ const Stats = ({ stat }) => {
           <stat.Icon className="w-16 h-16 text-white" />
         ) : (
           <img
-            src={stat?.img ? `${BASE_URL}/${stat.img}` : error}
+            // src={`${BASE_URL}/storage/${stat.img}`}
+            src={stat.img}
             alt={stat?.title || stat?.name}
-            className="w-full h-full object-contain rounded-full border-2 border-headerColor"
+            className="w-full h-full object-cover rounded-full border-2 border-headerColor"
             loading="lazy"
           />
         )}

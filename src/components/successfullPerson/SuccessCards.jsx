@@ -30,6 +30,11 @@ const SuccessCards = () => {
           {someSuccess.map((stat, index) => (
             <Stats stat={stat} key={index} />
           ))}
+          {someSuccess.lenght < 0 && (
+            <span className="text-xl text-red-500 italic">
+              No Person Available
+            </span>
+          )}
         </div>
       ) : (
         <div>

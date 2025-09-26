@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchCourseByIdThunk } from "../../redux-rtk/course/courseSlice";
 import CustomSpinner from "../../shared/custom/CustomSpinner";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -37,6 +38,7 @@ const CourseDetails = () => {
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <img
+            // src={`${BASE_URL}/${course.image}`}
             src={course.image}
             alt={course.title}
             className="w-full h-auto object-cover rounded-lg shadow-md"
@@ -65,12 +67,12 @@ const CourseDetails = () => {
       {/* Pricing Section */}
       <div className="flex justify-between items-center flex-wrap gap-4 border-t pt-4">
         <div>
-          {course.offer_price ? (
+          {course?.offer_price !== "0.00" ? (
             <p className="text-sm sm:text-lg">
               <span className="line-through text-red-500 mr-2">
                 ৳{course.price}
               </span>
-              <span className="text-green-600 font-bold">
+              <span className="text-headerColorHover font-bold">
                 Offer: ৳{course.offer_price}
               </span>
             </p>
