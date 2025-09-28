@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 // import { galleryData } from "../../data/galleryData";
 
 const categories = ["All", "Success", "Campus", "Student", "Others"];
@@ -8,15 +8,16 @@ const Gallery = ({ galleryData, loading }) => {
   const [displayData, setDisplayData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState(null);
-
   // Load gallery data based on selected category
   useEffect(() => {
     if (selectedCategory === "All".toLowerCase()) {
-      setDisplayData(galleryData);
+      setDisplayData(galleryData?.filter((data) => data.status === 1));
     } else {
       setDisplayData(
         galleryData?.filter(
-          (item) => item.category === selectedCategory.toLowerCase()
+          (item) =>
+            item.category === selectedCategory.toLowerCase() &&
+            item.status === 1
         )
       );
     }

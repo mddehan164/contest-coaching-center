@@ -106,7 +106,8 @@ const EditReviewModal = ({ data }) => {
           accept="image/*"
           maxSize={5 * 1024 * 1024} // 5MB
           required={false}
-          currentImage={`${BASE_URL}/${data?.img}`} // Show existing image
+          currentImage={data?.img} // Show existing image
+          // currentImage={`${BASE_URL}/${data?.img}`} // Show existing image
         />
       </div>
       <NotifyContainer />

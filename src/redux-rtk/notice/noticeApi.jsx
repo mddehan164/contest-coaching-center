@@ -12,7 +12,7 @@ export const noticeApi = apiSlice.injectEndpoints({
       query: (params = { page: 1, limit: 10 }) => {
         const queryString = new URLSearchParams(params).toString();
         return {
-          url: `notices/?${queryString}`,
+          url: `admin/notices/?${queryString}`,
           method: "GET",
         };
       },
