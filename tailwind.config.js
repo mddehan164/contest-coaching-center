@@ -7,7 +7,7 @@ export default {
     extend: {
       colors: {
         headerColor: "#50ccff",
-        headerColorHover: "#082a6e",
+        headerColorHover: "#181A20",
         headerTextColor: "#ffffff",
         contestRed: "#ff0522",
         contestLight: "#ebf9ff",
