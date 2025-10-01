@@ -1,5 +1,5 @@
 // hooks/usePayment.js
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetAllCoursesQuery,
@@ -34,8 +34,14 @@ export const usePayment = () => {
     selectedCourseEncryptedId,
     loading,
   } = useSelector((state) => state.payment);
-
+  const [switching, setSwitching] = useState(false);
   // 🔹 Query: All courses
+  useEffect(() => {
+    if (selectedStudentData?.encrypted_id) {
+      setSwitching(true);
+    }
+  }, [selectedStudentData?.encrypted_id]);
+
   const { data: coursesData, isLoading: loadingCourses } =
     useGetAllCoursesQuery();
 
@@ -76,6 +82,12 @@ export const usePayment = () => {
     }
   );
 
+  useEffect(() => {
+    if (singlePayment) {
+      setSwitching(false);
+    }
+  }, [singlePayment]);
+
   // 🔹 Mutations
   const [addDetail, { isLoading: adding }] = useAddPaymentDetailMutation();
   const [editDetail, { isLoading: editing }] = useEditPaymentDetailMutation();
@@ -83,9 +95,9 @@ export const usePayment = () => {
     useTogglePaymentDetailStatusMutation();
 
   // 🔹 Select student
-  const selectStudent = (student) => {
-    dispatch(setSelectedStudentData(student)); // এই লাইনটা যোগ করো
-  };
+  // const selectStudent = (student) => {
+  //   dispatch(setSelectedStudentData(student)); // এই লাইনটা যোগ করো
+  // };
 
   // 🔹 Clear selected student
   const clearSelectedStudent = () => {
@@ -125,9 +137,9 @@ export const usePayment = () => {
         detailData,
       }).unwrap();
 
-      if (selectedStudentData) {
-        refetchStudentPayment();
-      }
+      // if (selectedStudentData) {
+      //   refetchStudentPayment();
+      // }
       // if (selectedStudent) {
       //   refetchStudentPayment();
       // }
@@ -225,7 +237,7 @@ export const usePayment = () => {
     loadingFiltered,
     errorFiltered,
     singlePayment,
-    loadingSingle,
+    loadingSingle: loadingSingle || switching,
     errorSingle,
 
     // Course & Batch options
@@ -241,7 +253,7 @@ export const usePayment = () => {
     toggleDetailStatus,
 
     // Actions
-    selectStudent,
+    // selectStudent,
     clearSelectedStudent,
     updateSelectedCourseEncryptedId,
     refetchStudentPayment,

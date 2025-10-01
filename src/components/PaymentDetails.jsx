@@ -6,6 +6,7 @@ import {
 } from "../redux-rtk/payment/paymentSlice";
 import CustomSpinner from "../shared/custom/CustomSpinner";
 import { usePayment } from "../hooks/usePayment";
+import NotifyContainer from "../utils/notify";
 
 const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
   const { selectPaymentData } = usePayment();
@@ -21,21 +22,6 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
     dispatch(setIsOpenEditModal(true));
   };
 
-  if (loading || !paymentData) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <CustomSpinner />
-      </div>
-    );
-  }
-
-  if (!paymentData) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <p className="text-red-500">No payment data found</p>
-      </div>
-    );
-  }
   return (
     // Backdrop (fade bg)
     <div
@@ -51,10 +37,18 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
         <div className="flex justify-between students-center mb-4">
           <h2 className="text-xl md:text-2xl font-bold text-headerColorHover">
             Payment Details :
-            <span className="font-semibold text-gray-500 inline-block mx-2">
-              {paymentData.payer_name}
-            </span>
-            <span className="text-gray-400">({paymentData.payer_type})</span>
+            {loading ? (
+              <span className="text-gray-400 font-light"> Loading...</span>
+            ) : (
+              <>
+                <span className="font-semibold text-gray-500 inline-block mx-2">
+                  {paymentData?.payer_name}
+                </span>
+                <span className="text-gray-400">
+                  ({paymentData?.payer_type})
+                </span>
+              </>
+            )}
           </h2>
           <button
             className="text-gray-500 hover:text-red-500"
@@ -84,70 +78,78 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
               </tr>
             </thead>
             <tbody>
-              {paymentData?.payment_details?.length > 0 && !loading ? (
-                paymentData.payment_details.map((item) => {
-                  return (
-                    <tr
-                      key={item.id}
-                      className="hover:bg-contestLight text-center"
-                    >
-                      <td className="px-4 py-2 border">
-                        {item?.description || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {item?.payment_date?.split(" ")[0] || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {item?.payment_method
-                          ?.replace(/_/g, " ")
-                          .split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join(" ") || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {type === "student"
-                          ? "৳ " + paymentData?.total_amount
-                          : item?.subject || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {type === "student"
-                          ? "৳ " + item?.amount
-                          : item?.class_fee || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {item?.updated_by || "Not Found"}
-                      </td>
-                      <td className="px-4 py-2 border">
-                        {item?.status === "active" ? (
-                          <span className="text-green-600">
-                            {item?.status[0].toUpperCase() +
-                              item?.status.slice(1)}
-                          </span>
-                        ) : (
-                          <span className="text-red-600">
-                            {item?.status[0].toUpperCase() +
-                              item?.status.slice(1)}
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-2 border flex items-center justify-center">
-                        <button
-                          onClick={() => handleEditPayment(item)}
-                          className="hover:text-headerColor hover:cursor-pointer"
-                        >
-                          <EditIcon size={24} />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
+              {!loading ? (
+                paymentData?.payment_details?.length > 0 ? (
+                  paymentData.payment_details.map((item) => {
+                    return (
+                      <tr
+                        key={item.id}
+                        className="hover:bg-contestLight text-center"
+                      >
+                        <td className="px-4 py-2 border">
+                          {item?.description || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {item?.payment_date?.split(" ")[0] || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {item?.payment_method
+                            ?.replace(/_/g, " ")
+                            .split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ") || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {type === "student"
+                            ? "৳ " + paymentData?.total_amount
+                            : item?.subject || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {type === "student"
+                            ? "৳ " + item?.amount
+                            : item?.class_fee || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {item?.updated_by || "Not Found"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {item?.status === "active" ? (
+                            <span className="text-green-600">
+                              {item?.status[0].toUpperCase() +
+                                item?.status.slice(1)}
+                            </span>
+                          ) : (
+                            <span className="text-red-600">
+                              {item?.status[0].toUpperCase() +
+                                item?.status.slice(1)}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 border flex items-center justify-center">
+                          <button
+                            onClick={() => handleEditPayment(item)}
+                            className="hover:text-headerColor hover:cursor-pointer"
+                          >
+                            <EditIcon size={24} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="text-center py-4 text-red-500">
+                      No Payment Data Available
+                    </td>
+                  </tr>
+                )
               ) : (
                 <tr>
-                  <td colSpan="8" className="text-center py-4 text-red-500">
-                    No Payment Data Available
+                  <td colSpan="8" rowSpan={"1"} className="text-center py-8">
+                    <CustomSpinner />
                   </td>
                 </tr>
               )}
@@ -155,37 +157,42 @@ const PaymentDetails = ({ onClose, type, paymentData, loading }) => {
           </table>
           {paymentData?.payment_details?.length > 0 && (
             <div className="w-full flex items-center justify-end gap-5 py-5 font-semibold">
-              <div>
-                <p>
-                  Total Paid :
-                  <span className="text-green-500">
-                    &nbsp; ৳ {paymentData?.total_paid}
-                  </span>
-                </p>
-                <p>
-                  {paymentData?.remaining_amount === 0 ? (
-                    <span className="text-green-500">Paid</span>
-                  ) : (
-                    <span>
-                      Remaining: ৳{" "}
-                      <span className="text-red-500">
-                        {paymentData?.remaining_amount}
-                      </span>
+              {loading ? (
+                <span>Loading...</span>
+              ) : (
+                <div>
+                  <p>
+                    Total Paid :
+                    <span className="text-green-500">
+                      &nbsp; ৳ {paymentData?.total_paid}
                     </span>
-                  )}
-                </p>
-              </div>
+                  </p>
+                  <p>
+                    {paymentData?.remaining_amount === 0 ? (
+                      <span className="text-green-500">Paid</span>
+                    ) : (
+                      <span>
+                        Remaining: ৳{" "}
+                        <span className="text-red-500">
+                          {paymentData?.remaining_amount}
+                        </span>
+                      </span>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
           {/* Add Payment button */}
           <div className="flex justify-end">
             <button
+              disabled={loading}
               className={`${
                 isDisabled
                   ? "opacity-50 cursor-not-allowed"
                   : " bg-headerColor hover:bg-headerColorHover text-white "
-              } col-span-1 md:col-span-2 py-2 px-4 rounded-md`}
+              } col-span-1 md:col-span-2 py-2 px-4 rounded-md disabled:opacity-50`}
               onClick={() => {
                 if (isDisabled) return;
                 handleOpenAddModal();

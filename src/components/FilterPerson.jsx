@@ -29,12 +29,11 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     editing,
     toggling,
   } = usePayment();
-
   const handleCloseDetails = () => {
     closeDetailsModal();
     clearSelectedStudent();
+    closeAddModal();
   };
-
   const handleCloseAdd = () => {
     closeAddModal();
     clearPaymentData();
@@ -43,7 +42,6 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
     closeEditModal();
     clearPaymentData();
   };
-
   const handleAddPayment = async (paymentData) => {
     const student = selectedStudentData;
     if (!student) {
@@ -66,6 +64,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       });
       if (result.success) {
         closeAddModal(); // modal বন্ধ করো
+        await refetchStudentPayment();
       }
     } catch (error) {
       console.error("❌ Error adding payment:", error);
@@ -78,12 +77,13 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       if (paymentId) {
         const res = await editPaymentDetail(paymentId, editedPaymentData);
         if (res.success) {
-          handleCloseEdit();
-        }
+          closeEditModal(); // modal বন্ধ করো
+          await refetchStudentPayment();
+        } // ✅ এখন result PaymentEdit এ যাবে
       }
     } catch (error) {
       console.error("Error editing payment:", error.message);
-      alert(`Failed to edit payment for ${error.message}`);
+      return { success: false, message: error.message }; // fallback
     }
   };
 
@@ -98,7 +98,7 @@ const FilterPerson = ({ dataList = [], person = "Student" }) => {
       alert("Failed to toggle status. Please try again.");
     }
   };
-
+  // console.log(selectedStudentData);
   return (
     <div className="flex flex-wrap gap-5">
       {dataList.length > 0 ? (

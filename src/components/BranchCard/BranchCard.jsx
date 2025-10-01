@@ -1,7 +1,7 @@
 import { useState } from "react";
 // import { branchData } from "../../data/branchData";
 import "./BranchCard.css";
-const BASE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
+// const BASE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
 import CustomSpinner from "../../shared/custom/CustomSpinner";
 
 const BranchCard = ({ data, loading, error }) => {
@@ -41,7 +41,7 @@ const BranchCard = ({ data, loading, error }) => {
       {!error ? (
         data?.map((branch) => {
           // const currentSlide = slideIndex[branch.id] || 0;
-          const image = `${BASE_IMAGE_URL}${branch.image}`;
+          // const image = `${BASE_IMAGE_URL}${branch.image}`;
           return (
             <div
               key={branch.id}
@@ -59,12 +59,12 @@ const BranchCard = ({ data, loading, error }) => {
               </button> */}
                 <img
                   // src={branch.images[currentSlide]}
-                  src={image}
+                  src={branch.image}
                   // alt={`Slide ${currentSlide}`}
                   alt={branch.name}
                   className="w-64 h-64 object-contain rounded cursor-pointer"
                   // onClick={() => openFullscreen(branch.images[currentSlide])}
-                  onClick={() => openFullscreen(image)}
+                  onClick={() => openFullscreen(branch.image)}
                   loading="lazy"
                 />
                 {/* <button

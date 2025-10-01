@@ -99,7 +99,7 @@ export const paymentApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetAllStudentsPaymentQuery,
+  // useGetAllStudentsPaymentQuery,
   useGetStudentPaymentsByCourseBatchQuery,
   useGetPaymentByStudentQuery,
   useAddPaymentDetailMutation,

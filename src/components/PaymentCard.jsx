@@ -4,12 +4,10 @@ import {
   setSelectedStudentData,
   setShowDetailsModal,
 } from "../redux-rtk/payment/paymentSlice";
-import { usePayment } from "../hooks/usePayment";
 
 const PaymentCard = ({ status = 1, type = "student", data }) => {
-  const { selectStudent } = usePayment();
   const dispatch = useDispatch();
-  const handleDetails = () => {
+  const handleDetails = (data) => {
     dispatch(
       setSelectedStudentData({
         ...data,
@@ -17,7 +15,7 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
       })
     );
     dispatch(setShowDetailsModal(true));
-    selectStudent({ ...data, encrypted_id: data.student_id });
+    // selectStudent({ ...data, encrypted_id: data.student_id });
   };
 
   return (
@@ -49,7 +47,7 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
           </p>
           <button
             className="px-2 py-1 bg-headerColor hover:bg-headerColorHover text-white rounded-md"
-            onClick={handleDetails}
+            onClick={() => handleDetails(data)}
           >
             Details
           </button>
