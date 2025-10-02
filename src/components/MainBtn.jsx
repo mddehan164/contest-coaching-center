@@ -7,7 +7,7 @@ const MainBtn = ({ data, btnStyle, isActive, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className={`hover:cursor-pointer text-center max-sm:py-1 max-sm:px-2 max-sm:rounded-md text-sm 2xl:text-lg sm:py-2 sm:px-4 px-6 py-4 lg:px-3 lg:py-2 md:px-2 md:py-1 rounded-lg ${textColor} bg-${bgColor} ${hoverColor} ${fullWidth}`}
+      className={`hover:cursor-pointer text-center max-sm:py-1 max-sm:px-2 max-sm:rounded-md text-sm 2xl:text-base sm:py-2 sm:px-4 px-6 py-4 lg:px-3 lg:py-2 md:px-2 md:py-1 rounded-lg ${textColor} bg-${bgColor} ${hoverColor} ${fullWidth}`}
     >
       {data}
     </div>

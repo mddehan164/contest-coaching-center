@@ -58,8 +58,8 @@ const Gallery = ({ galleryData, loading }) => {
 
       {/* Gallery */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 animate-pulse">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 animate-pulse">
+          {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
               className="bg-gray-400 h-48 rounded-lg animate-pulse"

@@ -26,7 +26,10 @@ const StudentPay = () => {
     updateSelectedCourseEncryptedId,
     selectStudent,
     loading, // batch loading state
+    isBranchesLoading,
+    branchOptions,
   } = usePayment();
+  const [selectedBranch, setSelectedBranch] = useState(null);
 
   const { showPopup, showStickyBtn } = useSelector((state) => state.payment);
 
@@ -148,35 +151,57 @@ const StudentPay = () => {
       {/* Display filter info */}
       {shouldFetchStudents &&
         (filters.course || filters.batch || filters.search) && (
-          <div className="bg-gray-100 p-3 mb-4 rounded-md mx-4">
+          <div className="bg-gray-100 p-3 mb-4 rounded-md mx-4 ">
             <h3 className="font-semibold">Active Filters:</h3>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {filters.course && (
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                  Course:{" "}
-                  {(courseOptions || []).find(
-                    (c) => c.encrypted_id === filters.course
-                  )?.label || "Unknown"}
-                </span>
-              )}
-              {filters.batch && (
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
-                  Batch:{" "}
-                  {(batchesOptions || []).find((b) => b.value === filters.batch)
-                    ?.label || "Unknown"}
-                </span>
-              )}
-              {filters.search && (
-                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">
-                  Search: "{filters.search}"
-                </span>
-              )}
-              <button
-                onClick={handleClearFilters}
-                className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm hover:bg-red-200"
+            <div className="flex justify-between items-center">
+              <div className="flex flex-wrap gap-2 mt-2">
+                {filters.course && (
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                    Course:{" "}
+                    {(courseOptions || []).find(
+                      (c) => c.encrypted_id === filters.course
+                    )?.label || "Unknown"}
+                  </span>
+                )}
+                {filters.batch && (
+                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
+                    Batch:{" "}
+                    {(batchesOptions || []).find(
+                      (b) => b.value === filters.batch
+                    )?.label || "Unknown"}
+                  </span>
+                )}
+                {filters.search && (
+                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">
+                    Search: "{filters.search}"
+                  </span>
+                )}
+                <button
+                  onClick={handleClearFilters}
+                  className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm hover:bg-red-200"
+                >
+                  Clear All
+                </button>
+              </div>
+
+              {/* branches filter */}
+              <select
+                className="py-2 px-3 border"
+                value={selectedBranch || ""} // string হিসেবে রাখুন
+                onChange={(e) => {
+                  const val = e.target.value === "" ? null : e.target.value;
+                  setSelectedBranch(val);
+                }}
               >
-                Clear All
-              </button>
+                <option value="">
+                  {isBranchesLoading ? "Loading..." : "-- Select Branch --"}
+                </option>
+                {branchOptions.map((b, idx) => (
+                  <option key={idx} value={b.value}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         )}

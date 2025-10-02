@@ -3,6 +3,7 @@ import { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetAllCoursesQuery,
+  useGetBranchesQuery,
   useGetCourseBatchesQuery,
 } from "../redux-rtk/course";
 import {
@@ -188,6 +189,15 @@ export const usePayment = () => {
     }
   };
 
+  // branches
+  const { data: branchesData, isLoading: isBranchesLoading } =
+    useGetBranchesQuery();
+  // 🔹 Branch options
+  const branchOptions =
+    branchesData?.data?.branches?.map((branch) => ({
+      value: branch.id,
+      label: branch.name,
+    })) || [];
   // 🔹 Course options - এখানে encrypted_id store করুন
   const courseOptions = useMemo(() => {
     return (
@@ -239,6 +249,9 @@ export const usePayment = () => {
     singlePayment,
     loadingSingle: loadingSingle || switching,
     errorSingle,
+
+    isBranchesLoading,
+    branchOptions,
 
     // Course & Batch options
     courseOptions,

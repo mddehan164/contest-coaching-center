@@ -9,7 +9,7 @@ const Navbarmain = () => {
   const toggleMenu = () => setIsActiveMenu(!isActiveMenu);
 
   return (
-    <nav className="text-black w-full flex justify-between items-center relative max-sm:px-2 sm:px-5 lg:px-20 xl:px-40 z-20 bg-white">
+    <nav className="text-black w-full flex justify-between items-center relative max-sm:px-2 sm:px-5 lg:px-20 2xl:px-40 z-20 bg-white">
       <NavbarLogo />
       <NavbarLinks toggle={toggleMenu} isActiveMenu={isActiveMenu} />
       <div>

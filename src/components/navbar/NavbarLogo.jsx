@@ -20,12 +20,12 @@ const NavbarLogo = () => {
             duration: 1,
           },
         }}
-        className="w-1/6 h-auto flex items-center justify-center py-4 gap-3 max-sm:w-1/2 max-sm:gap-1 max-sm:py-2 sm:w-1/4 sm:gap-1 sm:py-3 sm:px-0 "
+        className="w-1/6 h-auto flex items-center  py-4 gap-3 max-sm:w-1/2 max-sm:gap-1 max-sm:py-2 sm:w-1/4 sm:gap-1 sm:py-3 sm:px-0 "
       >
         <img
           src={logo}
           alt="Contest"
-          className="w-1/4 max-sm:w-1/4 lg:w-1/5"
+          className="w-1/4 max-sm:w-1/4 lg:w-1/4"
           loading="lazy"
         />
         <div className="">

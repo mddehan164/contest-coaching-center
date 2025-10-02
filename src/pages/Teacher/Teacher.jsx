@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FormInput from "../../shared/forms/FormInput";
 import { AddSvg, EditSvg, EyeOpenSvg, SearchSvg } from "../../utils/svgs";
 import { SecondaryButton } from "../../shared/buttons";

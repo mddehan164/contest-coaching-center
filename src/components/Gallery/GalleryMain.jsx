@@ -35,7 +35,7 @@ const GalleryMain = () => {
     }
   };
   return (
-    <div className="px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44">
+    <div className="px-1 sm:px-5 md:px-10 lg:px-20 2xl:px-44">
       <ScrollAnimatedSection id="gallery" direction="right">
         <Gallery galleryData={images} loading={loading} />
       </ScrollAnimatedSection>

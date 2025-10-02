@@ -66,7 +66,7 @@ const Header = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex items-center justify-between w-full gap-10 max-sm:gap-1 max-sm:p-1 sm:px-5 md:px-10 lg:px-20 xl:px-44"
+        className="flex items-center justify-between w-full gap-10 max-sm:gap-1 max-sm:p-1 sm:px-5 md:px-10 lg:px-20 2xl:px-44"
       >
         <motion.div variants={leftChildVariants}>
           <HeaderDetails />

@@ -30,7 +30,7 @@ const Footer = () => {
       whileInView={{ opacity: 1, scaleX: 1 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.5 }}
-      className="p-3 sm:px-5 md:px-10 lg:px-20 xl:px-44 bg-headerColorHover text-white w-full mt-10 xl:mt-20"
+      className="p-3 sm:px-5 md:px-10 lg:px-20 2xl:px-44 bg-headerColorHover text-white w-full mt-10 xl:mt-20"
     >
       <h1 className="text-xl font-bold my-5 sm:py-2 sm:text-2xl w-full">
         {footerData?.logo?.slogan}
@@ -72,7 +72,7 @@ const Footer = () => {
             ))}
           </div>
 
-          <div>
+          {/* <div>
             <h1 className="text-xl font-bold mt-5 mb-2 xl:text-2xl">Explore</h1>
             {footerData?.exploreLinks?.map((item, index) => (
               <NavLink
@@ -83,7 +83,7 @@ const Footer = () => {
                 {item.name}
               </NavLink>
             ))}
-          </div>
+          </div> */}
 
           <div className="sm:w-1/2 lg:w-[60%]">
             <h1 className="text-xl font-bold mt-5 mb-2 xl:text-2xl">

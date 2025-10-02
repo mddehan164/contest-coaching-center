@@ -14,7 +14,7 @@ const Branches = () => {
   } = useBranches();
 
   return (
-    <div className="px-1 sm:px-5 md:px-10 lg:px-20 xl:px-44 mt-5">
+    <div className="px-1 sm:px-5 md:px-10 lg:px-20 2xl:px-44 mt-5">
       <ScrollAnimatedSection id="hero" direction="right">
         <Hero data={branchHeroData} />
       </ScrollAnimatedSection>
