@@ -23,7 +23,7 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
       <div className="w-[40%] h-full overflow-hidden rounded-sm">
         <img
           className="w-full h-full object-cover object-center"
-          src={img}
+          src={data?.image || img}
           alt={data?.name || "image"}
           loading="lazy"
         />
@@ -34,7 +34,17 @@ const PaymentCard = ({ status = 1, type = "student", data }) => {
         </h1>
         <p>{data?.mobile || "mobile"}</p>
         <p>{data?.batch_info?.name || "Batch"}</p>
-        {type === "student" ? <></> : <p>{data?.subject || "subject"}</p>}
+        {type === "student" ? (
+          <></>
+        ) : (
+          <p>
+            {data?.subject
+              ? data.subject.length > 10
+                ? data.subject.slice(0, 15) + "..."
+                : data.subject
+              : ""}
+          </p>
+        )}
         <div className="flex justify-between items-center mt-1">
           <p
             className={`${

@@ -134,8 +134,8 @@ const StudentPay = () => {
           setSelectedBatch={(batchId) =>
             dispatch(setFilters({ batch: batchId || null }))
           }
-          query={filters.search || ""}
-          setQuery={(query) => dispatch(setFilters({ search: query || "" }))}
+          // query={filters.search || ""}
+          // setQuery={(query) => dispatch(setFilters({ search: query || "" }))}
           onApply={handleApplyFilter}
           onClose={() => {
             dispatch(setShowPopup(false));

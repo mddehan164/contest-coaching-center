@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { errorNotify, successNotify } from "../utils/notify";
 import { useForm } from "react-hook-form";
-import { SelectedSliceTypeEnum } from "@utils/enums";
+// import { SelectedSliceTypeEnum } from "@utils/enums";
 import {
   addNewTeacherToList,
-  viewTeacherFromList,
+  // viewTeacherFromList,
   setAddTeacherModal,
   setEditTeacherModal,
   setSelectedTeacherData,
@@ -13,7 +13,7 @@ import {
   setTeacherMetaData,
   updateTeacherInList,
   useAddTeacherMutation,
-  useDeleteTeacherMutation,
+  // useDeleteTeacherMutation,
   useGetAllTeachersQuery,
   useUpdateTeacherMutation,
 } from "../redux-rtk/teacher";
@@ -35,12 +35,11 @@ export const useTeachers = () => {
     (state) => state.teacher
   );
   const { currentPage, pageSize } = meta || {};
-
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebouncedSearch(searchKeyword, 1000);
 
-  const [deleteTeacher, { isLoading: deleteLoading }] =
-    useDeleteTeacherMutation();
+  // const [deleteTeacher, { isLoading: deleteLoading }] =
+  //   useDeleteTeacherMutation();
   const { isLoading, isFetching, isError, error } = useGetAllTeachersQuery(
     { page: currentPage, limit: pageSize, search: debouncedSearch },
     {
@@ -64,23 +63,23 @@ export const useTeachers = () => {
     dispatch(setSelectedTeacherData(null));
   };
 
-  const handleDelete = ({ teacherId }) => {
-    if (!teacherId) return errorNotify("Teacher ID is required.");
+  // const handleDelete = ({ teacherId }) => {
+  //   if (!teacherId) return errorNotify("Teacher ID is required.");
 
-    deleteTeacher({ teacherId })
-      .unwrap()
-      .then((response) => {
-        if (response?.success) {
-          handleCloseConfirmationModal();
-          dispatch(viewTeacherFromList({ id: teacherId }));
-          successNotify(response?.message);
-        }
-      })
-      .catch((err) => {
-        errorNotify(err?.data?.message);
-        console.log(err.data.message);
-      });
-  };
+  //   deleteTeacher({ teacherId })
+  //     .unwrap()
+  //     .then((response) => {
+  //       if (response?.success) {
+  //         handleCloseConfirmationModal();
+  //         dispatch(viewTeacherFromList({ id: teacherId }));
+  //         successNotify(response?.message);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       errorNotify(err?.data?.message);
+  //       console.log(err.data.message);
+  //     });
+  // };
 
   return {
     dataList,
@@ -89,8 +88,8 @@ export const useTeachers = () => {
     isError,
     status: error?.status,
     updatePageMeta,
-    handleDelete,
-    deleteLoading,
+    // handleDelete,
+    // deleteLoading,
     searchKeyword,
     setSearchKeyword,
     selectedData,

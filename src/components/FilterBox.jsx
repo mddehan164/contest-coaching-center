@@ -1,4 +1,3 @@
-import { IoSearch } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 
 const FilterBox = ({
@@ -7,10 +6,9 @@ const FilterBox = ({
   setSelectedCourse,
   selectedBatch,
   setSelectedBatch,
-  query,
-  setQuery,
   onApply,
   onClose,
+  loading,
 }) => {
   return (
     <div
@@ -41,7 +39,9 @@ const FilterBox = ({
             setSelectedCourse(val);
           }}
         >
-          <option value="">-- Select Course --</option>
+          <option value="">
+            {loading.courses ? "Loading..." : "-- Select Course --"}
+          </option>
           {courseBatchData.map((c) => (
             <option key={c.encrypted_id} value={c.encrypted_id}>
               {c.title}
@@ -59,7 +59,9 @@ const FilterBox = ({
           }}
           disabled={!selectedCourse}
         >
-          <option value="">-- Select Batch --</option>
+          <option value="">
+            {loading.batches ? "Loading..." : "-- Select Batch --"}
+          </option>
           {selectedCourse &&
             courseBatchData
               .find((c) => c.encrypted_id === selectedCourse)
@@ -71,7 +73,7 @@ const FilterBox = ({
         </select>
 
         {/* Optional Search */}
-        <div className="px-2 border flex items-center gap-2 mb-4">
+        {/* <div className="px-2 border flex items-center gap-2 mb-4">
           <IoSearch className="text-lg font-semibold" />
           <input
             type="text"
@@ -80,7 +82,7 @@ const FilterBox = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-        </div>
+        </div> */}
 
         {/* Apply Button */}
         <button
@@ -92,7 +94,7 @@ const FilterBox = ({
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
         >
-          Apply Filter
+          Search
         </button>
       </div>
     </div>
